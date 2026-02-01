@@ -1,0 +1,194 @@
+from typing import Dict, Any, Optional
+import pandas as pd
+import pickle
+import joblib
+import json
+from datetime import datetime
+from pathlib import Path
+import streamlit as st
+from modules.utils import Logger
+
+def save_model(model, model_name: str, metadata: Dict[str, Any], format: str = 'joblib') -> str:
+    """
+    Saves a trained model with metadata to disk.
+    
+    Args:
+        model: Trained sklearn model.
+        model_name: Name for the saved model file.
+        metadata: Dictionary containing metrics, features, problem_type, etc.
+        format: Save format - 'joblib' (recommended) or 'pickle'.
+        
+    Returns:
+        str: Path to saved model file.
+        
+    Side Effects:
+        Creates saved_models/ directory if it doesn't exist.
+    """
+    # Create directory
+    save_dir = Path("saved_models")
+    save_dir.mkdir(exist_ok=True)
+    
+    # Add timestamp to metadata
+    metadata['saved_at'] = datetime.now().isoformat()
+    metadata['model_name'] = model_name
+    
+    # Generate filename
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    safe_name = model_name.replace(" ", "_").replace("(", "").replace(")", "")
+    
+    if format == 'joblib':
+        model_path = save_dir / f"{safe_name}_{timestamp}.joblib"
+        joblib.dump(model, model_path)
+    else:
+        model_path = save_dir / f"{safe_name}_{timestamp}.pkl"
+        with open(model_path, 'wb') as f:
+            pickle.dump(model, f)
+    
+    # Save metadata separately
+    metadata_path = save_dir / f"{safe_name}_{timestamp}_metadata.json"
+    with open(metadata_path, 'w') as f:
+        json.dump(metadata, f, indent=2)
+    
+    Logger.log(f"💾 Model saved: {model_path.name}")
+    return str(model_path)
+
+def load_model(filepath: str) -> tuple:
+    """
+    Loads a saved model and its metadata.
+    
+    Args:
+        filepath: Path to the saved model file.
+        
+    Returns:
+        tuple: (model, metadata_dict)
+    """
+    filepath = Path(filepath)
+    
+    # Load model
+    if filepath.suffix == '.joblib':
+        model = joblib.load(filepath)
+    else:
+        with open(filepath, 'rb') as f:
+            model = pickle.load(f)
+    
+    # Load metadata
+    metadata_path = filepath.parent / f"{filepath.stem}_metadata.json"
+    if metadata_path.exists():
+        with open(metadata_path, 'r') as f:
+            metadata = json.load(f)
+    else:
+        metadata = {}
+    
+    Logger.log(f"📂 Model loaded: {filepath.name}")
+    return model, metadata
+
+def list_saved_models() -> pd.DataFrame:
+    """
+    Lists all saved models with their metadata.
+    
+    Returns:
+        pd.DataFrame with columns: filename, model_name, saved_at, metrics.
+    """
+    save_dir = Path("saved_models")
+    if not save_dir.exists():
+        return pd.DataFrame()
+    
+    models_info = []
+    for model_file in save_dir.glob("*.joblib"):
+        metadata_file = save_dir / f"{model_file.stem}_metadata.json"
+        if metadata_file.exists():
+            with open(metadata_file, 'r') as f:
+                metadata = json.load(f)
+                models_info.append({
+                    'filename': model_file.name,
+                    'model_name': metadata.get('model_name', 'Unknown'),
+                    'saved_at': metadata.get('saved_at', 'Unknown'),
+                    'problem_type': metadata.get('problem_type', 'Unknown'),
+                    'metrics': str(metadata.get('metrics', {}))[:50] + "..."
+                })
+    
+    for model_file in save_dir.glob("*.pkl"):
+        if model_file.stem + ".joblib" not in [m['filename'].replace('.joblib', '') for m in models_info]:
+            metadata_file = save_dir / f"{model_file.stem}_metadata.json"
+            if metadata_file.exists():
+                with open(metadata_file, 'r') as f:
+                    metadata = json.load(f)
+                    models_info.append({
+                        'filename': model_file.name,
+                        'model_name': metadata.get('model_name', 'Unknown'),
+                        'saved_at': metadata.get('saved_at', 'Unknown'),
+                        'problem_type': metadata.get('problem_type', 'Unknown'),
+                        'metrics': str(metadata.get('metrics', {}))[:50] + "..."
+                    })
+    
+    return pd.DataFrame(models_info)
+
+def generate_api_code(model_name: str, feature_names: list, problem_type: str) -> str:
+    """
+    Generates FastAPI code template for model deployment.
+    
+    Args:
+        model_name: Name of the model.
+        feature_names: List of feature names.
+        problem_type: 'Classification' or 'Regression'.
+        
+    Returns:
+        str: FastAPI code template.
+    """
+    features_str = ", ".join([f"{f}: float" for f in feature_names[:5]])  # Limit for readability
+    
+    template = f'''"""
+FastAPI Deployment Template for {model_name}
+Generated by ANALYTIX.AI
+"""
+
+from fastapi import FastAPI
+from pydantic import BaseModel
+import joblib
+import numpy as np
+
+app = FastAPI(title="{model_name} API")
+
+# Load model at startup
+model = joblib.load("saved_models/{model_name}.joblib")
+
+class PredictionInput(BaseModel):
+    {features_str}
+    # Add remaining {len(feature_names) - 5} features...
+
+class PredictionOutput(BaseModel):
+    prediction: float
+    confidence: float = None
+
+@app.post("/predict", response_model=PredictionOutput)
+def predict(input_data: PredictionInput):
+    """
+    Make a prediction using the trained model.
+    """
+    # Convert input to numpy array
+    features = np.array([[
+        input_data.{feature_names[0] if feature_names else 'feature1'},
+        # Add remaining features...
+    ]])
+    
+    # Make prediction
+    prediction = model.predict(features)[0]
+    
+    # Get confidence for classification
+    confidence = None
+    if hasattr(model, 'predict_proba'):
+        proba = model.predict_proba(features)[0]
+        confidence = float(max(proba))
+    
+    return PredictionOutput(
+        prediction=float(prediction),
+        confidence=confidence
+    )
+
+@app.get("/health")
+def health_check():
+    return {{"status": "healthy", "model": "{model_name}"}}
+
+# Run with: uvicorn api:app --reload
+'''
+    return template
