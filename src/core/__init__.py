@@ -28,5 +28,6 @@ __all__ = [
     'model_persistence',
     'profiling',
     'timeseries',
-    'insights'
+    'insights',
+    'intent_engine'
 ]

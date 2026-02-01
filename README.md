@@ -1,147 +1,138 @@
 # 🧠 ANALYTIX.AI: Decision Intelligence System
 
-**Version 5.0 (Production Edition)**
+**Version 5.0 (Platform Edition)**
 
-An automated, robust, and explainable Data Science platform that transforms raw tabular data into actionable business decisions. Built for production environments with enterprise-grade error handling, automated optimization, and comprehensive diagnostics.
+An intelligent, adaptive Data Science platform that transforms raw data into actionable business decisions. Features SaaS-style intent selection, AI-powered recommendations, and guided workflows.
 
 [![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io)
 
 ## 🚀 Key Features
 
-### 1. Analytical Engine (The Core)
-- **Universal Ingestion**: Seamlessly handles CSV/XLSX with intelligent auto-type detection
-- **Robust Cleaning**: Automated missing value imputation, skewness correction, and outlier-safe scaling
-- **🔥 Precision Mode**: Recursive Feature Elimination (RFE) for accuracy-driven feature selection
-- **Industrial Tuning**: Automated hyperparameter optimization via `RandomizedSearchCV`
-- **Safety Layer**: Global `@safe_execution` decorator prevents crashes
+### 1. Platform Brain (NEW!)
+- **🎯 Intent Selection**: Choose your goal - system guides you to the right solution
+- **🤖 AI Recommendations**: Analyzes data and suggests optimal workflows
+- **✅ Smart Validation**: Checks requirements before starting
+- **📊 Confidence Scoring**: Know success probability upfront
+- **💡 Contextual Tips**: Smart suggestions based on your data
 
-### 2. Intelligence Hub (The Brain)
-- **Experiment Tracking**: Persistent experiment logging with CSV-based history
-- **Drift Detection**: Production safety monitoring using Population Stability Index (PSI)
-- **🔬 Diagnostic Audit**: Error analysis, segment-level performance monitoring, and bias detection
-- **Explainability 2.0**: Global (SHAP) and local (Permutation) importance for model transparency
+### 2. Analytical Engine
+- **Universal Ingestion**: CSV/XLSX with auto-type detection
+- **Robust Cleaning**: Automated preprocessing and outlier handling
+- **🔥 Precision Mode**: RFE for accuracy-driven feature selection
+- **Industrial Tuning**: Automated hyperparameter optimization
+- **Safety Layer**: Global error handling prevents crashes
 
-### 3. Production Features
-- **Docker Support**: Containerized deployment with docker-compose
-- **CI/CD Pipeline**: Automated testing and deployment with GitHub Actions
-- **Comprehensive Testing**: Unit and integration tests with pytest
-- **Configuration Management**: Environment-based settings with `.env` support
-- **Professional Documentation**: API docs, deployment guide, and architecture documentation
+### 3. Intelligence Hub
+- **Experiment Tracking**: Persistent experiment logging
+- **Drift Detection**: Production monitoring with PSI
+- **🔬 Diagnostic Audit**: Error analysis and bias detection
+- **Explainability**: SHAP and permutation importance
+- **A/B Testing**: Statistical comparison tools
+- **Time Series**: Forecasting and trend analysis
 
 ## 📁 Project Structure
 
 ```
 ANALYTIX.AI/
+├── app.py                        # Main Streamlit application
 ├── src/                          # Source code
 │   ├── core/                     # Core ML pipeline
+│   │   ├── intent_engine.py      # Intent detection & orchestration
 │   │   ├── data_loader.py        # Data ingestion
 │   │   ├── cleaning.py           # Data cleaning
 │   │   ├── features.py           # Feature engineering
-│   │   ├── modeling.py           # Model training
-│   │   └── ...                   # Other core modules
-│   ├── intelligence/             # Intelligence layer
-│   │   ├── dashboard.py          # Analytics dashboard
-│   │   ├── experiment_tracker.py # Experiment logging
-│   │   ├── report_generator.py   # Report generation
-│   │   └── ...                   # Other intelligence modules
-│   └── app.py                    # Main Streamlit application
+│   │   └── modeling.py           # Model training
+│   └── intelligence/             # Intelligence layer
+│       ├── intent_recommender.py # AI recommendations
+│       ├── dashboard.py          # Analytics dashboard
+│       ├── experiment_tracker.py # Experiment logging
+│       └── report_generator.py   # Report generation
+├── modules/                      # Legacy core modules
+├── intelligence/                 # Legacy intelligence modules
 ├── tests/                        # Test suite
-│   ├── unit/                     # Unit tests
-│   └── integration/              # Integration tests
-├── config/                       # Configuration files
-│   ├── settings.py               # Application settings
-│   └── logging_config.py         # Logging configuration
+├── config/                       # Configuration
 ├── data/                         # Data directory
-│   ├── raw/                      # Raw uploaded data
-│   ├── processed/                # Processed datasets
-│   └── models/                   # Saved models
-├── logs/                         # Application logs
 ├── docs/                         # Documentation
 │   ├── API.md                    # API documentation
-│   ├── DEPLOYMENT.md             # Deployment guide
 │   └── ARCHITECTURE.md           # System architecture
-├── scripts/                      # Utility scripts
-│   ├── setup.sh                  # Setup script (Unix)
-│   └── setup.bat                 # Setup script (Windows)
-├── .github/workflows/            # CI/CD pipelines
-├── Dockerfile                    # Docker configuration
-├── docker-compose.yml            # Docker Compose configuration
-├── pyproject.toml                # Project metadata
-├── requirements.txt              # Production dependencies
-├── requirements-dev.txt          # Development dependencies
+├── .github/                      # GitHub configuration
+├── requirements.txt              # Dependencies
 └── README.md                     # This file
 ```
 
 ## 🛠️ Installation & Usage
 
-### Quick Start (Local)
+### Quick Start
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/rajveersinghal/ANALYTIX.AI.git
    cd ANALYTIX.AI
    ```
 
-2. **Run setup script**
+2. **Create virtual environment**
    ```bash
-   # Unix/Linux/Mac
-   bash scripts/setup.sh
+   python -m venv venv
    
-   # Windows
-   scripts\setup.bat
+   # Activate (Windows)
+   venv\Scripts\activate
+   
+   # Activate (Unix/Mac)
+   source venv/bin/activate
    ```
 
-3. **Launch the application**
+3. **Install dependencies**
    ```bash
-   streamlit run src/app.py
+   pip install -r requirements.txt
    ```
 
-4. **Access the application**
+4. **Configure environment (optional)**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your preferences
+   ```
+
+5. **Launch the application**
+   ```bash
+   streamlit run app.py
+   ```
+
+6. **Access the application**
    - Open your browser to `http://localhost:8501`
 
-### Docker Deployment
+### Windows Quick Start
 
 ```bash
-# Build and run with Docker Compose
-docker-compose up -d
-
-# Access at http://localhost:8501
-
-# View logs
-docker-compose logs -f
-
-# Stop
-docker-compose down
-```
-
-### Manual Installation
-
-```bash
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Copy environment template
-cp .env.example .env
-
-# Run application
-streamlit run src/app.py
+# Use the provided batch file
+run_app.bat
 ```
 
 ## 📊 Workflow
 
-1. **Data Upload**: Upload CSV/Excel file
-2. **Quality Check**: Automated data quality assessment
-3. **Data Cleaning**: Automated preprocessing and cleaning
-4. **EDA**: Exploratory data analysis with visualizations
-5. **Feature Engineering**: Automated feature selection and engineering
-6. **Model Training**: Train and compare multiple models
-7. **Insights**: Generate insights, reports, and recommendations
+### New SaaS-Style Experience
+
+1. **📂 Data Upload**: Upload CSV/Excel file
+2. **🎯 What Do You Want to Do?** (NEW!)
+   - AI analyzes your data
+   - See top 3 recommended intents
+   - Choose from 8 predefined goals:
+     - 🎯 Build Predictive Model
+     - 📊 Explore & Understand Data
+     - 🏥 Data Health Check
+     - ⚡ Optimize Existing Model
+     - 💡 Understand Model Decisions
+     - 📈 Time Series Forecasting
+     - ⚖️ A/B Testing & Comparison
+     - 🔔 Monitor Model Performance
+3. **✅ Validation**: System checks if your data meets requirements
+4. **📋 Personalized Pipeline**: See exact steps for your goal
+5. **🚀 Guided Execution**: Follow the optimized workflow
+
+### Traditional Workflow (Still Available)
+
+1. Quality Check → 2. Data Cleaning → 3. EDA → 4. Feature Engineering → 5. Model Training → 6. Insights
 
 ## 🧪 Testing
 
@@ -160,13 +151,12 @@ pytest tests/integration/
 ## 📚 Documentation
 
 - [API Documentation](docs/API.md) - Detailed API reference
-- [Deployment Guide](docs/DEPLOYMENT.md) - Deployment instructions
 - [Architecture](docs/ARCHITECTURE.md) - System architecture
 - [Contributing](CONTRIBUTING.md) - Contribution guidelines
 
 ## 🔧 Configuration
 
-Configuration is managed through environment variables. Copy `.env.example` to `.env` and update:
+Configuration is managed through environment variables. Copy `.env.example` to `.env`:
 
 ```env
 DATABASE_URL=sqlite:///data/analytix.db
@@ -175,13 +165,15 @@ MODEL_TEST_SIZE=0.2
 LOG_LEVEL=INFO
 ```
 
-## 🚀 Production Deployment
+## 🎯 Use Cases
 
-See [DEPLOYMENT.md](docs/DEPLOYMENT.md) for detailed deployment instructions for:
-- AWS EC2
-- Azure Container Instances
-- Google Cloud Run
-- Docker/Kubernetes
+- **Churn Prediction**: Identify customers at risk
+- **Sales Forecasting**: Predict future revenue
+- **Fraud Detection**: Detect anomalous transactions
+- **Price Optimization**: Estimate optimal pricing
+- **Customer Segmentation**: Group similar customers
+- **Demand Forecasting**: Predict inventory needs
+- **A/B Testing**: Compare marketing campaigns
 
 ## 🤝 Contributing
 
@@ -189,19 +181,29 @@ We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guid
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
 
 ## 🏆 Technical Highlights
 
+- **Platform Brain**: Intent detection with AI-powered recommendations
 - **Type Safety**: Comprehensive type hints across all functions
-- **Documentation**: Google-style docstrings with Args/Returns/Examples
-- **Error Resilience**: Global exception handling with graceful degradation
-- **Performance**: Parallel processing (`n_jobs=-1`) for CPU-intensive operations
-- **Reproducibility**: Fixed random seeds and dataset fingerprinting
-- **Code Quality**: Black formatting, pylint linting, mypy type checking
-- **Testing**: 80%+ test coverage with pytest
+- **Documentation**: Google-style docstrings with examples
+- **Error Resilience**: Global exception handling
+- **Performance**: Parallel processing for CPU-intensive operations
+- **Reproducibility**: Fixed random seeds and fingerprinting
+- **Code Quality**: Black formatting, comprehensive testing
+- **Modern UX**: SaaS-style guided workflows
+
+## 🌟 What Makes This Different?
+
+### Before (Traditional Tools)
+- Upload data → Figure out what to do → Hope it works
+
+### After (ANALYTIX.AI Platform)
+- Upload data → **AI recommends best approach** → **Validation before starting** → **Guided workflow** → **Confident results**
 
 ---
 
-**Developed with ❤️ by ANALYTIX.AI Team** | Production-Ready ML Platform
+**Developed with ❤️ by ANALYTIX.AI Team** | Intelligent ML Platform
 
+**Repository**: https://github.com/rajveersinghal/ANALYTIX.AI.git

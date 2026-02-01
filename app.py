@@ -3,6 +3,8 @@ import pandas as pd
 import traceback
 from modules import data_loader, data_quality, cleaning, eda, features, modeling, insights, data_validator, metrics, utils
 from modules.utils import Logger
+from src.core.intent_engine import IntentEngine
+from src.intelligence.intent_recommender import IntentRecommender
 
 # Page Config
 st.set_page_config(page_title="Data Science Automation (Robust)", layout="wide", page_icon="🚀")
@@ -49,7 +51,8 @@ st.sidebar.markdown("**Decision Intelligence System** (Premium Edition)")
 # Sidebar Navigation
 st.sidebar.title("Workflow Steps")
 step = st.sidebar.radio("Go to Step:", [
-    "1. Data Upload", 
+    "1. Data Upload",
+    "1.5 What Do You Want to Do?",
     "2. Quality Check", 
     "3. Data Cleaning", 
     "4. Exploratory Data Analysis (EDA)",
@@ -83,6 +86,10 @@ if 'df_final' not in st.session_state:
     st.session_state.df_final = None
 if 'model_results' not in st.session_state:
     st.session_state.model_results = None
+if 'selected_intent' not in st.session_state:
+    st.session_state.selected_intent = None
+if 'intent_details' not in st.session_state:
+    st.session_state.intent_details = None
 
 # Set Seed for Reproducibility
 utils.set_seed()
@@ -122,12 +129,151 @@ with tab_run:
                     st.caption(f"Signature: {fp['Signature']}")
                     
                     st.session_state.df = df
-                    st.success("File uploaded and initial validation passed!")
+                    st.success("✅ File uploaded and initial validation passed!")
                     data_loader.display_basic_info(df)
                     st.dataframe(df.head())
+                    
+                    # Show next step prompt
+                    st.info("👉 **Next Step**: Go to '1.5 What Do You Want to Do?' to select your goal")
             except Exception as e:
                 st.error(f"Critical error during loading: {e}")
                 st.code(traceback.format_exc())
+    
+    # --- Step 1.5: Intent Selection (NEW - SaaS Style) ---
+    elif step == "1.5 What Do You Want to Do?":
+        st.header("🎯 What Do You Want to Do?")
+        st.markdown("### Tell us your goal, and we'll guide you to the right solution")
+        
+        if st.session_state.df is not None:
+            df = st.session_state.df
+            
+            # Get AI recommendations
+            with st.spinner("🧠 Analyzing your data..."):
+                recommendations = IntentRecommender.recommend_intents(df)
+            
+            # Display recommendations
+            st.markdown("---")
+            st.subheader("💡 Recommended for Your Data")
+            
+            cols = st.columns(3)
+            for idx, rec in enumerate(recommendations):
+                intent_info = IntentEngine.INTENTS[rec["intent"]]
+                with cols[idx]:
+                    confidence_color = "🟢" if rec["confidence"] > 80 else "🟡" if rec["confidence"] > 60 else "🟠"
+                    st.markdown(f"{confidence_color} **{rec['confidence']:.0f}% Match**")
+                    st.caption(f"*{rec['reason']}*")
+            
+            st.markdown("---")
+            
+            # Intent Selection Grid
+            st.subheader("📋 Choose Your Goal")
+            
+            # Create 2x4 grid of intent cards
+            intent_keys = list(IntentEngine.INTENTS.keys())
+            
+            for row in range(0, len(intent_keys), 4):
+                cols = st.columns(4)
+                for col_idx, intent_key in enumerate(intent_keys[row:row+4]):
+                    intent = IntentEngine.INTENTS[intent_key]
+                    with cols[col_idx]:
+                        # Create card-like button
+                        button_label = f"{intent['icon']}\n\n**{intent['name'].split(' ', 1)[1] if ' ' in intent['name'] else intent['name']}**"
+                        if st.button(
+                            button_label,
+                            key=f"intent_{intent_key}",
+                            help=intent['description'],
+                            use_container_width=True
+                        ):
+                            st.session_state.selected_intent = intent_key
+                            st.rerun()
+            
+            # Show selected intent details
+            if st.session_state.selected_intent:
+                st.markdown("---")
+                selected_key = st.session_state.selected_intent
+                intent = IntentEngine.INTENTS[selected_key]
+                
+                st.success(f"✅ Selected: **{intent['name']}**")
+                
+                # Create detailed view
+                col1, col2 = st.columns([2, 1])
+                
+                with col1:
+                    st.markdown(f"### {intent['icon']} {intent['name']}")
+                    st.markdown(intent['description'])
+                    st.markdown(f"**Business Value:** {intent['business_value']}")
+                    st.markdown(f"**Example Use Cases:** {intent['example']}")
+                    
+                    # Target column selection if needed
+                    target_col = None
+                    if intent['requires_target']:
+                        st.markdown("---")
+                        target_col = st.selectbox(
+                            "Select Target Column (what you want to predict/analyze)",
+                            df.columns,
+                            help="This is the outcome variable you want to predict or understand"
+                        )
+                    
+                    # Validate intent
+                    if st.button("🚀 Start This Workflow", type="primary", use_container_width=True):
+                        with st.spinner("Validating requirements..."):
+                            intent_result = IntentEngine.detect_user_intent(selected_key, df, target_col)
+                            
+                            if intent_result['valid']:
+                                st.session_state.intent_details = intent_result
+                                st.session_state.target_col = target_col
+                                st.success("✅ All requirements met! Proceeding to workflow...")
+                                
+                                # Show pipeline
+                                st.markdown("### 📋 Your Personalized Pipeline")
+                                for step_info in intent_result['pipeline']:
+                                    st.markdown(f"✓ **{step_info['name']}** - {step_info['description']}")
+                                
+                                st.info(f"⏱️ Estimated time: {intent_result['estimated_time']}")
+                                st.balloons()
+                            else:
+                                st.error("❌ Requirements not met")
+                                for error in intent_result['validation']['errors']:
+                                    st.error(error)
+                
+                with col2:
+                    st.markdown("### 📊 Requirements")
+                    validation = IntentEngine.validate_intent_requirements(intent, df, None)
+                    
+                    # Show requirements checklist
+                    st.markdown(f"**Minimum Rows:** {intent['min_rows']}")
+                    if len(df) >= intent['min_rows']:
+                        st.success(f"✅ You have {len(df)} rows")
+                    else:
+                        st.error(f"❌ You have {len(df)} rows")
+                    
+                    st.markdown(f"**Minimum Columns:** {intent['min_cols']}")
+                    if len(df.columns) >= intent['min_cols']:
+                        st.success(f"✅ You have {len(df.columns)} columns")
+                    else:
+                        st.error(f"❌ You have {len(df.columns)} columns")
+                    
+                    if intent['requires_target']:
+                        st.markdown("**Target Column:** Required")
+                    
+                    # Show confidence score
+                    st.markdown("---")
+                    st.markdown("### 🎯 Success Confidence")
+                    confidence = IntentEngine._calculate_intent_confidence(intent, df, None)
+                    st.progress(confidence / 100)
+                    st.caption(f"{confidence:.0f}% - Based on data quality and size")
+                    
+                    # Show smart suggestions
+                    suggestions = IntentRecommender.get_smart_suggestions(df, selected_key)
+                    if suggestions:
+                        st.markdown("---")
+                        st.markdown("### 💡 Smart Tips")
+                        for suggestion in suggestions:
+                            st.info(suggestion)
+        
+        else:
+            st.warning("⚠️ Please upload a dataset first (Step 1)")
+            st.info("👈 Go to 'Data Upload' in the sidebar to get started")
 
     # --- Step 2: Quality Check ---
     elif step == "2. Quality Check":
