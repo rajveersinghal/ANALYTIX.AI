@@ -1,138 +1,154 @@
-# 🧠 ANALYTIX.AI: Decision Intelligence System
+# ANALYTIX.AI 🧠
 
-**Version 5.0 (Platform Edition)**
+**AI-Powered Analytics Platform** - Transform your data into actionable insights with automated machine learning and intelligent analytics.
 
-An intelligent, adaptive Data Science platform that transforms raw data into actionable business decisions. Features SaaS-style intent selection, AI-powered recommendations, and guided workflows.
+[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.109-green.svg)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green.svg)](https://www.mongodb.com/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B.svg)](https://streamlit.io)
+---
 
-## 🚀 Key Features
+## 🚀 Quick Start
 
-### 1. Platform Brain (NEW!)
-- **🎯 Intent Selection**: Choose your goal - system guides you to the right solution
-- **🤖 AI Recommendations**: Analyzes data and suggests optimal workflows
-- **✅ Smart Validation**: Checks requirements before starting
-- **📊 Confidence Scoring**: Know success probability upfront
-- **💡 Contextual Tips**: Smart suggestions based on your data
+### Prerequisites
+- Python 3.10+
+- MongoDB 6.0+
+- Node.js 16+ (for frontend development)
 
-### 2. Analytical Engine
-- **Universal Ingestion**: CSV/XLSX with auto-type detection
-- **Robust Cleaning**: Automated preprocessing and outlier handling
-- **🔥 Precision Mode**: RFE for accuracy-driven feature selection
-- **Industrial Tuning**: Automated hyperparameter optimization
-- **Safety Layer**: Global error handling prevents crashes
+### Installation
 
-### 3. Intelligence Hub
-- **Experiment Tracking**: Persistent experiment logging
-- **Drift Detection**: Production monitoring with PSI
-- **🔬 Diagnostic Audit**: Error analysis and bias detection
-- **Explainability**: SHAP and permutation importance
-- **A/B Testing**: Statistical comparison tools
-- **Time Series**: Forecasting and trend analysis
+```bash
+# Clone repository
+git clone https://github.com/yourusername/ANALYTIX.AI.git
+cd ANALYTIX.AI
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Configure environment
+cp backend/.env.example backend/.env
+# Edit backend/.env with your settings
+
+# Start MongoDB
+mongod --dbpath /data/db
+
+# Start backend
+uvicorn backend.main:app --reload --port 8000
+
+# Start frontend (in new terminal)
+cd frontend
+python -m http.server 8080
+```
+
+**Access Application**: http://localhost:8080
+
+---
 
 ## 📁 Project Structure
 
 ```
 ANALYTIX.AI/
-├── app.py                        # Main Streamlit application
-├── src/                          # Source code
-│   ├── core/                     # Core ML pipeline
-│   │   ├── intent_engine.py      # Intent detection & orchestration
-│   │   ├── data_loader.py        # Data ingestion
-│   │   ├── cleaning.py           # Data cleaning
-│   │   ├── features.py           # Feature engineering
-│   │   └── modeling.py           # Model training
-│   └── intelligence/             # Intelligence layer
-│       ├── intent_recommender.py # AI recommendations
-│       ├── dashboard.py          # Analytics dashboard
-│       ├── experiment_tracker.py # Experiment logging
-│       └── report_generator.py   # Report generation
-├── modules/                      # Legacy core modules
-├── intelligence/                 # Legacy intelligence modules
-├── tests/                        # Test suite
-├── config/                       # Configuration
-├── data/                         # Data directory
-├── docs/                         # Documentation
-│   ├── API.md                    # API documentation
-│   └── ARCHITECTURE.md           # System architecture
-├── .github/                      # GitHub configuration
-├── requirements.txt              # Dependencies
-└── README.md                     # This file
+├── backend/              # FastAPI Backend
+│   ├── api/             # REST API endpoints
+│   ├── services/        # Business logic
+│   ├── models/          # Pydantic schemas
+│   ├── db/              # Database models
+│   └── main.py          # Application entry
+│
+├── frontend/            # Web Frontend
+│   ├── css/            # Stylesheets
+│   ├── js/             # JavaScript
+│   └── *.html          # Pages
+│
+├── core/                # Shared Core Modules
+│   ├── data/           # Data processing
+│   ├── ml/             # Machine learning
+│   ├── intelligence/   # AI features
+│   └── utils/          # Utilities
+│
+├── streamlit_app/       # Optional Streamlit UI
+├── data/                # Sample datasets
+├── docs/                # Documentation
+└── tests/               # Test suites
 ```
 
-## 🛠️ Installation & Usage
+---
 
-### Quick Start
+## ✨ Features
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/rajveersinghal/ANALYTIX.AI.git
-   cd ANALYTIX.AI
-   ```
+### 🎯 Core Capabilities
+- **Automated ML**: Train models with one click
+- **Smart Data Cleaning**: Auto-detect and fix data issues
+- **Feature Engineering**: Intelligent feature creation
+- **Model Explainability**: SHAP-based interpretations
+- **Real-time Predictions**: Fast inference API
 
-2. **Create virtual environment**
-   ```bash
-   python -m venv venv
-   
-   # Activate (Windows)
-   venv\Scripts\activate
-   
-   # Activate (Unix/Mac)
-   source venv/bin/activate
-   ```
+### 🧠 Intelligence Features
+- **Intent Detection**: Understand user goals
+- **Smart Recommendations**: Data-driven insights
+- **Auto-generated Reports**: Comprehensive analytics
+- **What-If Analysis**: Scenario modeling
 
-3. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
+### 🔐 Enterprise Ready
+- **JWT Authentication**: Secure user management
+- **MongoDB Integration**: Scalable data storage
+- **RESTful API**: 35+ endpoints
+- **Trial Management**: 14-day free trial system
 
-4. **Configure environment (optional)**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your preferences
-   ```
+---
 
-5. **Launch the application**
-   ```bash
-   streamlit run app.py
-   ```
+## 📚 Documentation
 
-6. **Access the application**
-   - Open your browser to `http://localhost:8501`
+- **[API Documentation](http://localhost:8000/docs)** - Interactive Swagger UI
+- **[Setup Guide](docs/SETUP.md)** - Detailed installation
+- **[Architecture](docs/ARCHITECTURE.md)** - System design
+- **[Contributing](CONTRIBUTING.md)** - Development guide
 
-### Windows Quick Start
+---
 
-```bash
-# Use the provided batch file
-run_app.bat
+## 🛠️ Technology Stack
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **MongoDB** - NoSQL database with Beanie ODM
+- **Scikit-learn** - Machine learning
+- **SHAP** - Model explainability
+- **Pandas** - Data manipulation
+
+### Frontend
+- **HTML/CSS/JavaScript** - Modern web stack
+- **Fetch API** - REST client
+- **Responsive Design** - Mobile-friendly
+
+### Optional
+- **Streamlit** - Advanced analytics UI
+- **Docker** - Containerization
+- **Nginx** - Production deployment
+
+---
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```env
+# MongoDB
+MONGODB_URL=mongodb://localhost:27017
+DATABASE_NAME=analytix_ai_prod
+
+# Security
+SECRET_KEY=your-secret-key-min-32-chars
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# CORS
+CORS_ORIGINS=http://localhost:8080
+
+# File Upload
+MAX_UPLOAD_SIZE=104857600  # 100MB
 ```
 
-## 📊 Workflow
-
-### New SaaS-Style Experience
-
-1. **📂 Data Upload**: Upload CSV/Excel file
-2. **🎯 What Do You Want to Do?** (NEW!)
-   - AI analyzes your data
-   - See top 3 recommended intents
-   - Choose from 8 predefined goals:
-     - 🎯 Build Predictive Model
-     - 📊 Explore & Understand Data
-     - 🏥 Data Health Check
-     - ⚡ Optimize Existing Model
-     - 💡 Understand Model Decisions
-     - 📈 Time Series Forecasting
-     - ⚖️ A/B Testing & Comparison
-     - 🔔 Monitor Model Performance
-3. **✅ Validation**: System checks if your data meets requirements
-4. **📋 Personalized Pipeline**: See exact steps for your goal
-5. **🚀 Guided Execution**: Follow the optimized workflow
-
-### Traditional Workflow (Still Available)
-
-1. Quality Check → 2. Data Cleaning → 3. EDA → 4. Feature Engineering → 5. Model Training → 6. Insights
+---
 
 ## 🧪 Testing
 
@@ -140,70 +156,64 @@ run_app.bat
 # Run all tests
 pytest
 
-# Run with coverage
-pytest --cov=src --cov-report=html
-
 # Run specific test suite
-pytest tests/unit/
-pytest tests/integration/
+pytest tests/backend/
+pytest tests/core/
+
+# With coverage
+pytest --cov=backend --cov=core
 ```
 
-## 📚 Documentation
+---
 
-- [API Documentation](docs/API.md) - Detailed API reference
-- [Architecture](docs/ARCHITECTURE.md) - System architecture
-- [Contributing](CONTRIBUTING.md) - Contribution guidelines
+## 📦 Deployment
 
-## 🔧 Configuration
+### Docker
 
-Configuration is managed through environment variables. Copy `.env.example` to `.env`:
+```bash
+# Build and run
+docker-compose up -d
 
-```env
-DATABASE_URL=sqlite:///data/analytix.db
-MODEL_RANDOM_STATE=42
-MODEL_TEST_SIZE=0.2
-LOG_LEVEL=INFO
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
 ```
 
-## 🎯 Use Cases
+### Production
 
-- **Churn Prediction**: Identify customers at risk
-- **Sales Forecasting**: Predict future revenue
-- **Fraud Detection**: Detect anomalous transactions
-- **Price Optimization**: Estimate optimal pricing
-- **Customer Segmentation**: Group similar customers
-- **Demand Forecasting**: Predict inventory needs
-- **A/B Testing**: Compare marketing campaigns
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for production deployment guide.
+
+---
 
 ## 🤝 Contributing
 
 We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
+---
+
 ## 📄 License
 
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file.
-
-## 🏆 Technical Highlights
-
-- **Platform Brain**: Intent detection with AI-powered recommendations
-- **Type Safety**: Comprehensive type hints across all functions
-- **Documentation**: Google-style docstrings with examples
-- **Error Resilience**: Global exception handling
-- **Performance**: Parallel processing for CPU-intensive operations
-- **Reproducibility**: Fixed random seeds and fingerprinting
-- **Code Quality**: Black formatting, comprehensive testing
-- **Modern UX**: SaaS-style guided workflows
-
-## 🌟 What Makes This Different?
-
-### Before (Traditional Tools)
-- Upload data → Figure out what to do → Hope it works
-
-### After (ANALYTIX.AI Platform)
-- Upload data → **AI recommends best approach** → **Validation before starting** → **Guided workflow** → **Confident results**
+This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**Developed with ❤️ by ANALYTIX.AI Team** | Intelligent ML Platform
+## 🙏 Acknowledgments
 
-**Repository**: https://github.com/rajveersinghal/ANALYTIX.AI.git
+- FastAPI for the excellent framework
+- MongoDB for scalable database
+- Scikit-learn for ML capabilities
+- SHAP for model interpretability
+
+---
+
+## 📞 Support
+
+- **Documentation**: [docs/](docs/)
+- **Issues**: [GitHub Issues](https://github.com/yourusername/ANALYTIX.AI/issues)
+- **Email**: support@analytix.ai
+
+---
+
+**Made with ❤️ by the ANALYTIX.AI Team**

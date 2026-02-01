@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to ANALYTIX.AI - Let's Get Started</title>
+    <link rel="stylesheet" href="css/onboarding.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="onboarding-page">
+    <div class="onboarding-container">
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-steps">
+                <div class="progress-step" id="progress-step-1">
+                    <div class="step-circle active" id="circle-1">1</div>
+                    <div class="step-label active">Your Goal</div>
+                </div>
+                <div class="progress-step" id="progress-step-2">
+                    <div class="step-circle" id="circle-2">2</div>
+                    <div class="step-label">Experience</div>
+                </div>
+                <div class="progress-step" id="progress-step-3">
+                    <div class="step-circle" id="circle-3">3</div>
+                    <div class="step-label">Get Started</div>
+                </div>
+            </div>
+            <div class="progress-bar" id="progressBar" style="width: 33.33%;"></div>
+        </div>
+
+        <!-- Step 1: Goal Selection -->
+        <div class="step-content active" id="step1">
+            <div class="step-header">
+                <div class="step-icon">🎯</div>
+                <h1 class="step-title">What's your primary goal?</h1>
+                <p class="step-description">Help us personalize your experience by telling us what you want to achieve
+                </p>
+            </div>
+
+            <div class="option-cards">
+                <label class="option-card">
+                    <input type="radio" name="goal" value="predict_outcomes">
+                    <div class="option-content">
+                        <div class="option-icon">🔮</div>
+                        <div class="option-title">Predict Outcomes</div>
+                        <div class="option-description">Forecast future trends and make data-driven predictions</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="goal" value="understand_data">
+                    <div class="option-content">
+                        <div class="option-icon">📊</div>
+                        <div class="option-title">Understand My Data</div>
+                        <div class="option-description">Discover patterns, insights, and hidden relationships</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="goal" value="automate_decisions">
+                    <div class="option-content">
+                        <div class="option-icon">⚡</div>
+                        <div class="option-title">Automate Decisions</div>
+                        <div class="option-description">Build AI models to automate business processes</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="goal" value="explore_features">
+                    <div class="option-content">
+                        <div class="option-icon">🚀</div>
+                        <div class="option-title">Just Exploring</div>
+                        <div class="option-description">I want to see what ANALYTIX.AI can do</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Step 2: Experience Level -->
+        <div class="step-content" id="step2">
+            <div class="step-header">
+                <div class="step-icon">📚</div>
+                <h1 class="step-title">What's your experience level?</h1>
+                <p class="step-description">We'll tailor the interface and suggestions to match your expertise</p>
+            </div>
+
+            <div class="option-cards">
+                <label class="option-card">
+                    <input type="radio" name="experience" value="beginner">
+                    <div class="option-content">
+                        <div class="option-icon">🌱</div>
+                        <div class="option-title">Beginner</div>
+                        <div class="option-description">New to data science and machine learning</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="experience" value="intermediate">
+                    <div class="option-content">
+                        <div class="option-icon">📈</div>
+                        <div class="option-title">Intermediate</div>
+                        <div class="option-description">Familiar with basic concepts and tools</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="experience" value="advanced">
+                    <div class="option-content">
+                        <div class="option-icon">🎓</div>
+                        <div class="option-title">Advanced</div>
+                        <div class="option-description">Experienced data scientist or ML engineer</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Step 3: Dataset Choice -->
+        <div class="step-content" id="step3">
+            <div class="step-header">
+                <div class="step-icon">📁</div>
+                <h1 class="step-title">How do you want to start?</h1>
+                <p class="step-description">Choose your preferred way to begin your journey</p>
+            </div>
+
+            <div class="option-cards">
+                <label class="option-card">
+                    <input type="radio" name="dataset" value="sample">
+                    <div class="option-content">
+                        <div class="option-icon">🎁</div>
+                        <div class="option-title">Use Sample Dataset</div>
+                        <div class="option-description">Start with our curated sample data to explore features</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="dataset" value="upload">
+                    <div class="option-content">
+                        <div class="option-icon">📤</div>
+                        <div class="option-title">Upload My Data</div>
+                        <div class="option-description">Bring your own CSV or Excel file to analyze</div>
+                    </div>
+                </label>
+
+                <label class="option-card">
+                    <input type="radio" name="dataset" value="later">
+                    <div class="option-content">
+                        <div class="option-icon">⏰</div>
+                        <div class="option-title">I'll Do This Later</div>
+                        <div class="option-description">Take me to the dashboard, I'll upload data when ready</div>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="step-navigation">
+            <button type="button" class="btn-nav btn-prev" id="prevBtn" onclick="prevStep()" style="display: none;">
+                ← Previous
+            </button>
+            <button type="button" class="btn-nav btn-next" id="nextBtn" onclick="nextStep()">
+                Next →
+            </button>
+            <button type="button" class="btn-nav btn-finish" id="finishBtn" onclick="finishOnboarding()"
+                style="display: none;">
+                Get Started 🚀
+            </button>
+        </div>
+
+        <!-- Skip Option -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-skip" onclick="skipOnboarding()">Skip for now</button>
+        </div>
+    </div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen"
+        style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(102, 126, 234, 0.95); z-index: 9999; display: none; align-items: center; justify-content: center; flex-direction: column;">
+        <div class="completion-animation">
+            <div class="success-icon">✨</div>
+            <h2 class="completion-title">Setting Up Your Workspace...</h2>
+            <p class="completion-message">This will only take a moment</p>
+        </div>
+    </div>
+
+    <script src="js/core/api-client.js"></script>
+    <script src="js/pages/onboarding.js"></script>
+</body>
+
+</html>

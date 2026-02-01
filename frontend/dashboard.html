@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ANALYTIX.AI</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="dashboard-header">
+        <div class="container">
+            <div class="header-content">
+                <h1>🧠 ANALYTIX.AI</h1>
+                <div class="user-menu">
+                    <span id="userName">Loading...</span>
+                    <button onclick="logout()" class="btn-secondary">Logout</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="dashboard-main">
+        <div class="container">
+            <!-- Trial Banner -->
+            <div id="trialBanner" class="trial-banner" style="display: none;">
+                <p>🎉 <span id="trialDays"></span> days remaining in your trial. <a href="#upgrade">Upgrade to Pro</a>
+                </p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-content">
+                        <h3 id="datasetCount">0</h3>
+                        <p>Datasets</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🤖</div>
+                    <div class="stat-content">
+                        <h3 id="modelCount">0</h3>
+                        <p>Models Trained</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-content">
+                        <h3 id="predictionCount">0</h3>
+                        <p>Predictions Made</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-content">
+                        <h3 id="qualityScore">-</h3>
+                        <p>Avg Quality Score</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Cards -->
+            <div class="action-section">
+                <h2>What would you like to do?</h2>
+                <div class="action-grid">
+                    <a href="workspace.html" class="action-card">
+                        <div class="action-icon">🚀</div>
+                        <h3>Start New Project</h3>
+                        <p>Upload data and train models</p>
+                    </a>
+                    <a href="workspace.html?view=datasets" class="action-card">
+                        <div class="action-icon">📁</div>
+                        <h3>View Datasets</h3>
+                        <p>Manage your uploaded data</p>
+                    </a>
+                    <a href="workspace.html?view=models" class="action-card">
+                        <div class="action-icon">🎓</div>
+                        <h3>View Models</h3>
+                        <p>See your trained models</p>
+                    </a>
+                    <a href="http://localhost:8501" target="_blank" class="action-card">
+                        <div class="action-icon">🔬</div>
+                        <h3>Advanced Analytics</h3>
+                        <p>Open Streamlit interface</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="recent-section">
+                <h2>Recent Activity</h2>
+                <div id="recentActivity" class="activity-list">
+                    <p class="loading">Loading recent activity...</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/core/api-client.js"></script>
+    <script src="js/pages/dashboard.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - ANALYTIX.AI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/onboarding.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body class="onboarding-page">
+    <!-- Trial Activation Banner -->
+    <div class="trial-banner" id="trialBanner">
+        <div class="container">
+            <div class="trial-content">
+                <div class="trial-icon">🎉</div>
+                <div class="trial-text">
+                    <strong>You are on a full-feature trial!</strong>
+                    <span>Free & Pro features unlocked. No credit card required.</span>
+                </div>
+                <button class="trial-close" id="closeBanner">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M5 5L15 15M5 15L15 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="onboarding-container">
+        <!-- Progress Indicator -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-steps">
+            <div class="progress-step active" data-step="1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Goal</div>
+            </div>
+            <div class="progress-step" data-step="2">
+                <div class="step-circle">2</div>
+                <div class="step-label">Experience</div>
+            </div>
+            <div class="progress-step" data-step="3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Dataset</div>
+            </div>
+        </div>
+
+        <!-- Step 1: What do you want to do? -->
+        <div class="onboarding-step active" id="step1">
+            <div class="step-content">
+                <div class="step-header">
+                    <h1 class="step-title">What do you want to do?</h1>
+                    <p class="step-subtitle">Choose your primary goal to get personalized recommendations</p>
+                </div>
+
+                <div class="options-grid">
+                    <div class="option-card" data-value="predict">
+                        <div class="option-icon">🎯</div>
+                        <h3 class="option-title">Build Prediction Model</h3>
+                        <p class="option-description">
+                            Create ML models to predict outcomes like sales, churn, or prices
+                        </p>
+                        <div class="option-badge">Most Popular</div>
+                    </div>
+
+                    <div class="option-card" data-value="analyze">
+                        <div class="option-icon">📊</div>
+                        <h3 class="option-title">Analyze Data</h3>
+                        <p class="option-description">
+                            Explore patterns, correlations, and insights in your data
+                        </p>
+                    </div>
+
+                    <div class="option-card" data-value="monitor">
+                        <div class="option-icon">📈</div>
+                        <h3 class="option-title">Monitor Model</h3>
+                        <p class="option-description">
+                            Track performance and detect drift in production models
+                        </p>
+                    </div>
+
+                    <div class="option-card" data-value="learn">
+                        <div class="option-icon">🎓</div>
+                        <h3 class="option-title">Learn ML</h3>
+                        <p class="option-description">
+                            Follow guided tutorials to understand machine learning concepts
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 2: Experience Level -->
+        <div class="onboarding-step" id="step2">
+            <div class="step-content">
+                <div class="step-header">
+                    <h1 class="step-title">What's your experience level?</h1>
+                    <p class="step-subtitle">We'll customize the interface and guidance for you</p>
+                </div>
+
+                <div class="options-list">
+                    <div class="option-row" data-value="beginner">
+                        <div class="option-row-icon">🌱</div>
+                        <div class="option-row-content">
+                            <h3 class="option-row-title">Beginner</h3>
+                            <p class="option-row-description">
+                                New to ML and data science. I want step-by-step guidance.
+                            </p>
+                        </div>
+                        <div class="option-row-check">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="option-row" data-value="intermediate">
+                        <div class="option-row-icon">🚀</div>
+                        <div class="option-row-content">
+                            <h3 class="option-row-title">Intermediate</h3>
+                            <p class="option-row-description">
+                                Familiar with ML concepts. I want smart defaults and flexibility.
+                            </p>
+                        </div>
+                        <div class="option-row-check">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="option-row" data-value="advanced">
+                        <div class="option-row-icon">⚡</div>
+                        <div class="option-row-content">
+                            <h3 class="option-row-title">Advanced</h3>
+                            <p class="option-row-description">
+                                Experienced data scientist. I want full control and customization.
+                            </p>
+                        </div>
+                        <div class="option-row-check">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M20 6L9 17L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 3: Dataset -->
+        <div class="onboarding-step" id="step3">
+            <div class="step-content">
+                <div class="step-header">
+                    <h1 class="step-title">How would you like to start?</h1>
+                    <p class="step-subtitle">Choose your data source to begin your journey</p>
+                </div>
+
+                <div class="options-grid two-column">
+                    <div class="option-card large" data-value="upload">
+                        <div class="option-icon">📁</div>
+                        <h3 class="option-title">Upload My Data</h3>
+                        <p class="option-description">
+                            Start with your own CSV or Excel file
+                        </p>
+                        <ul class="option-features">
+                            <li>CSV and Excel support</li>
+                            <li>Auto-type detection</li>
+                            <li>Quality validation</li>
+                        </ul>
+                    </div>
+
+                    <div class="option-card large" data-value="sample">
+                        <div class="option-icon">📚</div>
+                        <h3 class="option-title">Use Sample Data</h3>
+                        <p class="option-description">
+                            Explore with pre-loaded datasets
+                        </p>
+                        <ul class="option-features">
+                            <li>6 curated datasets</li>
+                            <li>Multiple domains</li>
+                            <li>Ready to analyze</li>
+                        </ul>
+                        <div class="option-badge recommended">Recommended for beginners</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="onboarding-nav">
+            <button class="btn-nav btn-back" id="btnBack" style="display: none;">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+                <span>Back</span>
+            </button>
+            <button class="btn-nav btn-next" id="btnNext" disabled>
+                <span>Continue</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M7.5 15L12.5 10L7.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Skip Option -->
+        <div class="onboarding-skip">
+            <a href="#" id="skipOnboarding">Skip and explore on my own</a>
+        </div>
+    </div>
+
+    <!-- Loading Screen (for generating workflow) -->
+    <div class="loading-screen" id="loadingScreen" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="loading-title">Creating your personalized workflow...</h2>
+            <p class="loading-subtitle">Analyzing your preferences and setting up your workspace</p>
+            <div class="loading-steps">
+                <div class="loading-step">
+                    <div class="loading-step-icon">✓</div>
+                    <span>Configuring interface</span>
+                </div>
+                <div class="loading-step">
+                    <div class="loading-step-icon">✓</div>
+                    <span>Preparing recommendations</span>
+                </div>
+                <div class="loading-step active">
+                    <div class="loading-step-icon">
+                        <div class="mini-spinner"></div>
+                    </div>
+                    <span>Setting up workspace</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api-client.js"></script>
+    <script src="js/onboarding.js"></script>
+</body>
+
+</html>
