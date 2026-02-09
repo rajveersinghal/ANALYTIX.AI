@@ -1,0 +1,1492 @@
+2026-02-08 22:22:12 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:22:13 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:22:24 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:25:10 | INFO | dataset_service:run_understanding | Starting data understanding for file: c5fca5c7-953f-465b-b1bd-598633af943a
+2026-02-08 22:27:19 | INFO | dataset_service:run_understanding | Starting data understanding for file: 8fafe7a5-e86b-4c4e-a9c7-0e5b7e524c69
+2026-02-08 22:27:40 | INFO | dataset_service:run_understanding | Starting data understanding for file: 5874f6ea-c0b6-444a-87d1-31b42791ee39
+2026-02-08 22:39:15 | INFO | dataset_service:run_understanding | Starting data understanding for file: 83b721d0-2066-4c81-8de1-09cc1c6bc806
+2026-02-08 22:56:14 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:56:14 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:56:16 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 22:59:18 | INFO | dataset_service:run_understanding | Starting data understanding for file: 4a0c5cf1-eb86-47af-b3ce-a139f05685e3
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 4a0c5cf1-eb86-47af-b3ce-a139f05685e3 in fast mode
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 4a0c5cf1-eb86-47af-b3ce-a139f05685e3
+2026-02-08 22:59:29 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 4a0c5cf1-eb86-47af-b3ce-a139f05685e3. Task: regression
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-08 22:59:29 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 4a0c5cf1-eb86-47af-b3ce-a139f05685e3
+2026-02-08 22:59:30 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-08 22:59:30 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 4a0c5cf1-eb86-47af-b3ce-a139f05685e3
+2026-02-08 22:59:30 | ERROR | pipeline_controller:run_step | Pipeline Step statistics Failed: name 'settings' is not defined
+Traceback (most recent call last):
+  File "R:\2026\Project\AnalytixAI\app\services\pipeline_controller.py", line 74, in run_step
+    data = self.stats_service.run_stats(self.dataset_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "R:\2026\Project\AnalytixAI\app\services\stats_service.py", line 18, in run_stats
+    train_path = os.path.join(settings.DATASET_DIR, f"{file_id}_train.csv")
+                              ^^^^^^^^
+NameError: name 'settings' is not defined
+2026-02-08 22:59:30 | ERROR | pipeline_controller:run_all | Pipeline stopped at statistics due to error: name 'settings' is not defined
+2026-02-08 23:08:47 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:08:47 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:08:48 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:13:21 | INFO | dataset_service:run_understanding | Starting data understanding for file: 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 983e8da0-d48d-490f-85c2-1b5837992f1e in fast mode
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:31 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 983e8da0-d48d-490f-85c2-1b5837992f1e. Task: regression
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-08 23:13:31 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:32 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-08 23:13:32 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:32 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-08 23:13:32 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:32 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 983e8da0-d48d-490f-85c2-1b5837992f1e (Mode: fast)
+2026-02-08 23:13:35 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-08 23:13:35 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:36 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-08 23:13:36 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:13:36 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-08 23:13:36 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 983e8da0-d48d-490f-85c2-1b5837992f1e
+2026-02-08 23:16:10 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:10 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:10 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:27 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:27 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:29 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:37 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:37 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:38 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:50 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:51 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:16:51 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:08 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:08 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:50 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:50 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:51 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:55 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:17:55 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:00 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:00 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:00 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:00 | INFO | dataset_service:run_understanding | Starting data understanding for file: e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:10 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for e85cf532-01c2-4757-94bf-e0d48e48d957 in fast mode
+2026-02-08 23:18:10 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-08 23:18:10 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-08 23:18:10 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:10 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset e85cf532-01c2-4757-94bf-e0d48e48d957. Task: regression
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-08 23:18:11 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:11 | INFO | modeling_service:run_automl | Starting AutoML process for dataset e85cf532-01c2-4757-94bf-e0d48e48d957 (Mode: fast)
+2026-02-08 23:18:13 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-08 23:18:13 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:14 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-08 23:18:14 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:14 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-08 23:18:14 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for e85cf532-01c2-4757-94bf-e0d48e48d957
+2026-02-08 23:18:19 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:19 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:18:19 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:16 | ERROR | inference_service:predict_batch | Batch Inference Failed: columns are missing: {'Area', 'Age', 'Location', 'Rooms'}
+2026-02-08 23:20:47 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:47 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:47 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:58 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:58 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:20:58 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:21:06 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:21:06 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:21:06 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:21:26 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:21:26 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:26:36 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-08 23:26:36 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:52:39 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:53:11 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:53:33 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 07:53:33 | INFO | dataset_service:run_understanding | Starting data understanding for file: 9731f143-f6ea-4118-b0bc-9945eec1dca5
+2026-02-09 07:56:10 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:56:23 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:56:37 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:56:49 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:56:56 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:57:03 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 07:58:22 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 07:58:22 | INFO | dataset_service:run_understanding | Starting data understanding for file: a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 07:58:34 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1 in fast mode
+2026-02-09 07:58:34 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 07:58:34 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 07:58:34 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 07:58:34 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset a6f489e8-6402-4272-a8ec-8e4a0d76d0e1. Task: regression
+2026-02-09 07:58:35 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 07:58:35 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 07:58:37 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 07:58:37 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 07:58:38 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 07:58:38 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 07:58:38 | INFO | modeling_service:run_automl | Starting AutoML process for dataset a6f489e8-6402-4272-a8ec-8e4a0d76d0e1 (Mode: fast)
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 08:00:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1
+2026-02-09 08:03:02 | WARNING | decision_service:run_decision_assistant | No feature importance found for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1. Using empty dict.
+2026-02-09 08:03:02 | ERROR | decision_service:run_decision_assistant | Decision Assistant Error for a6f489e8-6402-4272-a8ec-8e4a0d76d0e1: Simulation failed: columns are missing: {'location', 'size', 'total_sqft', 'society', 'area_type', 'availability'}
+2026-02-09 08:04:54 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:04:41 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:05:14 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:05:14 | INFO | dataset_service:run_understanding | Starting data understanding for file: 1edd8f18-f7f4-4994-9f2d-26715e54b296
+2026-02-09 11:05:42 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:05:42 | INFO | dataset_service:run_understanding | Starting data understanding for file: 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:44 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 448d3547-2212-4ea3-b9f9-c4f94d273254 in fast mode
+2026-02-09 11:05:44 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:05:44 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:05:44 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:44 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 448d3547-2212-4ea3-b9f9-c4f94d273254. Task: regression
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:05:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:45 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 448d3547-2212-4ea3-b9f9-c4f94d273254 (Mode: fast)
+2026-02-09 11:05:48 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 11:05:48 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 448d3547-2212-4ea3-b9f9-c4f94d273254
+2026-02-09 11:05:52 | ERROR | explainability_service:get_shap_values | SHAP Computation Failed: unsupported operand type(s) for -: 'str' and 'str'
+2026-02-09 11:05:52 | ERROR | explainability_service:run_explainability | Explainability Service Failure: name 'data' is not defined
+2026-02-09 11:05:52 | ERROR | pipeline_controller:run_step | Pipeline Step explainability Failed: Explainability failed: name 'data' is not defined
+Traceback (most recent call last):
+  File "R:\2026\Project\AnalytixAI\app\services\pipeline_controller.py", line 96, in run_step
+    raise Exception(error_text)
+Exception: Explainability failed: name 'data' is not defined
+2026-02-09 11:05:52 | ERROR | pipeline_controller:run_all | Pipeline stopped at explainability due to error: Explainability failed: name 'data' is not defined
+2026-02-09 11:06:28 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:06:53 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:06:53 | INFO | dataset_service:run_understanding | Starting data understanding for file: 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:55 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 21c26472-b9e4-4be8-af01-ebda48449917 in fast mode
+2026-02-09 11:06:55 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:06:55 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:06:55 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:55 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 21c26472-b9e4-4be8-af01-ebda48449917. Task: regression
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:06:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:56 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 21c26472-b9e4-4be8-af01-ebda48449917 (Mode: fast)
+2026-02-09 11:06:58 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 11:06:58 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:59 | ERROR | explainability_service:get_shap_values | SHAP Computation Failed: unsupported operand type(s) for -: 'str' and 'str'
+2026-02-09 11:06:59 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 11:06:59 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:06:59 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 11:06:59 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 21c26472-b9e4-4be8-af01-ebda48449917
+2026-02-09 11:07:04 | WARNING | decision_service:run_decision_assistant | No feature importance found for 21c26472-b9e4-4be8-af01-ebda48449917. Using empty dict.
+2026-02-09 11:10:51 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:13:18 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:13:18 | INFO | dataset_service:run_understanding | Starting data understanding for file: a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:20 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for a29a6489-4ef2-48e4-8320-72cacfd4fe94 in fast mode
+2026-02-09 11:13:20 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:13:20 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:13:20 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:20 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset a29a6489-4ef2-48e4-8320-72cacfd4fe94. Task: regression
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:13:21 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:21 | INFO | modeling_service:run_automl | Starting AutoML process for dataset a29a6489-4ef2-48e4-8320-72cacfd4fe94 (Mode: fast)
+2026-02-09 11:13:24 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 11:13:24 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:26 | ERROR | explainability_service:get_shap_values | SHAP Computation Failed: unsupported operand type(s) for -: 'str' and 'str'
+2026-02-09 11:13:26 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 11:13:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:26 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 11:13:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for a29a6489-4ef2-48e4-8320-72cacfd4fe94
+2026-02-09 11:13:32 | WARNING | decision_service:run_decision_assistant | No feature importance found for a29a6489-4ef2-48e4-8320-72cacfd4fe94. Using empty dict.
+2026-02-09 11:33:57 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:34:23 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:34:23 | INFO | dataset_service:run_understanding | Starting data understanding for file: aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for aee8a2da-2594-4fde-9937-03cd9b80d57e in fast mode
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:26 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset aee8a2da-2594-4fde-9937-03cd9b80d57e. Task: clustering
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:34:26 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:26 | INFO | modeling_service:run_automl | Starting AutoML process for dataset aee8a2da-2594-4fde-9937-03cd9b80d57e (Mode: fast)
+2026-02-09 11:34:29 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 11:34:29 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:30 | ERROR | explainability_service:get_shap_values | SHAP Computation Failed: unsupported operand type(s) for -: 'str' and 'str'
+2026-02-09 11:34:30 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 11:34:30 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:30 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 11:34:30 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for aee8a2da-2594-4fde-9937-03cd9b80d57e
+2026-02-09 11:34:32 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:36 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:40 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:44 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:48 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:52 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:34:56 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:00 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:04 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:08 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:12 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:16 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:20 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:24 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:29 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:33 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:37 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:41 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:45 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:49 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:53 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:35:57 | ERROR | main:global_exception_handler | Global Exception: Out of range float values are not JSON compliant: nan
+Traceback (most recent call last):
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\fastapi\routing.py", line 338, in app
+    response = actual_response_class(content, **response_args)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 182, in __init__
+    super().__init__(content, status_code, headers, media_type, background)
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 45, in __init__
+    self.body = self.render(content)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\site-packages\starlette\responses.py", line 185, in render
+    return json.dumps(
+           ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py", line 238, in dumps
+    **kw).encode(obj)
+          ^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 200, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RAJVEER SINGHAL\AppData\Local\Programs\Python\Python312\Lib\json\encoder.py", line 258, in iterencode
+    return _iterencode(o, 0)
+           ^^^^^^^^^^^^^^^^^
+ValueError: Out of range float values are not JSON compliant: nan
+2026-02-09 11:39:44 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:39:53 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: demo_house_prices.csv
+2026-02-09 11:39:53 | INFO | dataset_service:run_understanding | Starting data understanding for file: 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:55 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 5837fc42-ea0e-4be2-8554-e33c50d564f9 in fast mode
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:56 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 5837fc42-ea0e-4be2-8554-e33c50d564f9. Task: clustering
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:39:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:56 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 5837fc42-ea0e-4be2-8554-e33c50d564f9 (Mode: fast)
+2026-02-09 11:39:58 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 11:39:58 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:58 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 11:39:58 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:39:59 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 11:39:59 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 5837fc42-ea0e-4be2-8554-e33c50d564f9
+2026-02-09 11:47:45 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:48:57 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:50:25 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:50:30 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:50:48 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:55:54 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:56:02 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 11:57:48 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 11:57:48 | INFO | dataset_service:run_understanding | Starting data understanding for file: 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 11:58:01 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e in fast mode
+2026-02-09 11:58:01 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 11:58:01 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 11:58:01 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 11:58:01 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e. Task: regression
+2026-02-09 11:58:02 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 11:58:02 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 11:58:03 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 11:58:03 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 11:58:05 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 11:58:05 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 11:58:05 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e (Mode: fast)
+2026-02-09 12:00:21 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 12:00:21 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 12:00:31 | ERROR | explainability_service:get_shap_values | SHAP Computation Failed: unsupported operand type(s) for -: 'str' and 'str'
+2026-02-09 12:00:31 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 12:00:31 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 12:00:31 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 12:00:31 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e
+2026-02-09 12:02:16 | WARNING | decision_service:run_decision_assistant | No feature importance found for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e. Using empty dict.
+2026-02-09 12:02:31 | WARNING | decision_service:run_decision_assistant | No feature importance found for 6b96fb04-bd4d-4f63-853f-2b2cfa9af99e. Using empty dict.
+2026-02-09 12:03:40 | WARNING | inference_service:predict_batch | Feature 'area_type' missing in inference data. Filling with 0.
+2026-02-09 12:03:40 | WARNING | inference_service:predict_batch | Feature 'availability' missing in inference data. Filling with 0.
+2026-02-09 12:03:40 | WARNING | inference_service:predict_batch | Feature 'size' missing in inference data. Filling with 0.
+2026-02-09 12:03:40 | WARNING | inference_service:predict_batch | Feature 'society' missing in inference data. Filling with 0.
+2026-02-09 12:03:40 | WARNING | inference_service:predict_batch | Feature 'balcony' missing in inference data. Filling with 0.
+2026-02-09 12:06:14 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:06:15 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:06:17 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:24 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:26 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:27 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:42 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:43 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:45 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:54 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:11:55 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:13:56 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 12:13:56 | INFO | dataset_service:run_understanding | Starting data understanding for file: 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:14:08 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 97b92c96-8efa-4a3b-af9c-4d001d566a88 in fast mode
+2026-02-09 12:14:08 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 12:14:08 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 12:14:08 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:14:08 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 97b92c96-8efa-4a3b-af9c-4d001d566a88. Task: regression
+2026-02-09 12:14:09 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 12:14:09 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:14:11 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 12:14:11 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:14:12 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 12:14:12 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:14:12 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 97b92c96-8efa-4a3b-af9c-4d001d566a88 (Mode: fast)
+2026-02-09 12:16:42 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 12:16:42 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:16:42 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:16:53 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 12:16:53 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:16:53 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 12:16:53 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 97b92c96-8efa-4a3b-af9c-4d001d566a88
+2026-02-09 12:41:59 | WARNING | inference_service:predict_batch | Feature 'area_type' missing in inference data. Filling with 0.
+2026-02-09 12:41:59 | WARNING | inference_service:predict_batch | Feature 'availability' missing in inference data. Filling with 0.
+2026-02-09 12:41:59 | WARNING | inference_service:predict_batch | Feature 'size' missing in inference data. Filling with 0.
+2026-02-09 12:41:59 | WARNING | inference_service:predict_batch | Feature 'society' missing in inference data. Filling with 0.
+2026-02-09 12:41:59 | WARNING | inference_service:predict_batch | Feature 'balcony' missing in inference data. Filling with 0.
+2026-02-09 12:44:17 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 12:44:17 | INFO | dataset_service:run_understanding | Starting data understanding for file: 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:44:36 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 3f61907c-e94d-4ee9-b061-87aad7ac2642 in fast mode
+2026-02-09 12:44:36 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 12:44:36 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 12:44:36 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:44:36 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 3f61907c-e94d-4ee9-b061-87aad7ac2642. Task: regression
+2026-02-09 12:44:37 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 12:44:37 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:44:38 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 12:44:38 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:44:40 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 12:44:40 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:44:40 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 3f61907c-e94d-4ee9-b061-87aad7ac2642 (Mode: fast)
+2026-02-09 12:46:43 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 12:46:43 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:46:43 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:47:02 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 12:47:02 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:47:05 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 12:47:05 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 3f61907c-e94d-4ee9-b061-87aad7ac2642
+2026-02-09 12:48:40 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 12:48:40 | INFO | dataset_service:run_understanding | Starting data understanding for file: aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:51 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for aa042a51-0a15-4806-ac05-9ad75f4a9ae7 in fast mode
+2026-02-09 12:48:51 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 12:48:51 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 12:48:51 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:51 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset aa042a51-0a15-4806-ac05-9ad75f4a9ae7. Task: regression
+2026-02-09 12:48:52 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 12:48:52 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for aa042a51-0a15-4806-ac05-9ad75f4a9ae7 in fast mode
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_all | Executing data_understanding...
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_understanding for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 12:48:54 | INFO | dataset_service:run_understanding | Starting data understanding for file: aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | modeling_service:run_automl | Starting AutoML process for dataset aa042a51-0a15-4806-ac05-9ad75f4a9ae7 (Mode: fast)
+2026-02-09 12:48:54 | ERROR | modeling_service:run_automl | Modeling Service Failure: Target column not defined. Please select a target first.
+Traceback (most recent call last):
+  File "R:\2026\Project\AnalytixAI\app\services\modeling_service.py", line 47, in run_automl
+    raise ValueError("Target column not defined. Please select a target first.")
+ValueError: Target column not defined. Please select a target first.
+2026-02-09 12:48:54 | ERROR | pipeline_controller:run_step | Pipeline Step modeling Failed: Modeling failed: Target column not defined. Please select a target first.
+Traceback (most recent call last):
+  File "R:\2026\Project\AnalytixAI\app\services\pipeline_controller.py", line 97, in run_step
+    raise Exception(error_text)
+Exception: Modeling failed: Target column not defined. Please select a target first.
+2026-02-09 12:48:54 | ERROR | pipeline_controller:run_all | Pipeline stopped at modeling due to error: Modeling failed: Target column not defined. Please select a target first.
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 12:48:54 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:54 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset aa042a51-0a15-4806-ac05-9ad75f4a9ae7. Task: None
+2026-02-09 12:48:55 | INFO | pipeline_controller:run_all | Skipping eda (already completed)
+2026-02-09 12:48:55 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 12:48:55 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:56 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 12:48:56 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:48:56 | INFO | modeling_service:run_automl | Starting AutoML process for dataset aa042a51-0a15-4806-ac05-9ad75f4a9ae7 (Mode: fast)
+2026-02-09 12:51:02 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 12:51:02 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:51:02 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:51:23 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 12:51:23 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:52:22 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 12:52:22 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for aa042a51-0a15-4806-ac05-9ad75f4a9ae7
+2026-02-09 12:53:53 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:54:18 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:54:20 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:54:31 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:54:48 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:54:48 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:54:59 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:55:13 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:55:15 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:56:49 | ERROR | explainability_service:get_global_explanation | Global Importance Extraction Failed: name 'pd' is not defined
+2026-02-09 12:57:05 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:57:07 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 12:59:41 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 13:00:00 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 13:00:00 | INFO | dataset_service:run_understanding | Starting data understanding for file: 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:03:41 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 76e146a4-7e46-45b9-a12f-cc0538742dc3 in fast mode
+2026-02-09 13:03:41 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 13:03:41 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 13:03:41 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:03:41 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 76e146a4-7e46-45b9-a12f-cc0538742dc3. Task: regression
+2026-02-09 13:03:42 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 13:03:42 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:03:44 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 13:03:44 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:03:45 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 13:03:45 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:03:45 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 76e146a4-7e46-45b9-a12f-cc0538742dc3 (Mode: fast)
+2026-02-09 13:06:32 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 13:06:32 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:06:48 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 13:06:48 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:06:48 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 13:06:48 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 76e146a4-7e46-45b9-a12f-cc0538742dc3
+2026-02-09 13:58:32 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 13:59:01 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 13:59:01 | INFO | dataset_service:run_understanding | Starting data understanding for file: 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 13:59:18 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for 99318733-8e64-483f-a3be-eb44b3ab26a4 in fast mode
+2026-02-09 13:59:19 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 13:59:19 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 13:59:19 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 13:59:19 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset 99318733-8e64-483f-a3be-eb44b3ab26a4. Task: regression
+2026-02-09 13:59:19 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 13:59:19 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 13:59:21 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 13:59:21 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 13:59:22 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 13:59:22 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 13:59:22 | INFO | modeling_service:run_automl | Starting AutoML process for dataset 99318733-8e64-483f-a3be-eb44b3ab26a4 (Mode: fast)
+2026-02-09 14:01:37 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 14:01:37 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 14:02:02 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 14:02:02 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 14:02:06 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 14:02:06 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for 99318733-8e64-483f-a3be-eb44b3ab26a4
+2026-02-09 14:04:50 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:05:15 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:05:28 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:05:40 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:05:53 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:06:00 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:06:12 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:06:21 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
+2026-02-09 14:25:20 | INFO | dataset_service:upload_dataset | Starting dataset upload for file: Bengaluru_House_Data.csv
+2026-02-09 14:25:20 | INFO | dataset_service:run_understanding | Starting data understanding for file: b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:25:33 | INFO | pipeline_controller:run_all | Pipeline Controller: Running ALL for b8143b05-f317-4a1b-915c-446b75d64719 in fast mode
+2026-02-09 14:25:33 | INFO | pipeline_controller:run_all | Skipping data_understanding (already completed)
+2026-02-09 14:25:33 | INFO | pipeline_controller:run_all | Executing data_cleaning...
+2026-02-09 14:25:33 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step data_cleaning for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:25:33 | INFO | cleaning_service:run_cleaning | Starting cleaning pipeline for dataset b8143b05-f317-4a1b-915c-446b75d64719. Task: regression
+2026-02-09 14:25:34 | INFO | pipeline_controller:run_all | Executing eda...
+2026-02-09 14:25:34 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step eda for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:25:36 | INFO | pipeline_controller:run_all | Executing statistics...
+2026-02-09 14:25:36 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step statistics for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:25:37 | INFO | pipeline_controller:run_all | Executing modeling...
+2026-02-09 14:25:37 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step modeling for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:25:37 | INFO | modeling_service:run_automl | Starting AutoML process for dataset b8143b05-f317-4a1b-915c-446b75d64719 (Mode: fast)
+2026-02-09 14:27:39 | INFO | pipeline_controller:run_all | Executing explainability...
+2026-02-09 14:27:39 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step explainability for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:28:03 | INFO | pipeline_controller:run_all | Executing decision...
+2026-02-09 14:28:03 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step decision for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:29:11 | INFO | pipeline_controller:run_all | Executing report...
+2026-02-09 14:29:11 | INFO | pipeline_controller:run_step | Pipeline Controller: Starting step report for b8143b05-f317-4a1b-915c-446b75d64719
+2026-02-09 14:31:37 | INFO | main:startup_event |  AnalytixAI Backend Started Successfully
