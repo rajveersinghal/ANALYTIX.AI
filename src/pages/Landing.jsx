@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
+// Deployment Trigger: 2026-04-20-T19:17
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, useScroll, useTransform, useSpring, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
