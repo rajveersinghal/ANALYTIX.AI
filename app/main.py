@@ -8,7 +8,7 @@ except Exception:
     pass
 # -----------------------------
 
-from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Response
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
@@ -27,16 +27,21 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# Ultra-High Priority CORS Handle (Preflight & Reflection)
+# Definitive CORS & Preflight Handler
 @app.middleware("http")
 async def cors_handler(request: Request, call_next):
-    if request.method == "OPTIONS":
-        response = JSONResponse(content="OK")
-    else:
-        response = await call_next(request)
-        
     origin = request.headers.get("origin")
-    # Dynamically reflect any Vercel or localhost origin
+    
+    if request.method == "OPTIONS":
+        response = Response(status_code=204)
+    else:
+        try:
+            response = await call_next(request)
+        except Exception as e:
+            logger.error(f"Middleware Error: {e}")
+            response = JSONResponse(content={"detail": str(e)}, status_code=500)
+        
+    # Always inject CORS if it's a known origin
     if origin and ("vercel.app" in origin or "localhost" in origin):
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
