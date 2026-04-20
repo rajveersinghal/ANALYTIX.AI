@@ -606,7 +606,7 @@ export default function Landing() {
               className="hidden sm:block sign-in-link"
               style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
               onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
-              onClick={() => navigate('/login')}
+              onClick={() => window.requestAnimationFrame(() => navigate('/login'))}
             >
               Sign In
             </button>
@@ -615,7 +615,7 @@ export default function Landing() {
               whileTap={{ scale: 0.95 }}
               className="cta-glow get-started-btn px-4 py-2 sm:px-6 sm:py-3"
               style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
-              onClick={handleStart}
+              onClick={() => window.requestAnimationFrame(handleStart)}
             >
               Get Started
             </motion.button>

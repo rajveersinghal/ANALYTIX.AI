@@ -88,6 +88,7 @@ const Auth = () => {
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    clearError();
     setIsSubmitting(true);
     const fullName = `${suFirst} ${suLast}`;
     const ok = await register(suEmail, suPw, fullName);
@@ -320,15 +321,15 @@ const Auth = () => {
              </motion.div>
            </AnimatePresence>
 
-           <div className="slider-nav">
-             {SLIDES.map((_, i) => (
-               <div 
-                 key={i} 
-                 className={`slider-dot ${i === activeSlide ? 'active' : ''}`}
-                 onClick={() => setActiveSlide(i)}
-               ></div>
-             ))}
-           </div>
+            <div className="slider-nav">
+              {SLIDES.map((_, i) => (
+                <div 
+                  key={i} 
+                  className={`slider-dot ${i === activeSlide ? 'active' : ''}`}
+                  onClick={() => setActiveSlide(i)}
+                ></div>
+              ))}
+            </div>
         </div>
 
         {/* Decorative Badge */}

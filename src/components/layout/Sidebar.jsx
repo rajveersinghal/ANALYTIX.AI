@@ -59,7 +59,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           <div 
             key={item.path} 
             className={`nav-item ${active ? 'active' : ''}`}
-            onClick={() => navigate(item.path)}
+            onClick={() => {
+              window.requestAnimationFrame(() => {
+                navigate(item.path);
+              });
+            }}
             data-tip={item.label}
           >
             <Icon className="nav-icon" size={16} />
