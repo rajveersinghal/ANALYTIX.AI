@@ -1,9 +1,12 @@
 import axios from "axios";
 
+// Permanent Production API URL
+const PROD_API_URL = "https://analytix-api-zl96.onrender.com";
+
 export const BASE_URL = import.meta.env.VITE_API_URL || 
   ((window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') 
     ? "http://localhost:8000" 
-    : "/api");
+    : PROD_API_URL);
 
 export const api = axios.create({
   baseURL: BASE_URL,

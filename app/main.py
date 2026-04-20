@@ -41,13 +41,15 @@ async def cors_handler(request: Request, call_next):
     if origin and ("vercel.app" in origin or "localhost" in origin):
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, X-Vercel-Id, Accept, Origin"
         
     return response
 
-# Disable standard CORSMiddleware to avoid conflicts with the manual handler
-# app.add_middleware(CORSMiddleware, ...) 
+# Standard Ping for Diagnostic
+@app.get("/ping")
+async def ping():
+    return {"status": "online", "message": "AnalytixAI Backend is reachable!"}
 
 @app.on_event("startup")
 async def startup_event():
