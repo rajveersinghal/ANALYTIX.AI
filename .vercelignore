@@ -1,0 +1,10 @@
+# Exclude backend from Vercel frontend build
+api/
+app/
+Dockerfile
+docker-compose.yml
+requirements.txt
+render.yaml
+storage/
+logs/
+tests/
