@@ -63,3 +63,15 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(109, 78, 255, 0.3);
 }
 
+/* Hide Vercel Toolbar & Feedback Injected Icons */
+#vercel-toolbar-container, 
+[data-vercel-toolbar], 
+[data-vercel-insights],
+.vercel-toolbar-container,
+#vercel-feedback-widget {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
