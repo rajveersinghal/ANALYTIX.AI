@@ -534,7 +534,7 @@ export default function Landing() {
           </motion.div>
         )}
       </AnimatePresence>
-
+      <style>{styles}</style>
       {/* Scroll Progress */}
       <motion.div className="scroll-progress" style={{ scaleX }} />
 
