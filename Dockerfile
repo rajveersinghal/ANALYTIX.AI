@@ -1,14 +1,6 @@
-# Production Dockerfile for AnalytixAI Full-Stack
-# Stage 1: Build Frontend
-FROM node:18-alpine AS frontend-builder
-WORKDIR /app/frontend
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/ .
-RUN npm run build
-
-# Stage 2: Backend + Final Image
+# Backend-only Dockerfile for AnalytixAI (Render Deployment)
 FROM python:3.10-slim
+
 WORKDIR /app
 
 # Install system dependencies for ML libraries
@@ -26,9 +18,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app/ ./app/
 COPY README.md .
 
-# Copy built frontend from Stage 1
-COPY --from=frontend-builder /app/frontend/dist ./frontend/dist
-
 # Create storage directories
 RUN mkdir -p storage/datasets storage/models storage/reports logs
 
@@ -40,5 +29,4 @@ ENV PORT=8000
 EXPOSE 8000
 
 # Start Application
-# Note: We serve the frontend static files via FastAPI in production for simplicity
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
