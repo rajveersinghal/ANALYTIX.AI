@@ -4,8 +4,16 @@ import json
 import joblib
 import pandas as pd
 import numpy as np
-import shap
-from lime import lime_tabular
+try:
+    import shap
+    sh_available = True
+except ImportError:
+    sh_available = False
+try:
+    from lime import lime_tabular
+    lime_available = True
+except ImportError:
+    lime_available = False
 from sklearn.pipeline import Pipeline
 from app.config import settings
 from app.logger import logger
@@ -79,6 +87,8 @@ class ExplainabilityService:
         """
         Computes SHAP values optimized for Tree models.
         """
+        if not sh_available:
+             return {"shap_values": None, "note": "ANALYTIX-Lite: SHAP engine omitted to save space."}
         try:
             mm = MetadataManager(file_id, user_id=kwargs.get("user_id"), project_id=kwargs.get("project_id"))
             metadata = await mm.load()
@@ -154,6 +164,8 @@ class ExplainabilityService:
         """
         Computes LIME for a specific instance to provide local 'Trust'.
         """
+        if not lime_available:
+            return {"local_exp": [], "note": "ANALYTIX-Lite: LIME engine omitted to save space."}
         try:
             mm = MetadataManager(file_id, user_id=kwargs.get("user_id"), project_id=kwargs.get("project_id"))
             metadata = await mm.load()
