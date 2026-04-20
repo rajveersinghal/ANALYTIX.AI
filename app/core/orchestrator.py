@@ -119,5 +119,24 @@ class PipelineOrchestrator:
     def get_job_status(self, job_id: str) -> Optional[Dict]:
         return self.active_jobs.get(job_id)
 
+    def cleanup_old_jobs(self, max_age_hours: int = 12):
+        """
+        SRE Task: Prunes the in-memory active_jobs map to prevent memory leaks.
+        Removes completed/failed jobs older than max_age_hours.
+        """
+        now = datetime.datetime.utcnow()
+        to_delete = []
+        for job_id, info in self.active_jobs.items():
+            if info["status"] in [JobStatus.COMPLETED, JobStatus.FAILED]:
+                start_time = datetime.datetime.fromisoformat(info["start_time"])
+                if (now - start_time).total_seconds() > (max_age_hours * 3600):
+                    to_delete.append(job_id)
+        
+        for job_id in to_delete:
+            del self.active_jobs[job_id]
+        
+        if to_delete:
+            logger.info(f"ORCHESTRATOR: Pruned {len(to_delete)} stale job records from memory.")
+
 # Global Instance
 orchestrator = PipelineOrchestrator()

@@ -56,6 +56,9 @@ class Settings:
     STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
     STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
     
+    # 7. Deployment Specifics
+    ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+    
     def __init__(self):
         # Ensure all storage directories exist
         paths = [self.STORAGE_DIR, self.DATASET_DIR, self.METADATA_DIR, self.MODEL_DIR, self.REPORT_DIR]

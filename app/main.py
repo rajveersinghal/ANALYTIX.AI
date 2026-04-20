@@ -29,7 +29,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -65,6 +65,8 @@ async def background_maintenance():
                             if entry.stat().st_mtime < now - MAX_FILE_AGE:
                                 if entry.is_file(): os.remove(entry.path)
                                 elif entry.is_dir(): shutil.rmtree(entry.path)
+                from app.core.orchestrator import orchestrator
+                orchestrator.cleanup_old_jobs(max_age_hours=12)
                 data_manager.clear_cache()
                 gc.collect()
             await asyncio.to_thread(_perform_cleanup)

@@ -97,7 +97,7 @@ class PipelineController:
                     self.dataset_id, 
                     filename=metadata.get("filename", "dataset.csv"),
                     user_id=self.user_id or metadata.get("user_id"),
-                    project_id=metadata.get("project_id") or metadata.get("projectId")
+                    project_id=metadata.get("project_id")
                 )
                 
             elif step_name == "cleaning":
