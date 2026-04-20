@@ -96,7 +96,11 @@ export default function Pipeline() {
   // WebSocket Integration (Architecture V2)
   useEffect(() => {
     if (status === "processing" && jobId) {
-      const socketUrl = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host.includes('localhost') ? 'localhost:8000' : window.location.host}/ws/${jobId}`;
+      // Centralized WebSocket logic
+      const apiBase = import.meta.env.VITE_API_URL || (window.location.host.includes('localhost') ? 'http://localhost:8000' : `${window.location.protocol}//${window.location.host}`);
+      const wsProtocol = apiBase.startsWith('https') ? 'wss' : 'ws';
+      const wsBase = apiBase.replace(/^https?:\/\//, '');
+      const socketUrl = `${wsProtocol}://${wsBase}/ws/${jobId}`;
       
       console.log("Connecting to live brain stream:", socketUrl);
       socketRef.current = new WebSocket(socketUrl);
