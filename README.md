@@ -2,13 +2,13 @@
 
 > **Empowering Business Intelligence through Automated Data Science.**
 
-AnalytixAI is a state-of-the-art, production-ready Automated Machine Learning (AutoML) platform. It transforms raw, messy datasets into boardroom-ready intelligence reports through a sophisticated 11-step automated pipeline, now featuring **Premium Glassmorphic Design** and **Strategic Narrative Intelligence**.
+AnalytixAI is a state-of-the-art, production-ready Automated Machine Learning (AutoML) platform. It transforms raw, messy datasets into boardroom-ready intelligence reports through a sophisticated 11-step automated pipeline, featuring **Premium Design** and **Strategic Narrative Intelligence**.
 
 ---
 
 ## 🏛️ Domain-Specific Intelligence
 
-Unlike generic AutoML tools, AnalytixAI understands the context of your data.
+Unlike generic AutoML tools, AnalytixAI understands the context of your data:
 - **💼 Business & Operations**: Focuses on resource optimization and demand forecasting.
 - **📈 Finance**: Specialized in risk assessment, fraud detection, and valuation.
 - **🏠 Real Estate**: Advanced market segmentation and property valuation engines.
@@ -22,18 +22,17 @@ Unlike generic AutoML tools, AnalytixAI understands the context of your data.
 *   **Auto-Profiling**: 0-100 Quality Scoring with detailed metric extraction.
 *   **Audit Trail**: Every cleaning action (imputation, outlier removal, encoding) is logged for full transparency.
 
-### 2. Strategic Narrative Intelligence (NEW)
+### 2. Strategic Narrative Intelligence
 *   **Executive Storyteller**: Rule-based engine that translates technical scores (RMSE, R2, SHAP) into human-readable strategic outlooks.
-*   **Simulation Insights**: Proactive guidance based on "What-If" scenario outcomes.
+*   **What-If Simulator**: Interactive scenario planning to predict outcome shifts based on variable changes.
 
 ### 3. Advanced AI Engine
-*   **Interactive Simulations**: Real-time Plotly-powered impact charts for scenario planning.
 *   **Explainability (XAI)**: Integrated SHAP and Feature Importance to make model "Black Boxes" transparent.
 *   **Multi-Task Support**: Integrated Forecasting, Clustering, and Anomaly Detection.
 
-### 4. Professional Reporting 2.0
-*   **Dual-Format Export**: One-click generation of professional PDF reports and Interactive HTML dashboards.
-*   **Premium Aesthetics**: Modern "Glassmorphic" interface with micro-animations and vibrant themes.
+### 4. Modern Professional UI
+*   **Aesthetic Dashboards**: A world-class "Deep Void" glassmorphic design built for executive visibility.
+*   **Responsive Experience**: Fully optimized for data-heavy workflows with smooth transitions.
 
 ---
 
@@ -47,15 +46,19 @@ graph TD
     Insights --> Modeling[AutoML Engine]
     Modeling --> XAI[Explainability & SHAP]
     XAI --> Strategy[Decision Assistant & Narratives]
-    Strategy --> Export[Professional PDF & HTML Reports]
+    Strategy --> Frontend[React Dashboard]
     
-    subgraph "Intelligence Layer"
-        Narrative[Strategic Storyteller]
-        Charts[Plotly Impact Visuals]
+    subgraph "Backend (FastAPI)"
+        Ingest
+        Clean
+        Modeling
+        XAI
     end
     
-    Strategy -.-> Narrative
-    Strategy -.-> Charts
+    subgraph "Frontend (React)"
+        Frontend
+        Sim[What-If Simulator]
+    end
 ```
 
 ---
@@ -64,32 +67,41 @@ graph TD
 
 | Layer | Technology |
 | :--- | :--- |
-| **Backend** | Python, FastAPI, Uvicorn |
-| **Frontend** | Streamlit (Custom Glassmorphic Design) |
-| **Visuals** | Plotly, Matplotlib |
-| **Intelligence** | Scikit-Learn, SHAP, Statsmodels, Pandas |
-| **Reporting** | FPDF2, HTML5/CSS3 |
+| **Backend** | Python 3.12, FastAPI, Uvicorn |
+| **Frontend** | React, Vite, TailwindCSS, Lucide-React |
+| **Visuals** | Recharts, Plotly |
+| **Intelligence** | Scikit-Learn, SHAP, Pandas, NumPy |
+| **deployment** | Render, Vercel |
 
 ---
 
 ## 🚀 Getting Started
 
-### Installation
+### Prerequisites
+- Python 3.10+
+- Node.js 18+
+
+### 1. Backend Setup
 ```bash
-# Clone and install dependencies
-git clone https://github.com/your-repo/AnalytixAI.git
+# Navigate to root
 pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-### Running the Platform
-1.  **Start Backend**: `uvicorn app.main:app --port 8000`
-2.  **Start Frontend**: `streamlit run streamlit_app/Home.py`
+### 2. Frontend Setup
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-## 📚 Technical Reference
-- [Architecture Deep Dive](file:///r:/2026/Project/AnalytixAI/ARCHITECTURE.md)
-- [Feature Roadmap](file:///r:/2026/Project/AnalytixAI/FEATURES.md)
+## 📚 Documentation
+- [Project Architecture](./docs/ARCHITECTURE.md)
+- [Deployment Guide](./docs/DEPLOYMENT.md)
+- [Project Roadmap](./docs/ROADMAP.md)
+- [Final Project Report](./docs/FINAL_PROJECT_REPORT.md)
 
 ---
-*Developed by Rajveer Singhal for the next generation of data-driven enterprises.*
+*Developed by **Rajveer Singhal** for the next generation of data-driven enterprises.*

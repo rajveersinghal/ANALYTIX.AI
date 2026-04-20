@@ -148,8 +148,7 @@ cython_debug/
 
 # AnalytixAI Specific
 storage/
-logs/*.log
-!logs/system.log
+logs/
 data/*.csv
 data/*.xlsx
 *.pdf
