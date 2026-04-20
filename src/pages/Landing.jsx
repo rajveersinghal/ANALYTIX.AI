@@ -240,6 +240,23 @@ const styles = `
 
   /* Selection */
   ::selection { background: rgba(129,105,255,0.3); color: #fff; }
+
+  @media (max-width: 1024px) {
+    .nav-center { display: none !important; }
+  }
+  @media (max-width: 768px) {
+    .nav-main { padding: 0 16px !important; height: 64px !important; top: 16px !important; }
+    .logo-container { gap: 8px !important; }
+    .logo-text { font-size: 16px !important; }
+    .logo-sub { display: none !important; }
+  }
+  @media (max-width: 480px) {
+    .nav-main { padding: 0 12px !important; height: 56px !important; top: 12px !important; }
+    .nav-actions { gap: 6px !important; }
+    .get-started-btn { padding: 8px 12px !important; font-size: 9px !important; border-radius: 10px !important; }
+    .logo-text { font-size: 13px !important; }
+    .logo-container { gap: 6px !important; }
+  }
 `;
 
 // ─── ANIMATION VARIANTS ───────────────────────────────────────────────────────
@@ -541,6 +558,7 @@ export default function Landing() {
 
       {/* ─── NAV ─────────────────────────────────────────────────────────── */}
       <motion.nav
+        className="nav-main"
         style={{
           position: "fixed", top: 24, left: "4%", right: "4%",
           height: 72, zIndex: 100,
@@ -556,52 +574,55 @@ export default function Landing() {
         }}
       >
         {/* Left: Logo */}
-        <div 
+        <div
           onClick={() => scrollTo("top")}
+          className="logo-container"
           style={{ display: "flex", alignItems: "center", gap: 12, cursor: "pointer" }}
         >
           <div style={{ width: 36, height: 36, borderRadius: 12, background: "linear-gradient(135deg, #8169ff, #6046e6)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(129,105,255,0.45)" }}>
             <LucideIcon name="Activity" size={18} color="white" strokeWidth={2.5} />
           </div>
-          <div className="flex flex-col sm:flex"> {/* Keep it simple for now */}
-            <span className="syne" style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.04em", textTransform: "uppercase", lineHeight: 1 }}>Analytix<span style={{ color: "#8169ff" }}>AI</span></span>
-            <span className="hidden sm:block" style={{ fontSize: '8px', fontWeight: 900, color: '#8169ff', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '2px' }}>Open Beta 1.0</span>
+          <div className="flex flex-col">
+            <span className="syne logo-text" style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.04em", textTransform: "uppercase", lineHeight: 1 }}>Analytix<span style={{ color: "#8169ff" }}>AI</span></span>
           </div>
         </div>
 
         {/* Center: Desktop Links (Absolutely Centered) - Hidden on mobile */}
-        <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: 28 }} className="hidden lg:flex">
-          {navLinks.map(({ label, id }) => (
-            <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: activeSection === id ? "#ffffff" : "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => { if (activeSection !== id) e.target.style.color = "#8385a0"; }}>
-              {label}
-            </button>
-          ))}
-        </div>
+          <div
+            className="hidden lg:flex nav-center"
+            style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", alignItems: "center", gap: 28 }}
+          >
+            {navLinks.map(({ label, id }) => (
+              <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: activeSection === id ? "#ffffff" : "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => { if (activeSection !== id) e.target.style.color = "#8385a0"; }}>
+                {label}
+              </button>
+            ))}
+          </div>
 
-        {/* Right: Actions */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, md: { gap: 20 } }}>
-          <button 
-            className="hidden sm:block"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
-            onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
-            onClick={() => navigate('/login')}
-          >
-            Sign In
-          </button>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="cta-glow px-4 py-2 sm:px-6 sm:py-3"
-            style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
-            onClick={handleStart}
-          >
-            Get Started
-          </motion.button>
-          
-          <button className="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10" onClick={() => setMobileMenu(m => !m)} style={{ cursor: "pointer" }}>
-            <LucideIcon name={mobileMenu ? "X" : "Menu"} size={20} color="#eeeeff" />
-          </button>
-        </div>
+          {/* Right: Actions */}
+          <div className="nav-actions" style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <button
+              className="hidden sm:block sign-in-link"
+              style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
+              onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
+              onClick={() => navigate('/login')}
+            >
+              Sign In
+            </button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="cta-glow get-started-btn px-4 py-2 sm:px-6 sm:py-3"
+              style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
+              onClick={handleStart}
+            >
+              Get Started
+            </motion.button>
+
+            <button className="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10" onClick={() => setMobileMenu(m => !m)} style={{ cursor: "pointer" }}>
+              <LucideIcon name={mobileMenu ? "X" : "Menu"} size={20} color="#eeeeff" />
+            </button>
+          </div>
       </motion.nav>
 
       {/* Mobile Menu */}
@@ -612,7 +633,7 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             style={{
-              position: "fixed", top: 90, left: "4%", right: "4%", zIndex: 90,
+              position: "fixed", top: 76, left: "4%", right: "4%", zIndex: 90,
               background: "rgba(8,10,24,0.97)", backdropFilter: "blur(32px)",
               borderRadius: 16, border: "1px solid rgba(255,255,255,0.08)",
               padding: "20px 28px",
@@ -1339,7 +1360,7 @@ export default function Landing() {
 
           {/* Center: Copyright */}
           <div style={{ flex: 1, textAlign: "center" }}>
-             <span style={{ fontSize: 11, fontWeight: 700, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.4em" }}>© Rajveer Singhal❤️</span>
+            <span style={{ fontSize: 11, fontWeight: 700, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.4em" }}>© Rajveer Singhal❤️</span>
           </div>
 
           {/* Right: Links */}
