@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../store/useStore";
 import { motion, AnimatePresence } from "framer-motion";
-import { apiClient } from "../api/api";
+import { apiClient, BASE_URL } from "../api/api";
 import { 
   Upload, 
   FileText, 
@@ -97,7 +97,7 @@ export default function Pipeline() {
   useEffect(() => {
     if (status === "processing" && jobId) {
       // Centralized WebSocket logic
-      const apiBase = import.meta.env.VITE_API_URL || (window.location.host.includes('localhost') ? 'http://localhost:8000' : `${window.location.protocol}//${window.location.host}`);
+      const apiBase = BASE_URL;
       const wsProtocol = apiBase.startsWith('https') ? 'wss' : 'ws';
       const wsBase = apiBase.replace(/^https?:\/\//, '');
       const socketUrl = `${wsProtocol}://${wsBase}/ws/${jobId}`;
