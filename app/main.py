@@ -12,6 +12,7 @@ from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect, Response
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
+from datetime import datetime
 from app.config import settings
 from app.logger import logger
 from app.api.routes import (
@@ -61,17 +62,18 @@ async def startup_event():
         from app.core.db.mongodb import get_database
         from app.core.auth.security import get_password_hash
         db = get_database()
-        admin_email = "admin@analytixai.com"
+        admin_email = "admin@analytix.ai"
         exists = await db.users.find_one({"email": admin_email})
         if not exists:
             await db.users.insert_one({
                 "email": admin_email,
-                "password": get_password_hash("analytix_admin_2026"),
-                "full_name": "System Administrator",
+                "hashed_password": get_password_hash("admin"),
+                "full_name": "System Admin",
                 "tier": "enterprise",
-                "is_active": True
+                "is_active": True,
+                "created_at": datetime.utcnow()
             })
-            logger.info("Default Admin User Created!")
+            logger.info("Universal Admin Created: admin@analytix.ai / admin")
     except Exception as e:
         logger.error(f"Startup: Admin creation failed: {e}")
 
