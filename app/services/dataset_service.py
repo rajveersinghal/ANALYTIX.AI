@@ -1,4 +1,5 @@
-# app/services/dataset_service.py
+import asyncio
+import datetime
 import os
 import shutil
 import uuid
@@ -14,9 +15,10 @@ from app.core.data_understanding import (
     summary_generator
 )
 from app.utils.response_schema import success_response, error_response
+from app.utils.data_manager import data_manager
 
 class DatasetService:
-    async def upload_dataset(self, file: UploadFile):
+    async def upload_dataset(self, file: UploadFile, user_id: str, project_id: str = None):
         logger.info(f"Starting dataset upload for file: {file.filename}")
         
         # 1. Validation
@@ -31,28 +33,24 @@ class DatasetService:
         
         os.makedirs(settings.DATASET_DIR, exist_ok=True)
         
-        with open(save_path, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        # Phase 11: Non-blocking file copy to prevent event loop stutter
+        def _save_file():
+            with open(save_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+        
+        await asyncio.to_thread(_save_file)
             
-        # Trigger understanding (profiling) immediately so metadata is ready for Task Selection
-        try:
-            full_data = self.run_understanding(file_id)
-            if isinstance(full_data, dict) and full_data.get("status") == "success":
-                return full_data
-        except Exception as e:
-            logger.error(f"Failed to run initial understanding: {e}")
             
+        # Phase 11: Just return the file_id, let PipelineController handle the run
         return success_response(data={"file_id": file_id, "filename": file.filename})
 
-    def run_understanding(self, file_id: str):
+    async def run_understanding(self, file_id: str, filename: str, user_id: str = None, project_id: str = None):
         logger.info(f"Starting data understanding for file: {file_id}")
         
-        # Phase 17: Unified Metadata Manager
         from app.utils.metadata_manager import MetadataManager
-        mm = MetadataManager(file_id)
+        mm = MetadataManager(file_id, user_id=user_id, project_id=project_id)
 
         # Detect file extension
-        # ... (keep file detection logic)
         csv_path = os.path.join(settings.DATASET_DIR, f"{file_id}.csv")
         xlsx_path = os.path.join(settings.DATASET_DIR, f"{file_id}.xlsx")
         
@@ -65,41 +63,48 @@ class DatasetService:
         else:
             return error_response(f"Dataset not found: {file_id}")
             
-        # 3. Load into Pandas
-        mm.update_phase("data_understanding", "running")
-        mm.update_step("data_understanding", "loading", "running")
+        # 3. Load into Pandas (wrapped in thread to prevent blocking)
+        await mm.update_phase("profiling", "running", flush=True) 
+        await mm.update_step("data_understanding", "loading", "running", flush=False)
         try:
-            if ext == '.csv':
-                df = pd.read_csv(dataset_path)
-            else:
-                df = pd.read_excel(dataset_path)
+            # Use DataManager (Cache-first)
+            df = data_manager.get_dataframe(file_id, "raw")
             
-            mm.update_step("data_understanding", "loading", "completed")
-            mm.add_log("data_understanding", f"Loaded {len(df)} rows successfully.")
+            if df is None:
+                def _read_data():
+                    if ext == '.csv':
+                        return pd.read_csv(dataset_path)
+                    else:
+                        return pd.read_excel(dataset_path)
+                
+                df = await asyncio.to_thread(_read_data)
+                data_manager.update_cache(file_id, df, "raw")
+            
+            await mm.update_step("data_understanding", "loading", "completed", flush=False)
+            await mm.add_log("data_understanding", f"Loaded {len(df)} rows successfully.", flush=False)
         except Exception as e:
-            mm.update_step("data_understanding", "loading", "failed")
-            mm.update_phase("data_understanding", "failed", details=str(e))
+            await mm.update_step("data_understanding", "loading", "failed", flush=False)
+            await mm.update_phase("profiling", "failed", details=str(e), flush=True)
             return error_response(f"Failed to read dataset: {str(e)}")
             
         if df.empty:
             return error_response("Dataset is empty.")
 
         # 4. Run Intelligence Engine
-        # Profiling
-        mm.update_step("data_understanding", "profiling", "running")
-        metadata = profiler.extract_metadata(df)
-        mm.update_step("data_understanding", "profiling", "completed")
-        mm.add_log("data_understanding", "Extracted basic statistics and column profiles.")
+        await mm.update_step("data_understanding", "profiling", "running", flush=False)
+        metadata = await asyncio.to_thread(profiler.extract_metadata, df)
+        await mm.update_step("data_understanding", "profiling", "completed", flush=False)
+        await mm.add_log("data_understanding", "Extracted basic statistics and column profiles.", flush=False)
         
         # Type Detection
-        mm.update_step("data_understanding", "type_detection", "running")
-        feature_types = type_detector.detect_feature_types(df)
+        await mm.update_step("data_understanding", "type_detection", "running", flush=False)
+        feature_types = await asyncio.to_thread(type_detector.detect_feature_types, df)
         metadata.update(feature_types)
-        mm.update_step("data_understanding", "type_detection", "completed")
-        mm.add_log("data_understanding", f"Detected {len(feature_types.get('numerical_features', []))} numerical and {len(feature_types.get('categorical_features', []))} categorical features.")
+        await mm.update_step("data_understanding", "type_detection", "completed", flush=False)
+        await mm.add_log("data_understanding", f"Detected {len(feature_types.get('numerical_features', []))} numerical and {len(feature_types.get('categorical_features', []))} categorical features.", flush=False)
         
         # Target Identification & Quality Check
-        mm.update_step("data_understanding", "quality_check", "running")
+        await mm.update_step("data_understanding", "quality_check", "running", flush=False)
         target = target_identifier.identify_target(
             df, 
             feature_types['numerical_features'], 
@@ -112,21 +117,33 @@ class DatasetService:
         metadata["problem_type"] = problem_type
         
         metadata["data_quality_score"] = quality_checker.calculate_quality_score(df)
-        mm.update_step("data_understanding", "quality_check", "completed")
-        mm.add_log("data_understanding", f"Quality Score: {metadata['data_quality_score']}/100. Potential Target: {target}")
+        await mm.update_step("data_understanding", "quality_check", "completed", flush=False)
+        await mm.add_log("data_understanding", f"Quality Score: {metadata['data_quality_score']}/100. Potential Target: {target}", flush=False)
         
         # Summary
-        mm.update_step("data_understanding", "summary_generation", "running")
+        await mm.update_step("data_understanding", "summary_generation", "running", flush=False)
         metadata["summary"] = summary_generator.generate_summary(metadata)
-        mm.update_step("data_understanding", "summary_generation", "completed")
-        mm.add_log("data_understanding", "Summary generated successfully.")
+        await mm.update_step("data_understanding", "summary_generation", "completed", flush=False)
+        await mm.add_log("data_understanding", "Summary generated successfully.", flush=False)
         
         metadata["file_id"] = file_id
+        metadata["filename"] = filename
+        metadata["created_at"] = datetime.datetime.now().isoformat()
         
-        # 5. Save Metadata
-        full_data = mm.load()
+        # 5. Build and Save Metadata
+        full_data = await mm.load()
         full_data.update(metadata)
-        mm.save(full_data)
         
-        mm.update_phase("data_understanding", "completed")
+        # Phase 18: Standardize summary for UI history/dashboard
+        full_data["summary"] = {
+            "rows": metadata.get("rows", 0),
+            "columns": metadata.get("columns", 0),
+            "duplicates": metadata.get("duplicate_rows", 0),
+            "missing_pct": metadata.get("missing_pct", 0)
+        }
+        
+        await mm.save(full_data)
+        
+        await mm.update_phase("profiling", "completed", flush=True)
+        await mm.flush()
         return success_response(data=full_data)

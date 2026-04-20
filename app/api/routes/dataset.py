@@ -53,3 +53,25 @@ def get_dataset_metadata(id: str):
             }
         }
     }
+
+@router.get("/list")
+def list_datasets():
+    """Lists all uploaded datasets by reading the metadata directory."""
+    datasets = []
+    if not os.path.exists(settings.METADATA_DIR):
+        return {"status": "success", "datasets": []}
+    
+    for filename in os.listdir(settings.METADATA_DIR):
+        if filename.endswith(".json"):
+            try:
+                with open(os.path.join(settings.METADATA_DIR, filename), "r") as f:
+                    meta = json.load(f)
+                    datasets.append({
+                        "id": meta.get("file_id", filename.replace(".json", "")),
+                        "filename": meta.get("filename", "Unknown"),
+                        "created_at": meta.get("created_at", "")
+                    })
+            except Exception:
+                continue
+    
+    return {"status": "success", "datasets": datasets}

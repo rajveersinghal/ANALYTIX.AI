@@ -16,9 +16,11 @@ def build_pipeline(numerical_cols: list, categorical_cols: list, scaler=None):
     num_transformer = Pipeline(steps=num_steps)
     
     # Categorical Steps: Impute + Encode
+    # Using OrdinalEncoder for better compatibility with high-cardinality tree models
+    from sklearn.preprocessing import OrdinalEncoder
     cat_steps = [
         ('imputer', SimpleImputer(strategy='constant', fill_value='Unknown')),
-        ('onehot', OneHotEncoder(handle_unknown='ignore', sparse_output=False))
+        ('ordinal', OrdinalEncoder(handle_unknown='use_encoded_value', unknown_value=-1))
     ]
     cat_transformer = Pipeline(steps=cat_steps)
     

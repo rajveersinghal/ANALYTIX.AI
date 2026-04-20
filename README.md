@@ -2,7 +2,7 @@
 
 > **Empowering Business Intelligence through Automated Data Science.**
 
-AnalytixAI is a state-of-the-art, production-ready Automated Machine Learning (AutoML) platform. It transforms raw, messy datasets into boardroom-ready intelligence reports through a sophisticated 11-step automated pipeline.
+AnalytixAI is a state-of-the-art, production-ready Automated Machine Learning (AutoML) platform. It transforms raw, messy datasets into boardroom-ready intelligence reports through a sophisticated 11-step automated pipeline, now featuring **Premium Glassmorphic Design** and **Strategic Narrative Intelligence**.
 
 ---
 
@@ -22,14 +22,18 @@ Unlike generic AutoML tools, AnalytixAI understands the context of your data.
 *   **Auto-Profiling**: 0-100 Quality Scoring with detailed metric extraction.
 *   **Audit Trail**: Every cleaning action (imputation, outlier removal, encoding) is logged for full transparency.
 
-### 2. Narrative Reporting (Boardroom Ready)
-*   **Strategic Summaries**: Automatic generation of professional narratives.
-*   **PDF Orchstration**: Beautifully formatted reports with quality tables and branding.
+### 2. Strategic Narrative Intelligence (NEW)
+*   **Executive Storyteller**: Rule-based engine that translates technical scores (RMSE, R2, SHAP) into human-readable strategic outlooks.
+*   **Simulation Insights**: Proactive guidance based on "What-If" scenario outcomes.
 
 ### 3. Advanced AI Engine
-*   **Multi-Task Support**: Beyond Regression and Classification—integrated Forecasting, Clustering, and Anomaly Detection.
+*   **Interactive Simulations**: Real-time Plotly-powered impact charts for scenario planning.
 *   **Explainability (XAI)**: Integrated SHAP and Feature Importance to make model "Black Boxes" transparent.
-*   **Decision Assistant**: "What-If" simulator for real-time strategic planning.
+*   **Multi-Task Support**: Integrated Forecasting, Clustering, and Anomaly Detection.
+
+### 4. Professional Reporting 2.0
+*   **Dual-Format Export**: One-click generation of professional PDF reports and Interactive HTML dashboards.
+*   **Premium Aesthetics**: Modern "Glassmorphic" interface with micro-animations and vibrant themes.
 
 ---
 
@@ -42,17 +46,16 @@ graph TD
     Clean --> Insights[EDA & Statistical Validation]
     Insights --> Modeling[AutoML Engine]
     Modeling --> XAI[Explainability & SHAP]
-    XAI --> Strategy[Decision Assistant]
-    Strategy --> Export[Boardroom PDF Report]
+    XAI --> Strategy[Decision Assistant & Narratives]
+    Strategy --> Export[Professional PDF & HTML Reports]
     
-    subgraph "Single Source of Truth"
-        MM[Metadata Manager]
+    subgraph "Intelligence Layer"
+        Narrative[Strategic Storyteller]
+        Charts[Plotly Impact Visuals]
     end
     
-    Ingest -.-> MM
-    Clean -.-> MM
-    Modeling -.-> MM
-    Export -.-> MM
+    Strategy -.-> Narrative
+    Strategy -.-> Charts
 ```
 
 ---
@@ -63,9 +66,9 @@ graph TD
 | :--- | :--- |
 | **Backend** | Python, FastAPI, Uvicorn |
 | **Frontend** | Streamlit (Custom Glassmorphic Design) |
+| **Visuals** | Plotly, Matplotlib |
 | **Intelligence** | Scikit-Learn, SHAP, Statsmodels, Pandas |
-| **Reporting** | FPDF2 |
-| **Persistence** | Metadata JSON (SSD-Optimized) |
+| **Reporting** | FPDF2, HTML5/CSS3 |
 
 ---
 
@@ -86,7 +89,7 @@ pip install -r requirements.txt
 
 ## 📚 Technical Reference
 - [Architecture Deep Dive](file:///r:/2026/Project/AnalytixAI/ARCHITECTURE.md)
-- [API Reference](file:///r:/2026/Project/AnalytixAI/docs/API_REFERENCE.md)
+- [Feature Roadmap](file:///r:/2026/Project/AnalytixAI/FEATURES.md)
 
 ---
 *Developed by Rajveer Singhal for the next generation of data-driven enterprises.*

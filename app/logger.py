@@ -19,11 +19,18 @@ def setup_logger(name: str = "AnalytixAI"):
         ch.setFormatter(formatter)
         logger.addHandler(ch)
         
-        # File Handler (Optional, strictly for production debugging)
+        # File Handler (Production Grade with Rotation)
         log_dir = "logs"
         if not os.path.exists(log_dir):
             os.makedirs(log_dir)
-        fh = logging.FileHandler(os.path.join(log_dir, "system.log"))
+            
+        from logging.handlers import RotatingFileHandler
+        # 10MB per file, max 5 files = 50MB cap
+        fh = RotatingFileHandler(
+            os.path.join(log_dir, "system.log"), 
+            maxBytes=10*1024*1024, 
+            backupCount=5
+        )
         fh.setFormatter(formatter)
         logger.addHandler(fh)
         

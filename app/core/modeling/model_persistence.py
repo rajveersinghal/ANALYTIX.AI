@@ -3,7 +3,7 @@ import os
 import joblib
 from app.config import settings
 
-def save_best_model(dataset_id: str, model_info: dict):
+async def save_best_model(dataset_id: str, model_info: dict):
     """
     Saves the best model and its metadata.
     """
@@ -15,9 +15,13 @@ def save_best_model(dataset_id: str, model_info: dict):
     # 1. Save .pkl in unified MODEL_DIR
     filename = f"{dataset_id}_model.pkl"
     model_path = os.path.join(settings.MODEL_DIR, filename)
-    joblib.dump(model, model_path)
     
-    # 2. Register artifact in metadata
-    mm.update_artifact("model", f"storage/models/{filename}")
+    # joblib.dump is blocking, but file I/O is usually fast enough for small models.
+    # For large models, consider asyncio.to_thread.
+    import asyncio
+    await asyncio.to_thread(joblib.dump, model, model_path)
+    
+    # 2. Register artifact in metadata (CRITICAL: MUST BE AWAITED)
+    await mm.update_artifact("model", f"storage/models/{filename}")
     
     return model_path

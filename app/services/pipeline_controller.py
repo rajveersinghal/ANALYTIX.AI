@@ -1,6 +1,8 @@
 import os
 import json
 import uuid
+import asyncio
+import gc
 from app.config import settings
 from app.logger import logger
 from app.utils.response_schema import success_response, error_response
@@ -17,21 +19,30 @@ from app.services.decision_service import DecisionService
 from app.services.report_service import ReportService
 
 PIPELINE_STEPS = [
-    "data_understanding",
-    "data_cleaning",
+    "upload",
+    "profiling",
+    "cleaning",
     "eda",
     "statistics",
+    "routing",
     "modeling",
-    "explainability",
+    "tuning",
+    "explain",
     "decision",
     "report"
 ]
 
+# GLOBAL CONCURRENCY CONTROL: Prevent RAM spikes by limiting heavy modeling runs
+# Recommended: 1 per CPU core, but for dev 2 is safe.
+pipeline_semaphore = asyncio.Semaphore(2)
+
 class PipelineController:
-    def __init__(self, dataset_id: str):
+    def __init__(self, dataset_id: str, user_id: str = None, project_id: str = None):
         self.dataset_id = dataset_id
-        # Phase 17: Metadata Manager
-        self.metadata = MetadataManager(dataset_id)
+        self.user_id = user_id
+        self.project_id = project_id
+        # Phase 11: Async Metadata Manager
+        self.metadata = MetadataManager(dataset_id, user_id=user_id, project_id=project_id)
         
         # Initialize Services
         self.dataset_service = DatasetService()
@@ -43,112 +54,220 @@ class PipelineController:
         self.decision_service = DecisionService()
         self.report_service = ReportService()
 
-    def update_step_status(self, step: str, status: str, details: str = None):
-        # Update Central Metadata (Single Source of Truth)
-        self.metadata.update_phase(step, status, details)
-        
-        # Legacy Support - Disabled to avoid duplicate status files/logs
-        # pipeline_manager.update_status(self.dataset_id, step, status, details=details)
+    def _check_memory_safety(self):
+        """
+        SRE Safety Layer: Aborts execution if RAM > 90% to prevent hard crashes.
+        """
+        import psutil
+        ram_percent = psutil.virtual_memory().percent
+        if ram_percent > 90:
+            logger.critical(f"MEMORY SHIELD: Aborting pipeline run! RAM at {ram_percent}%.")
+            raise MemoryError(f"System RAM critical ({ram_percent}%). Please wait or upgrade plan.")
+        return True
 
-    def run_step(self, step_name: str, mode: str = "fast", **kwargs):
-        logger.info(f"Pipeline Controller: Starting step {step_name} for {self.dataset_id}")
-        self.update_step_status(step_name, "running")
+    async def update_step_status(self, step: str, status: str, details: str = None, flush: bool = True):
+        # Update Central Metadata (Single Source of Truth)
+        await self.metadata.update_phase(step, status, details, flush=flush)
+
+    async def run_step(self, step_name: str, mode: str = "fast", overrides: dict = None, **kwargs):
+        """
+        Runs a specific pipeline step with support for user overrides (Manual Mode).
+        """
+        self._check_memory_safety()
+        logger.info(f"Pipeline Controller: Starting step {step_name} for {self.dataset_id} (Manual: {bool(overrides)})")
+        await self.update_step_status(step_name, "running", flush=True) 
         
         try:
+            # Load fresh metadata to check for previous configurations
+            metadata = await self.metadata.load()
+            config = metadata.get("expert_config", {})
+            if overrides:
+                config.update(overrides)
+                await self.metadata.update_config("expert_config", config)
+            
             result = None
-            if step_name == "data_understanding":
-                result = self.dataset_service.run_understanding(self.dataset_id)
+            
+            # Step Mapping with Override Logic
+            if step_name == "upload":
+                await self.update_step_status(step_name, "completed", flush=True)
+                return True
+
+            if step_name == "profiling":
+                result = await self.dataset_service.run_understanding(
+                    self.dataset_id, 
+                    filename=metadata.get("filename", "dataset.csv"),
+                    user_id=self.user_id or metadata.get("user_id"),
+                    project_id=metadata.get("project_id") or metadata.get("projectId")
+                )
                 
-            elif step_name == "data_cleaning":
-                # Extract args for cleaning
-                task_type = kwargs.get("task_type")
-                target_col = kwargs.get("target_col")
-                result = self.cleaning_service.run_cleaning(self.dataset_id, task_type=task_type, target_col=target_col)
-                # Update Artifact
-                self.metadata.update_artifact("clean_data", f"storage/datasets/{self.dataset_id}_train.csv")
+            elif step_name == "cleaning":
+                # Manual Override: specific target or features
+                task_type = config.get("task_type") or kwargs.get("task_type")
+                target_col = config.get("target_column") or kwargs.get("target_col")
+                result = await self.cleaning_service.run_cleaning(
+                    self.dataset_id, 
+                    mode=mode, 
+                    task_type=task_type, 
+                    target_col=target_col, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id
+                )
+                await self.metadata.update_artifact("clean_data", f"storage/datasets/{self.dataset_id}_train.csv", flush=False)
                 
             elif step_name == "eda":
-                result = self.eda_service.run_eda(self.dataset_id)
+                # User might have excluded some columns from EDA
+                result = await self.eda_service.run_eda(
+                    self.dataset_id, 
+                    mode=mode, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
                 
             elif step_name == "statistics":
-                data = self.stats_service.run_stats(self.dataset_id)
+                data = await self.stats_service.run_stats(
+                    self.dataset_id, 
+                    mode=mode, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
                 result = success_response(data=data)
+
+            elif step_name == "routing":
+                from app.core.modeling import problem_router
+                problem_type = config.get("task_type") or kwargs.get("task_type") or problem_router.detect_problem_type(metadata)
+                await self.metadata.update_config("problem_type", problem_type)
+                result = success_response(data={"problem_type": problem_type})
                 
             elif step_name == "modeling":
-                task_type = kwargs.get("task_type")
-                result = self.modeling_service.run_automl(self.dataset_id, mode=mode, task_type=task_type)
+                # Expert Mode: User selects specific model types or features
+                task_type = config.get("task_type") or kwargs.get("task_type")
+                result = await self.modeling_service.run_automl(
+                    self.dataset_id, 
+                    mode=mode, 
+                    task_type=task_type, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
+            
+            elif step_name == "tuning":
+                result = await self.modeling_service.run_tuning(
+                    self.dataset_id, 
+                    mode=mode, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
                 
-            elif step_name == "explainability":
-                result = self.explainability_service.run_explainability(self.dataset_id)
+            elif step_name == "explain":
+                result = await self.explainability_service.run_explainability(
+                    self.dataset_id, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
                 
             elif step_name == "decision":
-                result = self.decision_service.run_decision(self.dataset_id)
+                result = await self.decision_service.run_decision(
+                    self.dataset_id, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
                 
             elif step_name == "report":
-                path = self.report_service.generate_report(self.dataset_id)
-                self.metadata.update_artifact("report", path)
+                path = await self.report_service.generate_report(
+                    self.dataset_id, 
+                    user_id=self.user_id, 
+                    project_id=self.project_id,
+                    overrides=config
+                )
+                await self.metadata.update_artifact("report", path, flush=False)
                 result = success_response(data={"report_path": path})
 
-            # Check result status if it's a standard response
+            # Handle errors
             if isinstance(result, dict) and result.get("status") == "error":
-                msg = result.get("message", "Unknown error in step")
-                detail = result.get("error")
-                error_text = f"{msg}: {detail}" if detail else msg
-                raise Exception(error_text)
+                raise Exception(result.get("message", "Step failed"))
                 
-            self.update_step_status(step_name, "completed")
+            await self.update_step_status(step_name, "completed", flush=True)
+            
+            import gc
+            gc.collect()
             return True
 
         except Exception as e:
             logger.error(f"Pipeline Step {step_name} Failed: {e}", exc_info=True)
-            user_msg = self._map_error_to_user_message(step_name, e)
-            self.update_step_status(step_name, "failed", details=user_msg)
+            await self.update_step_status(step_name, "failed", details=str(e), flush=True)
             raise e
 
-    def _map_error_to_user_message(self, step: str, error: Exception) -> str:
-        msg = str(error).lower()
-        if "empty" in msg or "no columns" in msg:
-            return "The dataset appears to be empty. Please upload a valid file."
-        if "target" in msg and ("not found" in msg or "missing" in msg):
-            return "Target column is missing. It may have been dropped during cleaning or not selected."
-        if "min_samples" in msg or "enough data" in msg or "small" in msg:
-            return "Dataset is too small for reliable modeling (needs 30+ rows)."
-        if "not found" in msg:
-            return f"Required data for {step} is missing. Please ensure previous steps completed successfully."
-        return str(error)
 
-    def run_all(self, mode: str = "fast"):
+
+    async def run_all(self, mode: str = "fast"):
         """
-        Runs the full pipeline sequentially, skipping completed steps.
+        Orchestrates the entire pipeline with concurrency protection.
         """
+        async with pipeline_semaphore:
+            await self._run_all_logic(mode)
+
+    async def _run_all_logic(self, mode: str = "fast"):
         logger.info(f"Pipeline Controller: Running ALL for {self.dataset_id} in {mode} mode")
+        await self.metadata.set_mode(mode, flush=False)
+        metadata = await self.metadata.load()
+        current_state = metadata.get("pipeline_state", {})
         
-        # Save mode to metadata
-        self.metadata.set_mode(mode)
-        
-        # Load current state
-        current_state = self.metadata.load().get("pipeline_state", {})
-        
-        for step in PIPELINE_STEPS:
-            step_status = current_state.get(step)
+        try:
+            # 1. Sequential Start
+            for step in ["upload", "profiling", "cleaning"]:
+                if current_state.get(step) == "completed": continue
+                await self.run_step(step, mode=mode, **(await self._get_step_args(step)))
+
+            # 2. Sequential Execution
+            for step in ["eda", "statistics", "routing", "modeling", "tuning", "explain", "decision"]:
+                if current_state.get(step) == "completed": continue
+                await self.run_step(step, mode=mode, **(await self._get_step_args(step)))
             
-            if step_status == "completed":
-                logger.info(f"Skipping {step} (already completed)")
-                continue
+            # 3. Handle Strategic Tasks (e.g. Sales Intel)
+            if metadata.get("task_type") == "sales":
+                logger.info(f"Pipeline Controller: Computing Sales Intelligence for {self.dataset_id}")
+                from app.services.sales_intelligence_service import SalesIntelligenceService
+                sis = SalesIntelligenceService()
+                file_path = os.path.join(settings.DATASET_DIR, f"{self.dataset_id}.csv")
+                if os.path.exists(file_path):
+                    sales_results = await sis.analyze_from_path(
+                        file_path, 
+                        self.dataset_id, 
+                        metadata.get("filename", "sales_data.csv"),
+                        self.user_id or metadata.get("user_id"),
+                        project_id=self.project_id or metadata.get("project_id")
+                    )
+                    metadata.update(sales_results)
+                    await self.metadata.save(metadata)
+                    logger.info(f"Pipeline Controller: Sales Intel merged into metadata.")
+
+            # 4. Final step: Report
+            if current_state.get("report") != "completed":
+                await self.run_step("report", mode=mode, **(await self._get_step_args("report")))
             
-            logger.info(f"Executing {step}...")
-            try:
-                # Load config from metadata for cleaning
-                # We need to pass args if step is cleaning and they exist
-                kw = {}
-                if step == "data_cleaning":
-                    meta = self.metadata.load()
-                    kw["task_type"] = meta.get("task_type")
-                    kw["target_col"] = meta.get("target_column")
-                    
-                self.run_step(step, mode, **kw)
-            except Exception as e:
-                logger.error(f"Pipeline stopped at {step} due to error: {e}")
-                break # Stop execution on failure
+            await self.metadata.flush()
+        except Exception as e:
+            logger.critical(f"Pipeline Controller Critical Crash: {e}", exc_info=True)
+            # Find the first non-completed step and mark it as failed
+            for step in PIPELINE_STEPS:
+                if current_state.get(step) != "completed":
+                    await self.update_step_status(step, "failed", details=f"Master controller crash: {str(e)}")
+                    break
+        logger.info(f"Pipeline Controller: Execution finished for {self.dataset_id}")
+        # Explicitly hint GC after heavy processing
+        gc.collect()
+
+    async def _get_step_args(self, step: str) -> dict:
+        kw = {}
+        if step in ["cleaning", "modeling", "routing"]:
+            meta = await self.metadata.load()
+            kw["task_type"] = meta.get("task_type") or meta.get("problem_type")
+            kw["target_col"] = meta.get("target_column")
+        return kw
                 
 

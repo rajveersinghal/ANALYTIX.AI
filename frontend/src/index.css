@@ -1,0 +1,65 @@
+@import "./styles/DeepVoid.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.app {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #04050f;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+.page {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+body {
+  font-family: 'Figtree', sans-serif;
+  margin: 0;
+  background-color: #04050f;
+  color: #eeeeff;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.family-syne {
+  font-family: 'Syne', sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(109, 78, 255, 0.3);
+}
+

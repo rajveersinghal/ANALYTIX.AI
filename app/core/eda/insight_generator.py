@@ -2,7 +2,7 @@
 import pandas as pd
 from app.core.eda import univariate, bivariate, correlation, target_analysis
 
-def generate_insights(df: pd.DataFrame, metadata: dict) -> dict:
+def generate_insights(df: pd.DataFrame, metadata: dict, mode: str = "fast") -> dict:
     """
     Aggregates all EDA insights.
     """
@@ -20,7 +20,9 @@ def generate_insights(df: pd.DataFrame, metadata: dict) -> dict:
     all_insights.extend(target_analysis.analyze_target(df, target_col, problem_type))
     
     # 2. Univariate
-    all_insights.extend(univariate.analyze_univariate(df, feature_types))
+    uni_insights, uni_plots = univariate.analyze_univariate(df, feature_types)
+    all_insights.extend(uni_insights)
+    plot_data.update(uni_plots)
     
     # 3. Correlation (Key Drivers)
     corr_insights, corr_plots = correlation.analyze_correlation(df, feature_types, target_col)
@@ -28,7 +30,9 @@ def generate_insights(df: pd.DataFrame, metadata: dict) -> dict:
     plot_data.update(corr_plots)
     
     # 4. Bivariate
-    all_insights.extend(bivariate.analyze_bivariate(df, feature_types, target_col))
+    biv_insights, biv_plots = bivariate.analyze_bivariate(df, feature_types, target_col)
+    all_insights.extend(biv_insights)
+    plot_data.update(biv_plots)
     
     return {
         "insights": all_insights,

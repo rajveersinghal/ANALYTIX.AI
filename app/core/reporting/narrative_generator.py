@@ -19,8 +19,9 @@ class NarrativeGenerator:
         domain_goal = self._get_domain_term(domain, prob)
         
         return [
-            f"AnalytixAI has successfully processed the dataset comprising **{rows} rows** and **{cols} columns**.",
-            f"Applying the **{domain.capitalize()}** specialized engine, we identified the primary objective as **{domain_goal}** utilizing the '**{target}**' variable."
+            f"AnalytixAI has successfully processed the dataset comprising {rows} rows and {cols} columns.",
+            f"Applying the {domain.upper()} specialized engine, we identified the primary objective as {domain_goal} utilizing the '{target}' variable.",
+            f"STRATEGIC CONTEXT: The analysis focuses on optimizing {target} to drive {domain.capitalize()} performance."
         ]
         
     def generate_quality_report_narrative(self, metadata: dict) -> list:
@@ -73,25 +74,29 @@ class NarrativeGenerator:
         return paragraphs
 
     def generate_model_summary(self, model_metrics: dict) -> list:
-        name = model_metrics.get("best_model", "N/A")
-        score = model_metrics.get("best_score", 0)
+        best_model = model_metrics.get("best_model", {})
+        name = best_model.get("name", "N/A")
+        # Accuracy is stored as percentage (0-100) in metadata
+        score = best_model.get("accuracy", 0)
         metric = model_metrics.get("metric", "score")
         
         return [
             f"The AnalytixAI Smart Strategy evaluated multiple architectures and selected **{name}** as the optimal model.",
-            f"The model achieved a validation {metric} of **{score:.4f}**, indicating strong predictive reliability for production deployment."
+            f"The model achieved a performance score of **{score}%** ({metric}), indicating its level of predictive reliability for production deployment."
         ]
 
     def generate_decision_summary_combined(self, explain: dict, decision: dict) -> list:
+        paragraphs = []
         recs = decision.get("recommendations", [])
         global_exp = explain.get("global_explanation", {})
-        importance = global_exp.get("importances", [])
         
-        paragraphs = ["Based on the model's intelligence, the following strategic drivers and recommendations were identified:"]
-        
-        if importance:
-            top_3 = [f"{i['feature']}" for i in importance[:3]]
-            paragraphs.append(f"Primary Business Drivers: {', '.join(top_3)}.")
+        if global_exp:
+            importance = global_exp.get("feature_importance", {})
+            if importance:
+                # Sort and get top 3
+                sorted_imp = sorted(importance.items(), key=lambda x: x[1], reverse=True)
+                top_3 = [f"{k}" for k, v in sorted_imp[:3]]
+                paragraphs.append(f"Primary Business Drivers: {', '.join(top_3)}.")
             
         if recs:
             paragraphs.append("Strategic Recommendations:")
@@ -101,4 +106,26 @@ class NarrativeGenerator:
                 else:
                     paragraphs.append(f"- {str(r)}")
                     
+        return paragraphs
+
+    def generate_risk_narrative(self, metadata: dict) -> list:
+        from app.core.nlp.insight_engine import insight_engine
+        explain = metadata.get("explainability_results", {})
+        importance = explain.get("global_explanation", {}).get("feature_importance", {})
+        
+        risks = insight_engine.detect_risks(importance)
+        paragraphs = ["Operational & Strategic Risks Detected:"]
+        for r in risks:
+            paragraphs.append(f"- {r}")
+        return paragraphs
+
+    def generate_opportunity_narrative(self, metadata: dict) -> list:
+        from app.core.nlp.insight_engine import insight_engine
+        explain = metadata.get("explainability_results", {})
+        importance = explain.get("global_explanation", {}).get("feature_importance", {})
+        
+        opps = insight_engine.detect_opportunities(importance)
+        paragraphs = ["Growth & Optimization Opportunities:"]
+        for o in opps:
+            paragraphs.append(f"- {o}")
         return paragraphs

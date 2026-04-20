@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-streamlit
+google-generativeai
 python-dotenv
 pydantic
 python-multipart
@@ -13,3 +13,15 @@ shap
 matplotlib
 fpdf2
 psutil
+plotly
+motor
+pymongo
+bcrypt
+python-jose[cryptography]
+passlib[bcrypt]
+dnspython
+statsmodels
+certifi
+stripe
+lime
+pyarrow

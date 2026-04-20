@@ -11,9 +11,10 @@ from app.core.data_cleaning import (
 )
 from app.utils.response_schema import success_response, error_response
 from app.utils.metadata_manager import MetadataManager
+from app.utils.data_manager import data_manager
 
 class CleaningService:
-    def run_cleaning(self, file_id: str, task_type: str = None, target_col: str = None):
+    async def run_cleaning(self, file_id: str, mode: str = "fast", task_type: str = None, target_col: str = None, user_id: str = None, project_id: str = None, overrides: dict = None):
         """
         Executes full cleaning pipeline.
         """
@@ -21,8 +22,8 @@ class CleaningService:
         
         try:
             # Unified Metadata Manager
-            mm = MetadataManager(file_id)
-            metadata = mm.load()
+            mm = MetadataManager(file_id, user_id=user_id, project_id=project_id)
+            metadata = await mm.load()
             
             csv_path = os.path.join(settings.DATASET_DIR, f"{file_id}.csv")
             xlsx_path = os.path.join(settings.DATASET_DIR, f"{file_id}.xlsx")
@@ -31,16 +32,23 @@ class CleaningService:
             if not dataset_path or not os.path.exists(dataset_path):
                  raise FileNotFoundError(f"Dataset not found: {file_id}")
             
-            mm.update_phase("data_cleaning", "running")
-            mm.update_step("data_cleaning", "loading", "running")
+            await mm.update_phase("cleaning", "running")
+            await mm.update_step("data_cleaning", "loading", "running")
+            await mm.update_ai_thinking("data_cleaning", "I am currently loading the dataset and checking for structural integrity. I'll look for outliers and missing values next.")
             
             cleaning_actions = [] # New: Structured log for report section 3
 
             
-            if dataset_path.endswith('.csv'):
-                df = pd.read_csv(dataset_path)
-            else:
-                df = pd.read_excel(dataset_path)
+            # Try to get from DataManager (Cache-first)
+            df = data_manager.get_dataframe(file_id, "raw")
+            
+            if df is None:
+                # Fallback to direct read if DataManager failed (unlikely if file exists)
+                if dataset_path.endswith('.csv'):
+                    df = pd.read_csv(dataset_path)
+                else:
+                    df = pd.read_excel(dataset_path)
+                data_manager.update_cache(file_id, df, "raw")
                 
             # VALIDATION: Check for empty dataset
             if df.empty:
@@ -48,9 +56,9 @@ class CleaningService:
                 
             # Auto-fill from metadata if not provided as arguments (Phase 17+)
             if not task_type:
-                task_type = metadata.get("task_type") or metadata.get("problem_type")
+                task_type = (overrides or {}).get("task_type") or metadata.get("task_type") or metadata.get("problem_type")
             if not target_col:
-                target_col = metadata.get("target_column")
+                target_col = (overrides or {}).get("target_column") or metadata.get("target_column")
                 # Fallback to possible target if single
                 if not target_col and metadata.get("possible_target_columns"):
                     pss = metadata.get("possible_target_columns")
@@ -61,6 +69,14 @@ class CleaningService:
                 logger.warning(f"Task type not provided or found for {file_id}. Defaulting to 'regression'.")
                 task_type = "regression"
 
+            # 1.5 Manual Overrides: Drop unwanted columns
+            if overrides and overrides.get("drop_columns"):
+                to_drop = [c for c in overrides["drop_columns"] if c in df.columns]
+                if to_drop:
+                    df = df.drop(columns=to_drop)
+                    logger.info(f"Expert Mode: Dropped manually selected columns: {to_drop}")
+                    await mm.add_log("data_cleaning", f"Expert Mode: Manually dropped columns {to_drop}")
+
             # VALIDATION: Check target existence
             if target_col and target_col not in df.columns:
                 raise ValueError(f"Target column '{target_col}' not found in dataset. Available columns: {list(df.columns)}")
@@ -70,52 +86,59 @@ class CleaningService:
                  raise ValueError(f"Dataset is too small for reliable modeling (found {len(df)} rows, need {settings.MIN_SAMPLES_MODELING}).")
 
             initial_rows = len(df)
-            mm.update_step("data_cleaning", "loading", "completed")
-            mm.add_log("data_cleaning", f"Loaded {initial_rows} rows for cleaning.")
+            await mm.update_step("data_cleaning", "loading", "completed")
+            await mm.add_log("data_cleaning", f"Loaded {initial_rows} rows for cleaning.")
             
+            import asyncio
             # 2. Type Correction
-            mm.update_step("data_cleaning", "type_correction", "running")
+            await mm.update_step("data_cleaning", "type_correction", "running")
             feature_types = {
                 "numerical_features": metadata.get("numerical_features", []),
                 "categorical_features": metadata.get("categorical_features", []),
                 "datetime_features": metadata.get("datetime_features", [])
             }
-            df = type_corrector.correct_types(df, feature_types)
-            mm.update_step("data_cleaning", "type_correction", "completed")
-            mm.add_log("data_cleaning", "Standardized data types across all columns.")
+            df = await asyncio.to_thread(type_corrector.correct_types, df, feature_types)
+            await mm.update_step("data_cleaning", "type_correction", "completed")
+            await mm.add_log("data_cleaning", "Standardized data types across all columns.")
             
             # 3. Duplicate Handling
-            mm.update_step("data_cleaning", "duplicates", "running")
+            await mm.update_step("data_cleaning", "duplicates", "running")
             initial_count = len(df)
-            df = duplicate_handler.remove_duplicates(df)
+            df = await asyncio.to_thread(duplicate_handler.remove_duplicates, df)
             duplicates_removed = initial_count - len(df)
-            mm.update_step("data_cleaning", "duplicates", "completed")
+            await mm.update_step("data_cleaning", "duplicates", "completed")
             msg = f"Removed {duplicates_removed} duplicate rows."
-            mm.add_log("data_cleaning", msg)
-            if duplicates_removed > 0: cleaning_actions.append(msg)
+            await mm.add_log("data_cleaning", msg)
+            if duplicates_removed > 0: 
+                cleaning_actions.append(msg)
+                await mm.add_step_insight("data_cleaning", f"Redundancy check complete. {duplicates_removed} duplicate records were purged to ensure statistical independence.")
             
             # 4. Outlier Handling
-            mm.update_step("data_cleaning", "outliers", "running")
-            df = outlier_handler.handle_outliers(df, feature_types["numerical_features"])
-            mm.update_step("data_cleaning", "outliers", "completed")
-            msg = "Capped outliers in numerical columns using IQR method."
-            mm.add_log("data_cleaning", msg)
+            await mm.update_step("data_cleaning", "outliers", "running")
+            df = await asyncio.to_thread(outlier_handler.handle_outliers, df, feature_types["numerical_features"], mode=mode)
+            await mm.update_step("data_cleaning", "outliers", "completed")
+            msg = "Capped outliers in numerical columns using IQR method." if mode == "fast" else "Removed extreme outliers using IsolationForest."
+            await mm.add_log("data_cleaning", msg)
             cleaning_actions.append(msg)
+            await mm.update_ai_thinking("data_cleaning", "Moving to advanced outlier detection. Ensuring extreme values don't skew our eventual model's perception.")
             
             # 5. Missing Value Handling
-            mm.update_step("data_cleaning", "missing_values", "running")
+            await mm.update_step("data_cleaning", "missing_values", "running")
             missing_before = df.isnull().sum().sum()
-            df = missing_handler.handle_missing_values(df, feature_types, target_col)
+            df = await asyncio.to_thread(missing_handler.handle_missing_values, df, feature_types, target_col, mode=mode)
             missing_after = df.isnull().sum().sum()
-            mm.update_step("data_cleaning", "missing_values", "completed")
+            await mm.update_step("data_cleaning", "missing_values", "completed")
             
             imputed_count = int(missing_before - missing_after)
-            msg = f"Imputed {imputed_count} missing values across numerical and categorical features."
-            mm.add_log("data_cleaning", msg)
-            if imputed_count > 0: cleaning_actions.append(msg)
+            method = "KNNImputer" if mode == "deep" and imputed_count > 0 else "Statistical Imputation (Mean/Median)"
+            msg = f"Imputed {imputed_count} missing values using {method}."
+            await mm.add_log("data_cleaning", msg)
+            if imputed_count > 0: 
+                cleaning_actions.append(msg)
+                await mm.add_step_insight("data_cleaning", f"Data sparsity addressed. Imputed {imputed_count} values using {method} to maintain dataset volume.")
             
             # 6. Pipeline Build
-            mm.update_step("data_cleaning", "scaling", "running")
+            await mm.update_step("data_cleaning", "scaling", "running")
             current_numerical = df.select_dtypes(include=['number']).columns.tolist()
             current_categorical = df.select_dtypes(include=['object', 'category']).columns.tolist()
             
@@ -123,29 +146,43 @@ class CleaningService:
             if target_col in current_categorical: current_categorical.remove(target_col)
                 
             pipeline_scaler = scaler.get_scaling_strategy(algo_type=task_type)
-            pipeline = pipeline_builder.build_pipeline(current_numerical, current_categorical, scaler=pipeline_scaler)
+            # Scaling logic is fast, but let's keep it safe
+            pipeline = await asyncio.to_thread(pipeline_builder.build_pipeline, current_numerical, current_categorical, scaler=pipeline_scaler)
             
-            mm.update_step("data_cleaning", "scaling", "completed")
+            await mm.update_step("data_cleaning", "scaling", "completed")
             msg = f"Standardized features using {pipeline_scaler} scaling for {len(current_numerical)} numerical columns."
-            mm.add_log("data_cleaning", msg)
+            await mm.add_log("data_cleaning", msg)
             cleaning_actions.append(msg)
             
             # 7. Split Data
-            mm.update_step("data_cleaning", "splitting", "running")
-            X_train, X_test, y_train, y_test = splitter.split_data(df, target_col, task_type)
-            mm.update_step("data_cleaning", "splitting", "completed")
-            mm.add_log("data_cleaning", "Split data into training and testing sets (80/20 ratio).")
+            await mm.update_step("data_cleaning", "splitting", "running")
+            X_train, X_test, y_train, y_test = await asyncio.to_thread(splitter.split_data, df, target_col, task_type)
+            await mm.update_step("data_cleaning", "splitting", "completed")
+            await mm.add_log("data_cleaning", "Split data into training and testing sets (80/20 ratio).")
             
             # 8. Save Artifacts
-            mm.update_step("data_cleaning", "saving", "running")
+            await mm.update_step("data_cleaning", "saving", "running")
             train_df = pd.concat([X_train, y_train], axis=1) if X_train is not None else None
             test_df = pd.concat([X_test, y_test], axis=1) if X_test is not None else None
             
             if train_df is not None:
-                train_path = os.path.join(settings.DATASET_DIR, f"{file_id}_train.csv")
-                test_path = os.path.join(settings.DATASET_DIR, f"{file_id}_test.csv")
-                train_df.to_csv(train_path, index=False)
-                if test_df is not None: test_df.to_csv(test_path, index=False)
+                # Update DataManager Cache
+                data_manager.update_cache(file_id, train_df, "train")
+                if test_df is not None:
+                    data_manager.update_cache(file_id, test_df, "test")
+
+                # Persistent Save (Hybrid: Parquet for speed, CSV for compatibility)
+                train_p_parquet = os.path.join(settings.DATASET_DIR, f"{file_id}_train.parquet")
+                train_p_csv = os.path.join(settings.DATASET_DIR, f"{file_id}_train.csv")
+                
+                train_df.to_parquet(train_p_parquet, index=False)
+                train_df.to_csv(train_p_csv, index=False)
+                
+                if test_df is not None:
+                    test_p_parquet = os.path.join(settings.DATASET_DIR, f"{file_id}_test.parquet")
+                    test_p_csv = os.path.join(settings.DATASET_DIR, f"{file_id}_test.csv")
+                    test_df.to_parquet(test_p_parquet, index=False)
+                    test_df.to_csv(test_p_csv, index=False)
             
             pipeline_path = os.path.join(settings.DATASET_DIR, f"{file_id}_pipeline.pkl")
             joblib.dump(pipeline, pipeline_path)
@@ -159,10 +196,10 @@ class CleaningService:
                 "clean_rows": len(df),
                 "cleaning_actions": cleaning_actions # Store for report section 3
             })
-            mm.save(metadata)
+            await mm.save(metadata)
             
-            mm.update_step("data_cleaning", "saving", "completed")
-            mm.update_phase("data_cleaning", "completed")
+            await mm.update_step("data_cleaning", "saving", "completed")
+            await mm.update_phase("cleaning", "completed")
             
             report = {"initial_rows": initial_rows, "final_rows": len(df), "success": True}
             return success_response(data=report)

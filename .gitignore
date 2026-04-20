@@ -155,3 +155,11 @@ data/*.xlsx
 *.pdf
 *.pkl
 .DS_Store
+
+# Frontend
+node_modules/
+dist/
+.next/
+out/
+build/
+.vercel/

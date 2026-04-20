@@ -6,7 +6,7 @@ from app.utils.response_schema import success_response
 router = APIRouter(prefix="/decision", tags=["Decision Engine"])
 service = DecisionService()
 
-@router.get("/recommend/{dataset_id}")
+@router.get("/recommendations/{dataset_id}")
 def get_recommendations(dataset_id: str):
     try:
         results = service.get_recommendations(dataset_id)
