@@ -27,29 +27,26 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# Hardened CORS with dynamic origin reflection for Vercel
+# Ultra-High Priority CORS Handle (Preflight & Reflection)
 @app.middleware("http")
 async def cors_handler(request: Request, call_next):
+    if request.method == "OPTIONS":
+        response = JSONResponse(content="OK")
+    else:
+        response = await call_next(request)
+        
     origin = request.headers.get("origin")
-    response = await call_next(request)
-    
-    # Allow Vercel and Localhost
+    # Dynamically reflect any Vercel or localhost origin
     if origin and ("vercel.app" in origin or "localhost" in origin):
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "*"
-        response.headers["Access-Control-Allow-Headers"] = "*"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
         
     return response
 
-# Standard CORS as fallback
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=settings.ALLOWED_ORIGINS,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Disable standard CORSMiddleware to avoid conflicts with the manual handler
+# app.add_middleware(CORSMiddleware, ...) 
 
 @app.on_event("startup")
 async def startup_event():
