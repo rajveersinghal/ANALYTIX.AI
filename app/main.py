@@ -27,25 +27,29 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# CORS Handling: If allow_credentials is True, allow_origins cannot be ["*"]
-origins = settings.ALLOWED_ORIGINS
-if "*" in origins and len(origins) == 1:
-    # In production with credentials, we strictly allow all for testing but ideally you set your Vercel URL
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origin_regex="https://.*\.vercel\.app|http://localhost:3000",
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
-else:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# Hardened CORS with dynamic origin reflection for Vercel
+@app.middleware("http")
+async def cors_handler(request: Request, call_next):
+    origin = request.headers.get("origin")
+    response = await call_next(request)
+    
+    # Allow Vercel and Localhost
+    if origin and ("vercel.app" in origin or "localhost" in origin):
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Access-Control-Allow-Methods"] = "*"
+        response.headers["Access-Control-Allow-Headers"] = "*"
+        
+    return response
+
+# Standard CORS as fallback
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup_event():

@@ -24,6 +24,7 @@ class Token(BaseModel):
 
 @router.post("/register", response_model=dict)
 async def register(user_in: UserCreate):
+    logger.info(f"Auth: Registration request received for {user_in.email}")
     db = get_database()
     email_lower = user_in.email.lower()
     existing_user = await db.users.find_one({"email": email_lower})
@@ -42,6 +43,7 @@ async def register(user_in: UserCreate):
 
 @router.post("/login", response_model=Token)
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
+    logger.info(f"Auth: Login request received for {form_data.username}")
     db = get_database()
     email_lower = form_data.username.lower()
     user = await db.users.find_one({"email": email_lower})
