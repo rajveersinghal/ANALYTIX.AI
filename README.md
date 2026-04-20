@@ -75,21 +75,29 @@ graph TD
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Deployment Strategy (Startup Ready)
 
-### Prerequisites
-- Python 3.10+
-- Node.js 18+
+AnalytixAI uses a high-performance **Distributed Architecture** to handle heavy Machine Learning tasks (like SHAP and Scikit-Learn) which exceed the 500MB limit of serverless platforms like Vercel.
 
-### 1. Backend Setup
+### 1. Frontend (Vercel)
+The UI is optimized for Vercel's global CDN.
+- **Root Directory**: `frontend`
+- **Build Command**: `npm install && npm run build`
+- **Output Directory**: `dist`
+- **Environment Variables**: Set `VITE_API_URL` to your Render backend URL.
+
+### 2. Backend (Render / Railway / Docker)
+The intelligence engine runs on a dedicated container to ensure the 900MB+ ML stack has enough resources.
+- **Option A (Render)**: Use the provided `render.yaml`.
+- **Option B (Docker)**: Use the provided `Dockerfile`.
+
+## 🛠️ Local Development
 ```bash
-# Navigate to root
+# Backend
 pip install -r requirements.txt
 uvicorn app.main:app --reload
-```
 
-### 2. Frontend Setup
-```bash
+# Frontend
 cd frontend
 npm install
 npm run dev
