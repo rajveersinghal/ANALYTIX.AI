@@ -144,45 +144,45 @@ export default function Dashboard() {
 
             {/* Greeting */}
             <div className="greeting mb-8">
-              <div className="greeting-row">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20 flex-shrink-0">
                     <User size={24} />
                   </div>
-                  <div>
-                    <div className="greeting-h text-xl">{getGreeting()}, <span>{user?.full_name?.split(' ')[0] || 'Admiral'}</span></div>
-                    <div className="greeting-sub flex items-center gap-2">
+                  <div className="min-w-0">
+                    <div className="greeting-h text-xl truncate">{getGreeting()}, <span>{user?.full_name?.split(' ')[0] || 'Admiral'}</span></div>
+                    <div className="greeting-sub flex flex-wrap items-center gap-2">
                        <span className="text-slate-500">Fleet Intelligence Lead</span>
-                       <span className="w-1 h-1 rounded-full bg-slate-700" />
-                       <span className="text-indigo-400 font-bold uppercase tracking-widest text-[9px]">{user?.tier || 'Free'} Core</span>
+                       <span className="hidden sm:block w-1 h-1 rounded-full bg-slate-700" />
+                       <span className="text-indigo-400 font-bold uppercase tracking-widest text-[9px] truncate">{user?.tier || 'Free'} Core</span>
                     </div>
                   </div>
                 </div>
-                <div className="greeting-actions">
+                <div className="flex items-center gap-3 w-full md:w-auto">
                   <motion.button 
                     whileHover={{ scale: 1.02, y: -2 }}
                     whileTap={{ scale: 0.97 }}
-                    className="btn-secondary" 
+                    className="btn-secondary flex-1 md:flex-none justify-center" 
                     onClick={() => navigate('/history')}
                   >
                     <History size={13} style={{ marginRight: '6px' }} />
-                    Intelligence Archive
+                    <span className="whitespace-nowrap">Archive</span>
                   </motion.button>
                   <motion.button 
                     whileHover={{ scale: 1.03, y: -2 }}
                     whileTap={{ scale: 0.97 }}
-                    className="btn-primary" 
+                    className="btn-primary flex-1 md:flex-none justify-center" 
                     onClick={() => navigate('/pipeline')}
                   >
                     <Rocket size={13} style={{ marginRight: '6px' }} />
-                    Execute Analysis
+                    <span className="whitespace-nowrap">Execute</span>
                   </motion.button>
                 </div>
               </div>
             </div>
 
             {/* Stat tiles */}
-            <div className="stat-grid mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               {[
                 { 
                   label: "Analyses Completed", 
@@ -350,7 +350,7 @@ export default function Dashboard() {
               <div className="space-y-4">
                 <div className="card-new p-4">
                   <span className="card-title block mb-4">Quick Actions</span>
-                  <div className="grid grid-cols-3 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                     {[
                       { label: "Upload CSV", icon: Upload, path: "/pipeline" },
                       { label: "Analytics", icon: Activity, path: "/analytics" },
@@ -529,14 +529,14 @@ export default function Dashboard() {
 
       case "completed":
         return (
-          <div className="space-y-24">
-           <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12">
+          <div className="space-y-16 md:space-y-24">
+           <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-8 md:mb-12">
               <div className="page-header mb-0">
                 <div className="page-eyebrow">
                   <span className="dot"></span>
                   Intelligence
                 </div>
-                <h1 className="page-title text-3xl md:text-4xl">Intelligence <span className="hl">Result</span></h1>
+                <h1 className="page-title text-2xl md:text-4xl">Intelligence <span className="hl">Result</span></h1>
                 <div className="flex items-center gap-3 mt-2">
                   <p className="page-sub !text-sm font-medium">
                     Session ID: <span className="text-primary font-mono opacity-80">{sessionId}</span>

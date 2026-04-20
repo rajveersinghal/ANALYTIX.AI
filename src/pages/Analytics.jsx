@@ -127,15 +127,15 @@ export default function Analytics() {
   return (
     <div className="view active">
       <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-end mb-6">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
         <div className="page-header mb-0">
           <div className="page-eyebrow"><span className="dot"></span>Analytics</div>
-          <h1 className="page-title">Platform <span className="hl">Analytics</span></h1>
+          <h1 className="page-title text-2xl md:text-4xl">Platform <span className="hl">Analytics</span></h1>
           <p className="page-sub">Cross-session performance trends, model comparisons, and usage metrics.</p>
         </div>
-        <div className="an-period">
+        <div className="an-period w-full sm:w-auto">
           {[7, 30, 90, 365].map(d => (
-            <button key={d} className={`period-btn ${period === d ? 'active' : ''}`} onClick={() => setPeriod(d)}>
+            <button key={d} className={`period-btn flex-1 sm:flex-none ${period === d ? 'active' : ''}`} onClick={() => setPeriod(d)}>
               {d === 365 ? '1y' : `${d}d`}
             </button>
           ))}
@@ -319,24 +319,24 @@ export default function Analytics() {
 
         {/* Leaderboard Table */}
         <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="an-table-glass mt-12">
-          <div className="anc-head flex justify-between items-center p-8 border-b border-white/5 bg-white/2">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-6 md:p-8 border-b border-white/5 bg-white/2 gap-6">
             <div className="flex items-center gap-4">
-               <div className="p-3 bg-violet/10 rounded-2xl border border-violet/20 flex items-center justify-center text-violet">
+               <div className="p-3 bg-violet/10 rounded-2xl border border-violet/20 flex items-center justify-center text-violet shrink-0">
                   <Share2 size={20} />
                </div>
                <div>
                   <div className="anc-title">High-Accuracy Leaderboard</div>
-                  <div className="anc-sub">Top 5 precision sessions across all workspaces</div>
+                  <div className="anc-sub">Top precision sessions</div>
                </div>
             </div>
-            <button className="flex items-center gap-2 px-6 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-white/10 transition-all" onClick={() => window.print()}>
+            <button className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 bg-white/5 border border-white/10 rounded-xl text-xs font-bold text-slate-400 hover:text-white hover:bg-white/10 transition-all" onClick={() => window.print()}>
                <Download size={14} />
-               Export Intelligence
+               Export
             </button>
           </div>
           
-          <div className="p-0 overflow-hidden">
-            <table className="an-premium-table">
+          <div className="overflow-x-auto no-scrollbar">
+            <table className="an-premium-table min-w-[800px]">
               <thead>
                 <tr>
                   <th>Neural Session</th>

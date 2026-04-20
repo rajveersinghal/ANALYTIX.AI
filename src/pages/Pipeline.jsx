@@ -320,7 +320,7 @@ export default function Pipeline() {
 
                   {activeTab === 'file' && (
                     <div className="space-y-6">
-                      <div className="grid grid-cols-2 gap-4 mb-2">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-2">
                         <button 
                           onClick={() => setTaskType("general")}
                           className={`p-4 rounded-2xl border transition-all text-left ${taskType === 'general' ? 'border-violet-500 bg-violet-500/10' : 'border-white/5 bg-white/2 hover:border-white/10'}`}
@@ -411,7 +411,7 @@ export default function Pipeline() {
                   )}
 
                   {activeTab === 'samples' && (
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       {sampleDatasets.map(s => (
                         <button key={s.name} onClick={() => { setFileLabel({name: s.name, size: s.size}); setError("Sample selection works, but please upload the actual file for prediction."); }} className="p-4 rounded-2xl border border-white/5 bg-white/2 hover:bg-white/5 transition-all text-left">
                           <div className="flex items-center gap-3 mb-2">
@@ -537,10 +537,10 @@ export default function Pipeline() {
                     <h2 className="text-2xl font-black text-white mb-2 font-syne">Intelligence Model Deployed</h2>
                     <p className="text-var(--t3) text-[14px] max-w-md mb-8">Your dataset has been successfully processed, outliers removed, and 4 high-performance models were trained. Insights are ready for exploration.</p>
                     
-                    <div className="grid grid-cols-3 gap-8 w-full max-w-lg mb-8">
-                       <div><div className="text-xl font-black text-mint">{metadata?.modeling_results?.best_model?.accuracy ? (metadata?.modeling_results?.best_model?.accuracy * 100).toFixed(1) + "%" : "Auto"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Accuracy</div></div>
-                       <div><div className="text-xl font-black text-violet-400">{metadata?.modeling_results?.best_model?.mean_score ? (metadata?.modeling_results?.best_model?.mean_score).toFixed(2) : "0.91"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">F1 Score</div></div>
-                       <div><div className="text-xl font-black text-amber-500">{metadata?.summary?.columns || "Live"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Features</div></div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full max-w-lg mb-8">
+                       <div className="flex flex-col items-center"><div className="text-xl font-black text-mint">{metadata?.modeling_results?.best_model?.accuracy ? (metadata?.modeling_results?.best_model?.accuracy * 100).toFixed(1) + "%" : "Auto"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Accuracy</div></div>
+                       <div className="flex flex-col items-center"><div className="text-xl font-black text-violet-400">{metadata?.modeling_results?.best_model?.mean_score ? (metadata?.modeling_results?.best_model?.mean_score).toFixed(2) : "0.91"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">F1 Score</div></div>
+                       <div className="flex flex-col items-center"><div className="text-xl font-black text-amber-500">{metadata?.summary?.columns || "Live"}</div><div className="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Features</div></div>
                     </div>
 
                       <div className="flex gap-4 w-full max-w-md">

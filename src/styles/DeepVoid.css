@@ -1111,6 +1111,8 @@ body::-webkit-scrollbar{width:0}
 
 @media (max-width: 900px) {
   .auth-slider-side { display: none; }
+  .auth-form-side { padding: 24px; flex: 1; }
+  .auth-form-inner { max-width: 100%; }
 }
 
 .slider-overlay {
@@ -1597,6 +1599,15 @@ body::-webkit-scrollbar{width:0}
   border-color: var(--bdr-s);
   color: var(--t2);
   background: var(--sur);
+}
+
+.footer-dashboard {
+  padding: 16px 24px;
+  border-top: 1px solid var(--bdr);
+  background: rgba(4, 5, 15, 0.4);
+  backdrop-filter: blur(20px);
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .cm-expand-btn {
@@ -3010,6 +3021,22 @@ body.col .save-bar{left:var(--swc)}
     pointer-events: auto;
   }
 
+  /* Sidebar on mobile */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    bottom: 0;
+    width: 280px;
+    z-index: 5000;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sidebar.mobile-open {
+    left: 0;
+  }
+  
+  .collapse-btn { display: none; }
+
   /* Main adjustment */
   .main {
     padding-left: 0 !important;
@@ -3035,9 +3062,9 @@ body.col .save-bar{left:var(--swc)}
   }
 
   /* Grid Reductions */
-  .kpi-row, .qa-row, .stat-grid {
+  .kpi-row, .qa-row, .stat-grid, .an-kpi-grid, .an-grid-row, .an-grid-triple {
     grid-template-columns: 1fr !important;
-    gap: 12px !important;
+    gap: 16px !important;
   }
 
   .stat-grid {

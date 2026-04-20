@@ -193,32 +193,36 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="ws-detail-header">
-          <div className="ws-dh-icon" style={{ background: WS_COLORS[selectedWs.color]?.bg }}>
-             <Database size={18} stroke={WS_COLORS[selectedWs.color]?.stroke} />
+        <div className="ws-detail-header p-6 flex flex-col md:flex-row items-center gap-6 md:gap-8 bg-white/2 border border-white/5 rounded-2xl mb-8">
+          <div className="flex items-center gap-4 w-full md:w-auto">
+            <div className="ws-dh-icon shrink-0" style={{ background: WS_COLORS[selectedWs.color]?.bg, width: 48, height: 48, borderRadius: 12, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+               <Database size={20} stroke={WS_COLORS[selectedWs.color]?.stroke} />
+            </div>
+            <div>
+              <div style={{ fontSize: '.76rem', color: 'var(--t3)', marginBottom: '2px' }}>Workspace</div>
+              <div style={{ fontSize: '.9rem', fontWeight: 600, color: 'var(--t1)' }}>{selectedWs.name}</div>
+            </div>
           </div>
-          <div>
-            <div style={{ fontSize: '.76rem', color: 'var(--t3)', marginBottom: '2px' }}>Workspace</div>
-            <div style={{ fontSize: '.9rem', fontWeight: 600, color: 'var(--t1)' }}>{selectedWs.name}</div>
-          </div>
-          <div style={{ marginLeft: '32px', textAlign: 'center' }}>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: 'var(--t1)' }}>{selectedWs.sessions}</div>
-            <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Sessions</div>
-          </div>
-          <div style={{ marginLeft: '20px', textAlign: 'center' }}>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: 'var(--mint)' }}>{selectedWs.bestAcc}</div>
-            <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Best Accuracy</div>
-          </div>
-          <div style={{ marginLeft: '20px', textAlign: 'center' }}>
-            <div style={{ fontSize: '.8rem', fontWeight: 500, color: 'var(--t2)' }}>{selectedWs.updated}</div>
-            <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Last Run</div>
+          <div className="grid grid-cols-2 sm:flex sm:flex-row items-center gap-8 w-full md:w-auto md:ml-auto">
+            <div className="text-center sm:text-left">
+              <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: 'var(--t1)' }}>{selectedWs.sessions}</div>
+              <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Sessions</div>
+            </div>
+            <div className="text-center sm:text-left">
+              <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: '1.4rem', color: 'var(--mint)' }}>{selectedWs.bestAcc}</div>
+              <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Best Accuracy</div>
+            </div>
+            <div className="text-center sm:text-left col-span-2 sm:col-span-1">
+              <div style={{ fontSize: '.8rem', fontWeight: 500, color: 'var(--t2)' }}>{selectedWs.updated}</div>
+              <div style={{ fontSize: '.68rem', color: 'var(--t3)' }}>Last Run</div>
+            </div>
           </div>
         </div>
 
         <div className="section-header">
           <div className="section-title">Sessions in this workspace</div>
         </div>
-        <div className="sess-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {loadingSessions ? (
             [...Array(3)].map((_, i) => (
               <div key={i} className="sess-card">
@@ -276,21 +280,21 @@ export default function Projects() {
   return (
     <div className="view active">
       <div className="max-w-7xl mx-auto">
-        <div className="ph ph-row" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-8 md:mb-10">
         <div>
           <div className="ph-eye" style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '.65rem', fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: 'var(--t3)', marginBottom: '.4rem' }}>
             <span style={{ width: '4px', height: '4px', borderRadius: '50%', background: 'var(--mint)' }}></span>Dashboard
           </div>
-          <h1 className="ph-title">{getGreeting()}, <span className="hl">{user?.full_name?.split(' ')[0] || 'Rajveer'}</span>.</h1>
+          <h1 className="ph-title text-2xl md:text-3xl">{getGreeting()}, <span className="hl">{user?.full_name?.split(' ')[0] || 'Rajveer'}</span>.</h1>
           <p className="ph-sub">Here's what's happening across your workspaces.</p>
         </div>
-        <button className="btn-primary" onClick={() => setShowModal(true)}>
+        <button className="btn-primary w-full sm:w-auto justify-center" onClick={() => setShowModal(true)}>
           <Plus size={13} strokeWidth={2.5} />
           New Workspace
         </button>
       </div>
 
-      <div className="kpi-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: '10px', marginBottom: '22px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
         {[
           { label: "Total Runs", val: stats.total, sub: "↑ Live tracking" },
           { label: "Avg Accuracy", val: `${stats.avgAcc}%`, sub: "↑ Neural efficiency" },
@@ -309,7 +313,7 @@ export default function Projects() {
         ))}
       </div>
 
-      <div className="qa-row" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '8px', marginBottom: '22px' }}>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-8">
         <div className="qa" style={{ background: 'var(--sur)', border: '1px solid var(--bdr)', borderRadius: '12px', padding: '14px', cursor: 'pointer', display: 'flex', gap: '11px', alignItems: 'flex-start' }} onClick={() => navigate('/pipeline')}>
           <div className="qa-ico" style={{ width: '34px', height: '34px', borderRadius: '9px', background: 'var(--violet-g)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Zap size={15} stroke="#b0a0ff" /></div>
           <div><div style={{ fontSize: '.82rem', fontWeight: 600, color: 'var(--t1)' }}>Upload Dataset</div><div style={{ fontSize: '.72rem', color: 'var(--t3)' }}>Start an AI pipeline run</div></div>

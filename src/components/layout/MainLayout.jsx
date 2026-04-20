@@ -69,6 +69,23 @@ export default function MainLayout() {
             </motion.div>
           </AnimatePresence>
         </main>
+
+        <footer className="footer-dashboard">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+             <div className="flex items-center gap-2 opacity-50 hover:opacity-100 transition-opacity">
+                <div className="w-5 h-5 rounded bg-violet/20 flex items-center justify-center text-violet">
+                   <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <span className="text-[10px] font-black syne tracking-wider text-slate-400">ANALYTIXAI</span>
+             </div>
+             <div className="text-[10px] font-bold text-slate-600 tracking-[0.3em] uppercase">
+                © Rajveer Singhal❤️
+             </div>
+             <div className="hidden sm:flex items-center gap-4 text-[9px] font-bold text-slate-600 tracking-widest uppercase">
+                <span>System Status: Optimal</span>
+             </div>
+          </div>
+        </footer>
       </div>
       <ChatWidget />
       <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />

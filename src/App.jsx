@@ -15,6 +15,8 @@ import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
 import SalesDashboard from "./pages/SalesDashboard";
 import Docs from "./pages/Docs";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 import TierGuard from "./pages/TierGuard";
 import { ChatProvider } from "./context/ChatContext";
@@ -66,6 +68,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Auth />} />
             <Route path="/signup" element={<Auth />} />
+            <Route path="/forgot" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/docs" element={<Docs />} />
 
             {/* ── Protected Dashboard Routes (all require auth + MainLayout) ── */}

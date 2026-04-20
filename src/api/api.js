@@ -65,6 +65,8 @@ export const endpoints = {
   login: "/auth/login",
   register: "/auth/register",
   me: "/auth/me",
+  forgotPassword: "/auth/forgot-password",
+  resetPassword: "/auth/reset-password",
 
   // Projects
   projects: "/projects",
@@ -189,6 +191,15 @@ export const apiClient = {
 
   getSalesForecast: async (fileId, periods = 3) => {
     return api.get(endpoints.salesForecast(fileId, periods));
+  },
+
+  // Password Recovery
+  requestPasswordReset: async (email) => {
+    return api.post(endpoints.forgotPassword, { email });
+  },
+
+  resetPassword: async (token, newPassword) => {
+    return api.post(endpoints.resetPassword, { token, password: newPassword });
   },
 };
 

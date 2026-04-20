@@ -563,13 +563,13 @@ export default function Landing() {
           <div style={{ width: 36, height: 36, borderRadius: 12, background: "linear-gradient(135deg, #8169ff, #6046e6)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 16px rgba(129,105,255,0.45)" }}>
             <LucideIcon name="Activity" size={18} color="white" strokeWidth={2.5} />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col sm:flex"> {/* Keep it simple for now */}
             <span className="syne" style={{ fontSize: 19, fontWeight: 900, color: "white", letterSpacing: "-0.04em", textTransform: "uppercase", lineHeight: 1 }}>Analytix<span style={{ color: "#8169ff" }}>AI</span></span>
-            <span style={{ fontSize: '8px', fontWeight: 900, color: '#8169ff', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '2px' }}>Open Beta 1.0</span>
+            <span className="hidden sm:block" style={{ fontSize: '8px', fontWeight: 900, color: '#8169ff', letterSpacing: '0.2em', textTransform: 'uppercase', marginTop: '2px' }}>Open Beta 1.0</span>
           </div>
         </div>
 
-        {/* Center: Desktop Links (Absolutely Centered) */}
+        {/* Center: Desktop Links (Absolutely Centered) - Hidden on mobile */}
         <div style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", display: "flex", alignItems: "center", gap: 28 }} className="hidden lg:flex">
           {navLinks.map(({ label, id }) => (
             <button key={id} onClick={() => scrollTo(id)} style={{ background: "none", border: "none", cursor: "pointer", color: activeSection === id ? "#ffffff" : "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", transition: "color 0.2s" }} onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => { if (activeSection !== id) e.target.style.color = "#8385a0"; }}>
@@ -579,9 +579,9 @@ export default function Landing() {
         </div>
 
         {/* Right: Actions */}
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
-
+        <div style={{ display: "flex", alignItems: "center", gap: 10, md: { gap: 20 } }}>
           <button 
+            className="hidden sm:block"
             style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
             onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
             onClick={() => navigate('/login')}
@@ -591,8 +591,8 @@ export default function Landing() {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="cta-glow"
-            style={{ padding: "12px 26px", borderRadius: 14, border: "none", color: "white", fontSize: 12, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
+            className="cta-glow px-4 py-2 sm:px-6 sm:py-3"
+            style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
             onClick={handleStart}
           >
             Get Started
@@ -784,9 +784,9 @@ export default function Landing() {
                   </div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+                <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-center">
                   {/* Left: Narrative */}
-                  <div>
+                  <div className="w-full lg:w-1/2">
                     <div style={{ fontSize: 10, fontWeight: 900, color: "#8169ff", textTransform: "uppercase", letterSpacing: "0.4em", marginBottom: 16 }}>Narrative Engine</div>
                     <h3 className="syne" style={{ fontSize: "clamp(22px, 3vw, 38px)", fontWeight: 900, color: "white", lineHeight: 1.15, letterSpacing: "-0.02em", fontStyle: "italic", marginBottom: 28 }}>
                       "Your Mumbai revenue drop<br />traces back to 3 SKUs<br />in the ₹500–₹1.2k band."
@@ -1031,7 +1031,7 @@ export default function Landing() {
         transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
         style={{ padding: "80px 24px 100px", background: "linear-gradient(180deg, transparent, rgba(129,105,255,0.03), transparent)" }}
       >
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 72, alignItems: "start" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }} className="flex flex-col lg:grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
 
           {/* Left: Steps */}
           <div>
@@ -1073,7 +1073,7 @@ export default function Landing() {
           </div>
 
           {/* Right: Live Card */}
-          <div style={{ position: "sticky", top: 120 }}>
+          <div className="w-full lg:sticky lg:top-[120px]">
             <FadeUp delay={0.3}>
               <div style={{ padding: 32, borderRadius: 28, background: "#0d0f22", border: "1px solid rgba(255,255,255,0.06)", boxShadow: "0 40px 80px rgba(0,0,0,0.5)", overflow: "hidden", position: "relative" }}>
                 <GlowOrb color="rgba(129,105,255,0.3)" size={200} top={-80} right={-60} blur={80} opacity={0.15} />
@@ -1097,7 +1097,7 @@ export default function Landing() {
                 </div>
 
                 {/* Metrics */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 24 }}>
+                <div className="grid grid-cols-2 lg:grid-cols-2 gap-3 mb-6">
                   {[
                     { v: "94.7%", l: "Accuracy", c: "#00e5b0" },
                     { v: "XGBoost", l: "Best Model", c: "#8169ff" },
@@ -1163,7 +1163,7 @@ export default function Landing() {
       {/* ─── PRIVACY ──────────────────────────────────────────────────────── */}
       <section style={{ padding: "0 24px 80px" }}>
         <FadeUp>
-          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "56px 64px", borderRadius: 28, background: "linear-gradient(135deg, rgba(129,105,255,0.08), rgba(0,229,176,0.04))", border: "1px solid rgba(129,105,255,0.18)", display: "flex", flexWrap: "wrap", alignItems: "center", gap: 40 }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }} className="p-8 md:p-14 rounded-[40px] bg-gradient-to-br from-[#8169ff15] to-[#00e5b008] border border-[#8169ff30] flex flex-col md:flex-row items-center gap-10">
             <motion.div whileHover={{ scale: 1.1, rotate: 5 }} style={{ width: 72, height: 72, borderRadius: 20, background: "rgba(0,229,176,0.08)", border: "1px solid rgba(0,229,176,0.2)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
               <LucideIcon name="Lock" size={32} color="#00e5b0" strokeWidth={1.5} />
             </motion.div>
@@ -1286,7 +1286,7 @@ export default function Landing() {
       {/* ─── FINAL CTA ────────────────────────────────────────────────────── */}
       <section style={{ padding: "0 24px 100px" }}>
         <FadeUp>
-          <div style={{ maxWidth: 1100, margin: "0 auto", padding: "64px 80px", borderRadius: 40, background: "linear-gradient(145deg, rgba(129,105,255,0.1), rgba(0,229,176,0.04))", border: "1px solid rgba(129,105,255,0.2)", textAlign: "center", position: "relative", overflow: "hidden" }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }} className="px-8 py-16 md:px-20 md:py-16 rounded-[40px] bg-gradient-to-br from-[#8169ff15] to-[#00e5b008] border border-[#8169ff30] text-center relative overflow-hidden">
             <GlowOrb color="rgba(129,105,255,0.4)" size={350} top={-150} left="50%" blur={120} opacity={0.15} />
             <GlowOrb color="rgba(0,229,176,0.3)" size={250} bottom={-100} right={-80} blur={100} opacity={0.12} />
 
@@ -1327,18 +1327,26 @@ export default function Landing() {
       </section>
 
       {/* ─── FOOTER ───────────────────────────────────────────────────────── */}
-      <footer style={{ padding: "32px 32px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ width: 24, height: 24, borderRadius: 8, background: "linear-gradient(135deg, #8169ff, #6046e6)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <LucideIcon name="Activity" size={12} color="white" strokeWidth={2} />
+      <footer style={{ padding: "48px 32px", borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }} className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
+          {/* Left: Name with Logo */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flex: 1 }} className="justify-center md:justify-start">
+            <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, #8169ff, #6046e6)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <LucideIcon name="Activity" size={14} color="white" strokeWidth={2} />
             </div>
-            <span style={{ fontSize: 11, fontWeight: 900, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.4em" }}>© 2026 AnalytixAI</span>
+            <span style={{ fontSize: 13, fontWeight: 900, color: "white", textTransform: "uppercase", letterSpacing: "0.15em", fontFamily: 'Syne' }}>Analytix<span style={{ color: '#8169ff' }}>AI</span></span>
           </div>
-          <div style={{ display: "flex", gap: 28 }}>
+
+          {/* Center: Copyright */}
+          <div style={{ flex: 1, textAlign: "center" }}>
+             <span style={{ fontSize: 11, fontWeight: 700, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.4em" }}>© Rajveer Singhal❤️</span>
+          </div>
+
+          {/* Right: Links */}
+          <div style={{ display: "flex", gap: 24, flex: 1, justifyContent: "center" }} className="md:justify-end">
             {["Privacy", "Blog", "Terms"].map(link => (
-              <span key={link} style={{ fontSize: 11, fontWeight: 700, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.25em", cursor: "pointer", transition: "color 0.2s" }}
-                onMouseEnter={e => e.target.style.color = "#8385a0"}
+              <span key={link} style={{ fontSize: 10, fontWeight: 700, color: "#40425a", textTransform: "uppercase", letterSpacing: "0.2em", cursor: "pointer", transition: "color 0.2s" }}
+                onMouseEnter={e => e.target.style.color = "#8169ff"}
                 onMouseLeave={e => e.target.style.color = "#40425a"}
               >{link}</span>
             ))}
