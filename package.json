@@ -1,10 +1,30 @@
 {
-  "name": "analytixai-lite",
+  "name": "analytixai-fullstack",
   "private": true,
-  "workspaces": [
-    "frontend"
-  ],
+  "version": "1.0.0",
+  "type": "module",
   "scripts": {
-    "build": "cd frontend && npm install && node node_modules/vite/bin/vite.js build"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.6.7",
+    "framer-motion": "^11.0.8",
+    "lucide-react": "^0.344.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.22.2",
+    "recharts": "^2.12.2",
+    "zustand": "^4.5.1",
+    "vite": "^5.1.4",
+    "@vitejs/plugin-react": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.56",
+    "@types/react-dom": "^18.2.19",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1"
   }
 }
