@@ -57,6 +57,26 @@ async def cors_handler(request: Request, call_next):
 async def startup_event():
     logger.info("Initializing AnalytixAI Backend Engine...")
     await connect_to_mongo()
+    
+    # Create Default Admin if it doesn't exist
+    try:
+        from app.core.db.mongodb import get_database
+        from app.core.auth.security import get_password_hash
+        db = get_database()
+        admin_email = "admin@analytixai.com"
+        exists = await db.users.find_one({"email": admin_email})
+        if not exists:
+            admin_user = {
+                "email": admin_email,
+                "password": get_password_hash("analytix_admin_2026"),
+                "full_name": "System Administrator",
+                "tier": "enterprise",
+                "is_active": True
+            }
+            await db.users.insert_one(admin_user)
+            logger.info("Default Admin User Created!")
+    except Exception as e:
+        logger.error(f"Failed to create default admin: {e}")
     logger.info("MongoDB Connection Established.")
     asyncio.create_task(background_maintenance())
 
