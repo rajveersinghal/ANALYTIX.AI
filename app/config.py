@@ -58,6 +58,7 @@ class Settings:
     
     # 7. Deployment Specifics
     ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "*").split(",")
+    FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
     
     def __init__(self):
         # Ensure all storage directories exist

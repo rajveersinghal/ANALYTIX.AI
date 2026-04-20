@@ -49,8 +49,8 @@ async def create_checkout_session(
                 'quantity': 1,
             }],
             mode='subscription',
-            success_url=f"{settings.BASE_DIR.replace('r:\\2026\\Project\\AnalytixAI', 'http://localhost:3000')}/projects?upgrade=success",
-            cancel_url=f"{settings.BASE_DIR.replace('r:\\2026\\Project\\AnalytixAI', 'http://localhost:3000')}/pricing?upgrade=cancelled",
+            success_url=f"{settings.FRONTEND_URL}/projects?upgrade=success",
+            cancel_url=f"{settings.FRONTEND_URL}/pricing?upgrade=cancelled",
         )
         return success_response(data={"checkout_url": checkout_session.url})
     except Exception as e:
