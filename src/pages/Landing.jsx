@@ -602,23 +602,37 @@ export default function Landing() {
 
           {/* Right: Actions */}
           <div className="nav-actions" style={{ display: "flex", alignItems: "center", gap: 20 }}>
-            <button
-              className="hidden sm:block sign-in-link"
-              style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
-              onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
-              onClick={() => window.requestAnimationFrame(() => navigate('/login'))}
-            >
-              Sign In
-            </button>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="cta-glow get-started-btn px-4 py-2 sm:px-6 sm:py-3"
-              style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
-              onClick={() => window.requestAnimationFrame(handleStart)}
-            >
-              Get Started
-            </motion.button>
+            {!user ? (
+              <>
+                <button
+                  className="hidden sm:block sign-in-link"
+                  style={{ background: "none", border: "none", cursor: "pointer", color: "#8385a0", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.18em", transition: "color 0.2s" }}
+                  onMouseEnter={e => e.target.style.color = "white"} onMouseLeave={e => e.target.style.color = "#8385a0"}
+                  onClick={() => window.requestAnimationFrame(() => navigate('/login'))}
+                >
+                  Sign In
+                </button>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="cta-glow get-started-btn px-4 py-2 sm:px-6 sm:py-3"
+                  style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
+                  onClick={() => window.requestAnimationFrame(handleStart)}
+                >
+                  Get Started
+                </motion.button>
+              </>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="cta-glow get-started-btn px-4 py-2 sm:px-6 sm:py-3"
+                style={{ borderRadius: 14, border: "none", color: "white", fontSize: 11, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer" }}
+                onClick={() => window.requestAnimationFrame(() => navigate('/projects'))}
+              >
+                Go to App
+              </motion.button>
+            )}
 
             <button className="lg:hidden p-2 rounded-xl bg-white/5 border border-white/10" onClick={() => setMobileMenu(m => !m)} style={{ cursor: "pointer" }}>
               <LucideIcon name={mobileMenu ? "X" : "Menu"} size={20} color="#eeeeff" />
@@ -720,10 +734,10 @@ export default function Landing() {
               whileTap={{ scale: 0.96 }}
               className="cta-glow"
               style={{ color: "white", padding: "18px 44px", borderRadius: 16, fontSize: 15, fontWeight: 800, cursor: "pointer", border: "none", display: "flex", alignItems: "center", gap: 10, letterSpacing: "0.01em" }}
-              onClick={handleStart}
+              onClick={() => user ? navigate('/projects') : handleStart()}
             >
-              <LucideIcon name="Rocket" size={18} color="white" strokeWidth={2} />
-              Analyse My First Dataset
+              <LucideIcon name={user ? "ChevronRight" : "Rocket"} size={18} color="white" strokeWidth={2} />
+              {user ? "Go to App" : "Analyse My First Dataset"}
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.04 }}
@@ -1330,11 +1344,11 @@ export default function Landing() {
                   whileHover={{ scale: 1.04 }}
                   whileTap={{ scale: 0.96 }}
                   className="cta-glow"
-                  onClick={handleStart}
+                  onClick={() => user ? navigate('/projects') : handleStart()}
                   style={{ color: "white", padding: "18px 48px", borderRadius: 16, fontSize: 15, fontWeight: 800, cursor: "pointer", border: "none", display: "flex", alignItems: "center", gap: 10 }}
                 >
-                  <LucideIcon name="Rocket" size={18} color="white" strokeWidth={2} />
-                  Start Your First Analysis
+                  <LucideIcon name={user ? "ChevronRight" : "Rocket"} size={18} color="white" strokeWidth={2} />
+                  {user ? "Go to App" : "Start Your First Analysis"}
                 </motion.button>
               </div>
               <p style={{ fontSize: 11, fontWeight: 700, color: "#8169ff", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 12 }}>
