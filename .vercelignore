@@ -1,5 +1,5 @@
-# Exclude backend from Vercel frontend build
-api/
+# Exclude root backend from Vercel frontend build
+/api/
 app/
 Dockerfile
 docker-compose.yml
