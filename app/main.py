@@ -27,26 +27,22 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# Definitive CORS & Preflight Handler
+# Failsafe CORS Bridging Middleware
 @app.middleware("http")
 async def cors_handler(request: Request, call_next):
-    origin = request.headers.get("origin")
-    
+    # 1. Handle Preflight (OPTIONS)
     if request.method == "OPTIONS":
         response = Response(status_code=204)
     else:
-        try:
-            response = await call_next(request)
-        except Exception as e:
-            logger.error(f"Middleware Error: {e}")
-            response = JSONResponse(content={"detail": str(e)}, status_code=500)
+        response = await call_next(request)
         
-    # Always inject CORS if it's a known origin
+    # 2. Inject Headers for ALL Responses
+    origin = request.headers.get("origin")
     if origin and ("vercel.app" in origin or "localhost" in origin):
         response.headers["Access-Control-Allow-Origin"] = origin
         response.headers["Access-Control-Allow-Credentials"] = "true"
         response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With"
+        response.headers["Access-Control-Allow-Headers"] = "*"
         
     return response
 
@@ -58,7 +54,7 @@ async def startup_event():
     logger.info("Initializing AnalytixAI Backend Engine...")
     await connect_to_mongo()
     
-    # Create Default Admin if it doesn't exist
+    # Create Default Admin
     try:
         from app.core.db.mongodb import get_database
         from app.core.auth.security import get_password_hash
@@ -66,17 +62,17 @@ async def startup_event():
         admin_email = "admin@analytixai.com"
         exists = await db.users.find_one({"email": admin_email})
         if not exists:
-            admin_user = {
+            await db.users.insert_one({
                 "email": admin_email,
                 "password": get_password_hash("analytix_admin_2026"),
                 "full_name": "System Administrator",
                 "tier": "enterprise",
                 "is_active": True
-            }
-            await db.users.insert_one(admin_user)
+            })
             logger.info("Default Admin User Created!")
     except Exception as e:
-        logger.error(f"Failed to create default admin: {e}")
+        logger.error(f"Startup: Admin creation failed: {e}")
+
     logger.info("MongoDB Connection Established.")
     asyncio.create_task(background_maintenance())
 
