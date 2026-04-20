@@ -35,7 +35,8 @@ class PipelineOrchestrator:
         # Initialize Metadata
         mm = MetadataManager(dataset_id, user_id=user_id, project_id=project_id)
         await mm.load()
-        await mm.update_config("current_job_id", job_id)
+        await mm.update_config("active_job_id", job_id)
+        await mm.update_config("last_job_status", JobStatus.RUNNING)
         
         job_info = {
             "job_id": job_id,
@@ -107,6 +108,7 @@ class PipelineOrchestrator:
             await socket_manager.broadcast_to_job(job_id, self.active_jobs[job_id])
             
             await mm.update_config("last_job_status", JobStatus.COMPLETED)
+            await mm.update_config("active_job_id", None)
             logger.info(f"ORCHESTRATOR: Job {job_id} COMPLETED successfully.")
             
         except Exception as e:
@@ -114,6 +116,7 @@ class PipelineOrchestrator:
             self.active_jobs[job_id]["status"] = JobStatus.FAILED
             self.active_jobs[job_id]["error"] = str(e)
             await mm.update_config("last_job_status", JobStatus.FAILED)
+            await mm.update_config("active_job_id", None)
             await mm.update_config("last_job_error", str(e))
 
     def get_job_status(self, job_id: str) -> Optional[Dict]:

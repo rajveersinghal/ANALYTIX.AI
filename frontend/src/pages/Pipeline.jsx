@@ -60,6 +60,35 @@ export default function Pipeline() {
   const [aiThinking, setAiThinking] = useState("Awaiting neural handshake...");
   const pollingRef = useRef(null);
   const socketRef = useRef(null);
+  const mounted = useRef(false);
+
+  // Auto-Recovery and Initial State Sync
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+
+    const recoverState = async () => {
+       if (fileId && status === "processing") {
+          console.log("RECOVERY: Re-attaching to pipeline for dataset:", fileId);
+          try {
+             const res = await apiClient.fetchPipelineStatus(fileId);
+             if (res.active_job_id) {
+                setJobId(res.active_job_id);
+             } else if (res.pipeline_state?.report === "completed") {
+                setStatus("completed");
+             } else {
+                // If it was processing but no active job and not completed, it likely crashed
+                setStatus("error");
+                setError("Neural connection lost. The pipeline was interrupted.");
+             }
+          } catch (err) {
+             console.error("Recovery failed:", err);
+          }
+       }
+    };
+
+    recoverState();
+  }, [fileId, status]);
 
   // Use currentStep as default if nothing selected
   const activeDetailId = selectedStepId || currentStep;

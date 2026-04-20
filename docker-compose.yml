@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  analytixai:
+    build: .
+    container_name: analytixai-app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    restart: always
+
+networks:
+  default:
+    name: analytixai-network
