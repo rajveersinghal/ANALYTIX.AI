@@ -20,3 +20,4 @@ passlib[bcrypt]
 dnspython
 certifi
 stripe
+email-validator
