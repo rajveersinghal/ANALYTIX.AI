@@ -20,13 +20,30 @@ class DataManager:
         with cls._lock:
             if cls._instance is None:
                 cls._instance = super(DataManager, cls).__new__(cls)
+                import asyncio
+                cls._instance.async_lock = asyncio.Lock()
             return cls._instance
 
-    def get_dataframe(self, dataset_id: str, df_type: str = "train") -> pd.DataFrame:
+    def _get_ram_usage(self):
+        import psutil
+        return psutil.virtual_memory().percent
+
+    def _evict_if_low_memory(self):
+        """Emergency eviction if RAM is critical (>85%)"""
+        if self._get_ram_usage() > 85:
+            with self._lock:
+                if self._cache:
+                    key, _ = self._cache.popitem(last=False)
+                    logger.warning(f"DataManager: EMERGENCY EVICTION of {key} due to high RAM.")
+                    import gc
+                    gc.collect()
+
+    async def get_dataframe(self, dataset_id: str, df_type: str = "train") -> pd.DataFrame:
         """
-        Retrieves a DataFrame from cache or disk.
+        Retrieves a DataFrame from cache or disk (Async-Friendly).
         types: 'train', 'test', 'clean', 'raw'
         """
+        self._evict_if_low_memory()
         cache_key = f"{dataset_id}_{df_type}"
         
         with self._lock:
@@ -36,7 +53,7 @@ class DataManager:
                 self._cache.move_to_end(cache_key)
                 return self._cache[cache_key]
 
-        # Cache Miss: Load from Disk
+        # Cache Miss: Load from Disk asynchronously
         logger.info(f"DataManager: Cache MISS for {cache_key}, loading from disk...")
         
         # Priority: .parquet (Fast) -> .csv (Standard) -> .xlsx (Office)
@@ -69,28 +86,30 @@ class DataManager:
                   logger.warning(f"DataManager: No data found for {dataset_id} ({df_type})")
                   return None
 
-        try:
-            if path.endswith('.parquet'):
-                df = pd.read_parquet(path)
-            elif path.endswith('.csv'):
-                df = pd.read_csv(path, encoding_errors='replace')
-            elif path.endswith('.xlsx'):
-                df = pd.read_excel(path)
-            else:
-                # Default fallback
-                df = pd.read_csv(path, encoding_errors='replace')
-            
+        def _load():
+            try:
+                if path.endswith('.parquet'):
+                    return pd.read_parquet(path)
+                elif path.endswith('.csv'):
+                    return pd.read_csv(path, encoding_errors='replace', low_memory=True) # RAM optimization
+                elif path.endswith('.xlsx'):
+                    return pd.read_excel(path)
+                return pd.read_csv(path, encoding_errors='replace')
+            except Exception as e:
+                logger.error(f"DataManager Interface: Read failed for {path}: {e}")
+                return None
+
+        import asyncio
+        df = await asyncio.to_thread(_load)
+        
+        if df is not None:
             with self._lock:
-                # LRU Eviction: remove oldest (first item in OrderedDict)
                 if len(self._cache) >= self._max_size:
                     oldest_key, _ = self._cache.popitem(last=False)
                     logger.info(f"DataManager: Evicting {oldest_key} (LRU)")
-                
                 self._cache[cache_key] = df
             return df
-        except Exception as e:
-            logger.error(f"DataManager: Failed to load {path}: {e}")
-            return None
+        return None
 
     def update_cache(self, dataset_id: str, df: pd.DataFrame, df_type: str = "train"):
         """Updates the cache with a new DataFrame (e.g., after cleaning)."""

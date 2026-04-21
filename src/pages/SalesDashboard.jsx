@@ -89,6 +89,32 @@ export default function SalesDashboard() {
     setTimeout(() => setIsRegenerating(false), 1200);
   };
 
+  const handleDownload = async () => {
+    try {
+      const baseUrl = apiClient.defaults?.baseURL || "http://127.0.0.1:8000";
+      const url = `${baseUrl}/download/report/${sessionId}`;
+      const token = localStorage.getItem('token');
+      const response = await fetch(url, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', `AnalytixAI_Sales_Report_${sessionId}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      } else {
+        alert("Report not ready or session expired.");
+      }
+    } catch (err) {
+      console.error("Download Error:", err);
+    }
+  };
+
   // Extract Data from Metadata (Handling both specialized sales and AutoML results)
   const isSalesTask = metadata?.task_type === "sales";
   
@@ -183,7 +209,7 @@ export default function SalesDashboard() {
           <button className="btn-secondary" onClick={() => (window.location.href = "/pipeline")}>
             <RotateCcw size={14} /> New Run
           </button>
-          <button className="btn-primary" id="export-pdf" style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontWeight: 700 }}>
+          <button className="btn-primary" id="export-pdf" onClick={handleDownload} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 20px', fontWeight: 700 }}>
              <Download size={14} /> Export PDF
           </button>
         </div>

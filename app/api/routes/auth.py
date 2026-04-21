@@ -45,6 +45,12 @@ async def register(user_in: UserCreate):
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     logger.info(f"Auth: Login request received for {form_data.username}")
     db = get_database()
+    if db is None:
+        logger.error("Auth: Database connection is missing! Potential Atlas IP whitelist issue.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_AVAILABLE,
+            detail="Database connection offline. Please check your MongoDB Atlas whitelist."
+        )
     email_lower = form_data.username.lower()
     user = await db.users.find_one({"email": email_lower})
     

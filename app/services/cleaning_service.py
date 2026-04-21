@@ -40,7 +40,7 @@ class CleaningService:
 
             
             # Try to get from DataManager (Cache-first)
-            df = data_manager.get_dataframe(file_id, "raw")
+            df = await data_manager.get_dataframe(file_id, "raw")
             
             if df is None:
                 # Fallback to direct read if DataManager failed (unlikely if file exists)

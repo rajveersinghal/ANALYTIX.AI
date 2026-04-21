@@ -28,24 +28,35 @@ app = FastAPI(
     version="2.1.0"
 )
 
-# Failsafe CORS Bridging Middleware
+# Standard CORS Implementation (Production Hardened)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "https://analytix-ai.vercel.app",
+        "https://analytix-ai-git-main-rajveer-singhals-projects.vercel.app",
+    ],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+):\d+|https://analytix-ai-.*\.vercel\.app",
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Global Request Logger
 @app.middleware("http")
-async def cors_handler(request: Request, call_next):
-    # 1. Handle Preflight (OPTIONS)
-    if request.method == "OPTIONS":
-        response = Response(status_code=204)
-    else:
-        response = await call_next(request)
-        
-    # 2. Inject Headers for ALL Responses
+async def log_requests(request: Request, call_next):
     origin = request.headers.get("origin")
-    if origin and ("vercel.app" in origin or "localhost" in origin):
-        response.headers["Access-Control-Allow-Origin"] = origin
-        response.headers["Access-Control-Allow-Credentials"] = "true"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS, PATCH"
-        response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Requested-With, X-Vercel-Id, Accept, Origin"
-        
-    return response
+    logger.info(f"BRIDGE: Incoming {request.method} {request.url.path} | Origin: {origin}")
+    try:
+        response = await call_next(request)
+        logger.info(f"BRIDGE: Outgoing Status {response.status_code}")
+        return response
+    except Exception as e:
+        logger.error(f"BRIDGE: Middleware Error: {e}")
+        return JSONResponse(status_code=500, content={"detail": str(e)})
 
 # Standard Ping for Diagnostic
 @app.get("/ping")
@@ -55,7 +66,10 @@ async def ping():
 @app.on_event("startup")
 async def startup_event():
     logger.info("Initializing AnalytixAI Backend Engine...")
-    await connect_to_mongo()
+    try:
+        await connect_to_mongo()
+    except Exception as e:
+        logger.error(f"Startup: MongoDB Connection Failed. API will start but some features will be unavailable: {e}")
     
     # Create Default Admin
     try:

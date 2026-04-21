@@ -43,6 +43,58 @@ export default function Insights() {
     }
   }, [status, sessionId]);
 
+  // Helper to convert number to Indian words
+  const numberToIndianWords = (num) => {
+    if (num === null || isNaN(num) || num === undefined) return "";
+    
+    const singleDigits = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"];
+    const teenDigits = ["Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+    const doubleDigits = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+    
+    const getWords = (n) => {
+        if (n === 0) return "";
+        let str = "";
+        if (n >= 100) {
+            str += singleDigits[Math.floor(n / 100)] + " Hundred ";
+            n %= 100;
+        }
+        if (n >= 20) {
+            str += doubleDigits[Math.floor(n / 10)] + " ";
+            n %= 10;
+            if (n > 0) str += singleDigits[n] + " ";
+        } else if (n >= 10) {
+            str += teenDigits[n - 10] + " ";
+        } else if (n > 0) {
+            str += singleDigits[n] + " ";
+        }
+        return str.trim();
+    };
+
+    let result = "";
+    let n = Math.floor(num);
+    let decimal = Math.round((num - n) * 100);
+
+    if (n >= 10000000) {
+        result += getWords(Math.floor(n / 10000000)) + " Crore ";
+        n %= 10000000;
+    }
+    if (n >= 100000) {
+        result += getWords(Math.floor(n / 100000)) + " Lakh ";
+        n %= 100000;
+    }
+    if (n >= 1000) {
+        result += getWords(Math.floor(n / 1000)) + " Thousand ";
+        n %= 1000;
+    }
+    if (n > 0) {
+        result += getWords(n);
+    }
+    
+    if (result.trim() === "") result = "Zero";
+    if (decimal > 0) result += " and " + getWords(decimal) + " Paisa";
+    return result.trim() + " Only";
+  };
+
   const loadIntelligence = async () => {
     try {
       setLoading(true);
@@ -70,6 +122,38 @@ export default function Insights() {
       console.error("Simulation Failed:", err);
     } finally {
       setPredicting(false);
+    }
+  };
+
+  const handleDownload = async (type) => {
+    try {
+      const baseUrl = apiClient.defaults?.baseURL || "http://127.0.0.1:8000";
+      let url = "";
+      if (type === 'report') url = `${baseUrl}/download/report/${sessionId}`;
+      if (type === 'model') url = `${baseUrl}/download/model/${sessionId}`;
+      
+      const token = localStorage.getItem('token');
+      const response = await fetch(url, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (response.ok) {
+        const blob = await response.blob();
+        const downloadUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.setAttribute('download', type === 'report' ? `AnalytixAI_Report_${sessionId}.pdf` : `AnalytixAI_Model_${sessionId}.pkl`);
+        document.body.appendChild(link);
+        link.click();
+        link.parentNode.removeChild(link);
+      } else {
+        alert("Download failed. The file may not be generated yet.");
+      }
+    } catch (err) {
+      console.error("Download Error:", err);
+      alert("An error occurred during download.");
     }
   };
 
@@ -105,15 +189,15 @@ export default function Insights() {
            <h1 className="text-3xl font-black text-white font-syne tracking-tighter uppercase">Intelligence <span className="text-primary italic">Result</span></h1>
            <p className="text-[11px] text-gray-500 font-bold font-mono mt-1">Session ID: {sessionId}</p>
         </div>
-         <div className="flex gap-3">
-            <div className={`px-4 py-2.5 rounded-xl border border-${dashboardData?.confidence?.color || 'violet'}-500/20 bg-${dashboardData?.confidence?.color || 'violet'}-500/5 flex items-center gap-2`}>
+         <div className="flex flex-wrap gap-3 w-full lg:w-auto">
+            <div className={`flex-1 sm:flex-none px-4 py-2.5 rounded-xl border border-${dashboardData?.confidence?.color || 'violet'}-500/20 bg-${dashboardData?.confidence?.color || 'violet'}-500/5 flex items-center justify-center gap-2`}>
                <ShieldCheck size={16} className={`text-${dashboardData?.confidence?.color || 'violet'}-400`} />
                <span className={`text-[10px] font-black text-${dashboardData?.confidence?.color || 'violet'}-400 uppercase tracking-widest`}>
-                 Confidence: {dashboardData?.confidence?.level || 'CALCULATING'}
+                 {dashboardData?.confidence?.level || 'CALCULATING'}
                </span>
             </div>
-            <button onClick={() => navigate('/pipeline')} className="px-5 py-2.5 rounded-xl border border-white/5 bg-white/2 text-[11px] font-bold text-gray-400 hover:text-white transition-all uppercase tracking-widest">Discard Run</button>
-            <button onClick={() => window.location.reload()} className="px-6 py-2.5 rounded-xl bg-violet-600 text-[11px] font-black text-white transition-all uppercase tracking-widest shadow-[0_10px_30px_rgba(109,78,255,0.3)]">New Session</button>
+            <button onClick={() => navigate('/pipeline')} className="flex-1 sm:flex-none px-5 py-2.5 rounded-xl border border-white/5 bg-white/2 text-[11px] font-bold text-gray-400 hover:text-white transition-all uppercase tracking-widest">Discard</button>
+            <button onClick={() => window.location.reload()} className="flex-1 sm:flex-none px-6 py-2.5 rounded-xl bg-violet-600 text-[11px] font-black text-white transition-all uppercase tracking-widest shadow-[0_10px_30px_rgba(109,78,255,0.3)]">New</button>
          </div>
       </div>
 
@@ -178,7 +262,7 @@ export default function Insights() {
       </div>
 
       {/* ── Dashboard Tabs ── */}
-      <div className="flex items-center gap-4 bg-white/2 p-2 rounded-2xl border border-white/5 w-fit">
+      <div className="flex items-center gap-4 bg-white/2 p-2 rounded-2xl border border-white/5 w-full overflow-x-auto no-scrollbar">
          {[
             { id: 'overview', label: 'Executive Brief', icon: BarChart3 },
             { id: 'simulator', label: 'What-If Engine', icon: Play },
@@ -379,7 +463,7 @@ export default function Insights() {
                             <select 
                               value={val}
                               onChange={(e) => setSimulatorInputs({...simulatorInputs, [key]: e.target.value})}
-                              className="w-full bg-white/2 border border-white/5 rounded-xl px-4 py-3.5 text-xs text-white outline-none focus:border-violet-500/50 focus:bg-violet-500/5 transition-all font-bold cursor-pointer appearance-none"
+                              className="w-full bg-[#0a0a0f] border border-white/5 rounded-xl px-4 py-3.5 text-xs text-white outline-none focus:border-violet-500/50 focus:bg-violet-500/5 transition-all font-bold cursor-pointer appearance-none"
                             >
                               {options.map(opt => <option key={opt} value={opt} className="bg-[#0a0a0b]">{opt}</option>)}
                             </select>
@@ -391,7 +475,7 @@ export default function Insights() {
                             value={val}
                             step="any"
                             onChange={(e) => setSimulatorInputs({...simulatorInputs, [key]: e.target.value === '' ? '' : parseFloat(e.target.value)})}
-                            className="w-full bg-white/2 border border-white/5 rounded-xl px-4 py-3.5 text-xs text-white outline-none focus:border-violet-500/50 focus:bg-violet-500/5 transition-all font-bold"
+                            className="w-full bg-[#0a0a0f] border border-white/5 rounded-xl px-4 py-3.5 text-xs text-white outline-none focus:border-violet-500/50 focus:bg-violet-500/5 transition-all font-bold"
                           />
                         )}
                       </div>
@@ -415,22 +499,67 @@ export default function Insights() {
                </button>
             </div>
 
-            <div className="lg:col-span-4 flex flex-col gap-6">
-               <div className="card-glass p-8 flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden">
-                  <div className="absolute top-0 right-0 w-40 h-40 bg-violet-600/10 blur-[60px] rounded-full -mr-20 -mt-20" />
-                  <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">Simulation Result</p>
-                  <div className="text-6xl font-black text-white tracking-tighter mb-4 font-syne">
-                    {prediction !== null ? (typeof prediction === 'number' ? prediction.toLocaleString(undefined, { maximumFractionDigits: 2 }) : prediction) : "---"}
-                  </div>
-                  <p className="text-[12px] text-violet-400 font-bold uppercase tracking-widest">
-                    Predicted {metadata?.problem_type === 'regression' ? 'Outcome' : 'Class'}
-                  </p>
-                  <div className="mt-8 pt-8 border-t border-white/5 w-full">
-                     <p className="text-[11px] text-gray-500 leading-relaxed italic">
-                        "The neural model predicts this specific outcome based on the cross-validation fold history with a 99.4% confidence score."
-                     </p>
-                  </div>
-               </div>
+    <div className="lg:col-span-4 flex flex-col gap-6">
+       <div className="card-glass p-8 flex-1 flex flex-col items-center justify-center text-center relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-40 h-40 bg-violet-600/10 blur-[60px] rounded-full -mr-20 -mt-20" />
+          <p className="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-6">Simulation Result</p>
+          
+          <div className="flex flex-col items-center">
+            <div className="flex items-baseline gap-2 mb-2">
+                <span className="text-2xl font-black text-violet-400 opacity-60">₹</span>
+                <span className="text-6xl font-black text-white tracking-tighter font-syne">
+                    {prediction !== null ? (() => {
+                        const val = prediction;
+                        if (typeof val !== 'number') return val;
+                        
+                        // Smart Scaling for Typical Real Estate/Finance Datasets
+                        // If value is small (e.g. 26.85), it's likely Lakhs or Crores.
+                        if (val > 0 && val < 500) {
+                            return val.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                        }
+                        
+                        if (val >= 10000000) return (val/10000000).toFixed(2);
+                        if (val >= 100000) return (val/100000).toFixed(2);
+                        return val.toLocaleString(undefined, { maximumFractionDigits: 2 });
+                    })() : "---"}
+                </span>
+                {prediction !== null && typeof prediction === 'number' && (
+                    <span className="text-xl font-black text-emerald-400">
+                        {(() => {
+                           const val = prediction;
+                           if (val >= 10000000) return ' Cr';
+                           if (val >= 100000) return ' Lk';
+                           if (val > 0 && val < 500) return ' Lk'; // Assume small values are Lakhs for this context
+                           return '';
+                        })()}
+                    </span>
+                )}
+            </div>
+            
+            {/* Number to Words Display */}
+            {prediction !== null && typeof prediction === 'number' && (
+                <div className="px-4 py-2 rounded-full bg-white/2 border border-white/5 text-[10px] font-black text-gray-400 uppercase tracking-[0.05em] mt-2 mb-6">
+                    {(() => {
+                        let absoluteVal = prediction;
+                        // If the value is in the 'scaled' range, convert to absolute for the word helper
+                        if (prediction > 0 && prediction < 500) {
+                            absoluteVal = prediction * 100000; // Scaled to Lakhs
+                        }
+                        return numberToIndianWords(absoluteVal);
+                    })()}
+                </div>
+            )}
+          </div>
+
+          <p className="text-[11px] text-violet-400 font-bold uppercase tracking-widest">
+            Neural Forecast (INR)
+          </p>
+          <div className="mt-8 pt-8 border-t border-white/5 w-full">
+             <p className="text-[11px] text-gray-500 leading-relaxed italic">
+                "The neural model predicts this specific outcome based on the cross-validation fold history with a 99.4% confidence score."
+             </p>
+          </div>
+       </div>
                <div className="card-glass p-6 bg-emerald-500/5 border-emerald-500/10">
                   <div className="flex gap-4 items-center">
                      <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400"><Activity size={20} /></div>
@@ -560,7 +689,7 @@ export default function Insights() {
 
       {/* ── Global Action Cards ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="card-glass p-8 flex flex-col md:flex-row items-center gap-6 group hover:translate-y-[-4px] transition-all cursor-pointer">
+        <div className="card-glass p-8 flex flex-col md:flex-row items-center gap-6 group hover:translate-y-[-4px] transition-all cursor-pointer" onClick={() => handleDownload('report')}>
             <div className="w-16 h-16 rounded-2xl bg-rose-500/10 flex items-center justify-center text-rose-400 border border-rose-500/20 group-hover:scale-110 transition-transform"><FileText size={32} /></div>
             <div className="flex-1 text-center md:text-left">
                <h3 className="text-xl font-black text-white uppercase font-syne tracking-tighter">Get Executive Report</h3>
@@ -569,7 +698,7 @@ export default function Insights() {
             <button className="w-full md:w-auto px-8 py-3 rounded-xl bg-white text-black font-black text-[12px] uppercase tracking-widest hover:bg-gray-200 transition-all flex items-center justify-center gap-2"><Download size={16} /> Get PDF</button>
         </div>
 
-        <div className="card-glass p-8 flex flex-col md:flex-row items-center gap-6 bg-gradient-to-br from-violet-600/20 to-transparent group hover:translate-y-[-4px] transition-all cursor-pointer">
+        <div className="card-glass p-8 flex flex-col md:flex-row items-center gap-6 bg-gradient-to-br from-violet-600/20 to-transparent group hover:translate-y-[-4px] transition-all cursor-pointer" onClick={() => handleDownload('model')}>
             <div className="w-16 h-16 rounded-2xl bg-violet-500/10 flex items-center justify-center text-violet-400 border border-violet-500/20 group-hover:scale-110 transition-transform animate-pulse"><Database size={32} /></div>
             <div className="flex-1 text-center md:text-left">
                <h3 className="text-xl font-black text-white uppercase font-syne tracking-tighter">Get Trained Model</h3>

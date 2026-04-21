@@ -68,7 +68,7 @@ class InsightEngine:
             return "Cognitive Module Offline: Please provide a GENAI_API_KEY to activate my intelligence layer."
 
         dataset_id = session_data.get("dataset_id")
-        df = data_manager.get_dataframe(dataset_id, "train")
+        df = await data_manager.get_dataframe(dataset_id, "train")
         
         # Build High-Fidelity Context
         context = {

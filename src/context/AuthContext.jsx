@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
-import { BASE_URL as API_BASE_URL } from '../api/api';
+import { api, BASE_URL as API_BASE_URL } from '../api/api';
 
 const AuthContext = createContext(null);
 
@@ -21,10 +20,8 @@ export const AuthProvider = ({ children }) => {
 
   const fetchCurrentUser = async (token) => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setUser(response.data);
+      const response = await api.get('/auth/me');
+      setUser(response);
     } catch (err) {
       localStorage.removeItem('token');
       setError('Session expired');
@@ -41,17 +38,31 @@ export const AuthProvider = ({ children }) => {
       params.append('username', email);
       params.append('password', password);
 
-      const response = await axios.post(`${API_BASE_URL}/auth/login`, params);
-      console.log("[Auth] Login successful", response.data);
-      const { access_token } = response.data;
+      const response = await api.post('/auth/login', params, {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      });
+      console.log("[Auth] Login response received", response);
+      const { access_token } = response;
       
       localStorage.setItem('token', access_token);
       await fetchCurrentUser(access_token);
       return true;
     } catch (err) {
-      console.error("[Auth] Login error:", err);
-      const detail = err.response?.data?.detail || 'Login failed. Please check your network or credentials.';
-      setError(detail);
+      console.error("[Auth] Login error details:", err);
+      
+      let errorMessage = "An error occurred during login.";
+      
+      if (!err.response) {
+        errorMessage = "We're having trouble reaching our servers. Please check your internet connection and try again.";
+      } else if (err.response.status === 503) {
+        errorMessage = "Our service is currently undergoing a brief update. Please try again in a few minutes.";
+      } else if (err.response.data?.detail) {
+        errorMessage = err.response.data.detail;
+      } else if (err.response.data?.message) {
+        errorMessage = err.response.data.message;
+      }
+      
+      setError(errorMessage);
       return false;
     }
   };
@@ -60,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     console.log(`[Auth] Attempting register to: ${API_BASE_URL}/auth/register`);
     try {
-      await axios.post(`${API_BASE_URL}/auth/register`, {
+      await api.post('/auth/register', {
         email,
         password,
         full_name: fullName
@@ -68,8 +79,17 @@ export const AuthProvider = ({ children }) => {
       console.log("[Auth] Register successful");
       return true;
     } catch (err) {
-      console.error("[Auth] Register error:", err);
-      setError(err.response?.data?.detail || 'Registration failed');
+      console.error("[Auth] Register error details:", err);
+      
+      let errorMessage = "Registration failed.";
+      
+      if (!err.response) {
+        errorMessage = "We're having trouble reaching our servers. Please check your internet connection and try again.";
+      } else if (err.response.data?.detail) {
+        errorMessage = err.response.data.detail;
+      }
+      
+      setError(errorMessage);
       return false;
     }
   };
@@ -88,4 +108,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export { AuthContext };

@@ -56,7 +56,7 @@ class ExplainabilityService:
                         importances_list.append({"feature": name, "importance": float(val)})
             
             if not importances_list:
-                df = data_manager.get_dataframe(file_id, "train")
+                df = await data_manager.get_dataframe(file_id, "train")
                 if df is None and os.path.exists(train_path):
                     df = pd.read_csv(train_path)
                     data_manager.update_cache(file_id, df, "train")
@@ -105,7 +105,7 @@ class ExplainabilityService:
             
             pipeline = joblib.load(model_path)
             
-            df = data_manager.get_dataframe(file_id, "train")
+            df = await data_manager.get_dataframe(file_id, "train")
             if df is None:
                 df = pd.read_csv(train_path)
                 data_manager.update_cache(file_id, df, "train")
@@ -173,12 +173,18 @@ class ExplainabilityService:
             model_path = os.path.join(settings.MODEL_DIR, f"{file_id}_model.pkl")
             pipeline = joblib.load(model_path)
             
-            df = data_manager.get_dataframe(file_id, "train")
+            df = await data_manager.get_dataframe(file_id, "train")
             target = metadata.get("target_column")
             X = df.drop(columns=[target]) if target in df.columns else df
             
+            # RAM PROTECTION: Sample training data for explainer if too large
+            X_lime_bg = X.values
+            if len(X) > 500:
+                logger.info(f"ExplainabilityService: Sampling LIME background (500/{len(X)})")
+                X_lime_bg = X.sample(500, random_state=42).values
+
             explainer = lime_tabular.LimeTabularExplainer(
-                training_data=X.values,
+                training_data=X_lime_bg,
                 feature_names=X.columns.tolist(),
                 class_names=['Target'],
                 mode='regression' if metadata.get('problem_type') == 'regression' else 'classification'

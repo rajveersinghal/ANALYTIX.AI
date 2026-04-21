@@ -198,7 +198,7 @@ class MetadataManager:
             data[key] = value
             self._dirty = True
         
-    async def update_step(self, phase: str, step: str, status: str, flush=False):
+    async def update_step(self, phase: str, step: str, status: str, flush=True):
         if flush:
             await self._atomic_update({"$set": {f"steps.{phase}.{step}": status}})
         else:
@@ -208,7 +208,7 @@ class MetadataManager:
             data["steps"][phase][step] = status
             self._dirty = True
 
-    async def add_log(self, phase: str, message: str, flush=False):
+    async def add_log(self, phase: str, message: str, flush=True):
         if flush:
             # Use $addToSet to avoid duplicate logs in DB
             await self._atomic_update({"$addToSet": {f"logs.{phase}": message}})

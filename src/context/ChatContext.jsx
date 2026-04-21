@@ -26,14 +26,14 @@ export function ChatProvider({ children }) {
     const lq = query.toLowerCase();
     const match = sess.qa.find(item => lq.includes(item.key));
     if (match) return match.reply;
-    return `Analysing your query against <strong>${sess.label}</strong>… Based on the <strong>${sess.model}</strong> model, this appears related to the top SHAP drivers. Could you be more specific?`;
+    return `Analysing your query against <strong>${sess.label}</strong>… Based on the <strong>${sess.model}</strong> model, this appears related to the top key factors. Could you be more specific?`;
   };
 
   const getFollowUps = (query) => {
     const lq = query.toLowerCase();
-    if (lq.includes('drop') || lq.includes('q2')) return ['Worst affected regions?', 'Show SHAP breakdown', 'How to fix?'];
+    if (lq.includes('drop') || lq.includes('q2')) return ['Worst affected regions?', 'Show details', 'How to fix?'];
     if (lq.includes('forecast') || lq.includes('q4')) return ['Confidence level?', 'Region breakdown'];
-    return ['Show SHAP features', 'Next steps?', 'Tell me more'];
+    return ['Show key factors', 'Next steps?', 'Tell me more'];
   };
 
   const sendMessage = async (text, role = 'user') => {
@@ -87,7 +87,7 @@ export function ChatProvider({ children }) {
       time: 'now',
       messages: [{
         role: 'ai',
-        text: "I've analyzed your dataset patterns. <strong>Region South</strong> shows a latent revenue risk in the upcoming cycle. Would you like me to explain the drivers or suggest tactical pricing adjustments?",
+        text: "I've analyzed your data patterns. <strong>Region South</strong> shows a potential sales drop next month. Would you like me to explain why or suggest some price changes?",
         time: new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' }),
         followups: ['Explain Drop', 'Find Opportunities', 'Forecast Next Month']
       }]

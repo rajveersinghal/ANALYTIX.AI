@@ -39,20 +39,25 @@ async def seed_dev_user():
             from app.core.auth.security import get_password_hash
             from datetime import datetime
             
-            dev_email = "admin@analytix.ai"
-            # FORCE DELETE to ensure clean state
-            await db.db.users.delete_one({"email": dev_email})
+            # Seed multiple variants to be absolutely sure user can log in
+            admin_variants = [
+                "admin@analytix.ai",
+                "admin@analytixai.com",
+                "admin@analytixai"
+            ]
             
-            dev_user = {
-                "email": dev_email,
-                "hashed_password": get_password_hash("admin"),
-                "full_name": "Dev Admin",
-                "is_active": True,
-                "created_at": datetime.utcnow(),
-                "tier": "pro"
-            }
-            await db.db.users.insert_one(dev_user)
-            logger.info(f"MongoDB: HARD RESET -> Admin Seeded ({dev_email} / admin)")
+            for email in admin_variants:
+                await db.db.users.delete_one({"email": email})
+                dev_user = {
+                    "email": email,
+                    "hashed_password": get_password_hash("admin"),
+                    "full_name": f"Admin ({email.split('@')[1]})",
+                    "is_active": True,
+                    "created_at": datetime.utcnow(),
+                    "tier": "pro"
+                }
+                await db.db.users.insert_one(dev_user)
+                logger.info(f"MongoDB: Seeded {email} / admin")
         except Exception as e:
             logger.error(f"MongoDB Seeding Failed: {e}")
 
@@ -94,13 +99,30 @@ async def connect_to_mongo():
             current_ip = "Unable to detect"
             
         logger.error(f"MongoDB Connection Error: {e}")
-        logger.warning("-" * 50)
-        logger.warning("CRITICAL: Atlas connection failed. This is usually due to your IP not being whitelisted.")
-        logger.warning(f"YOUR CURRENT IP: {current_ip}")
-        logger.warning("ACTION: Add this IP to MongoDB Atlas -> Network Access -> Add IP Address.")
-        logger.warning("TEMPORARY FIX: Add 0.0.0.0/0 to allow connections from anywhere for testing.")
-        logger.warning("-" * 50)
-        raise e
+        
+        # OFFLINE FALLBACK
+        logger.warning("Attempting OFFLINE FALLBACK to local MongoDB (localhost:27017)...")
+        try:
+            db.client = AsyncIOMotorClient("mongodb://localhost:27017", serverSelectionTimeoutMS=2000)
+            await db.client.admin.command('ping')
+            db.db = db.client[settings.DATABASE_NAME]
+            logger.info("OFFLINE SUCCESS: Connected to local MongoDB.")
+            await ensure_indexes()
+            await seed_dev_user()
+        except Exception as local_e:
+            import requests
+            try:
+                current_ip = requests.get('https://api.ipify.org', timeout=5).text
+            except:
+                current_ip = "Unable to detect"
+                
+            logger.error(f"Local Fallback Failed: {local_e}")
+            logger.warning("-" * 50)
+            logger.warning(f"CRITICAL: No MongoDB connection available (Atlas or Local).")
+            logger.warning(f"YOUR CURRENT IP: {current_ip}")
+            logger.warning("ACTION: Start local MongoDB or whitelist your IP in Atlas.")
+            logger.warning("-" * 50)
+            raise e
 
 async def close_mongo_connection():
     logger.info("Closing MongoDB connection...")

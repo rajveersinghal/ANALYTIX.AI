@@ -68,7 +68,7 @@ class DatasetService:
         await mm.update_step("data_understanding", "loading", "running", flush=False)
         try:
             # Use DataManager (Cache-first)
-            df = data_manager.get_dataframe(file_id, "raw")
+            df = await data_manager.get_dataframe(file_id, "raw")
             
             if df is None:
                 def _read_data():

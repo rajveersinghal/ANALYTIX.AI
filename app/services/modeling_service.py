@@ -28,7 +28,7 @@ class ModelingService:
             await mm.update_step("modeling", "loading", "running")
             
             # Use DataManager (Cache-first)
-            df_train = data_manager.get_dataframe(file_id, "train")
+            df_train = await data_manager.get_dataframe(file_id, "train")
             
             if df_train is None:
                 train_path = os.path.join(settings.DATASET_DIR, f"{file_id}_train.csv")
@@ -216,7 +216,7 @@ class ModelingService:
             await mm.update_phase("tuning", "running")
 
             # 1. Load Training Data
-            df_train = data_manager.get_dataframe(file_id, "train")
+            df_train = await data_manager.get_dataframe(file_id, "train")
             if df_train is None: raise ValueError("Training data missing for tuning.")
             
             target = metadata.get("target_column")

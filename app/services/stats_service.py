@@ -18,7 +18,7 @@ class StatsService:
         await mm.update_phase("statistics", "running")
         
         # Use DataManager to get Cleaned Data from Memory
-        df = data_manager.get_dataframe(file_id, "train")
+        df = await data_manager.get_dataframe(file_id, "train")
         
         if df is None:
              # Direct read fallback

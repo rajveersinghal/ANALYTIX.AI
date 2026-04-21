@@ -1,5 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useChat } from '../context/ChatContext';
+import { apiClient } from '../api/api';
+import { useAuth } from '../hooks/useAuth';
+import { Button } from '../components/ui/Button';
 import { 
   Plus, 
   Trash2, 
@@ -124,7 +127,7 @@ export default function ChatView() {
           <div className="cm-context-card">
             <div className="cm-ctx-dot"></div>
             <span className="cm-ctx-text">
-              {sessions.find(s => (s.file_id || s._id) === activeSession)?.task_type === 'sales' ? 'Sales Context Active' : 'AutoML Context Active'}
+              {sessions.find(s => (s.file_id || s._id) === activeSession)?.task_type === 'sales' ? 'Sales Insights On' : 'Smart Analysis On'}
             </span>
           </div>
 
@@ -147,13 +150,13 @@ export default function ChatView() {
                   <Sparkles size={32} className="text-indigo-400" />
                 </motion.div>
               </div>
-              <h2 className="ce-title mt-6 text-2xl font-black syne">Intelligence Engine Ready</h2>
+              <h2 className="ce-title mt-6 text-2xl font-black syne">AI Assistant Ready</h2>
               <p className="ce-sub text-slate-400 mt-2 max-w-sm mx-auto">
-                No active session context detected. Initialize a conversation to unlock deep-data narrative extraction.
+                Select a data session to begin your analysis. My AI is ready to help you understand your datasets.
               </p>
               <div className="mt-8">
                  <Button onClick={createNewConv} className="px-8 py-4 bg-indigo-600 rounded-xl font-black uppercase tracking-widest text-xs">
-                   Start Simulation Conversation
+                   Start AI Chat
                  </Button>
               </div>
               <div className="ce-suggestions mt-10">
@@ -183,7 +186,7 @@ export default function ChatView() {
               {activeConv.messages.map((msg, i) => (
                 <div key={i} className={`cm-msg-row ${msg.role === 'user' ? 'user pl-12' : 'ai pr-12'}`}>
                   <div className={`cm-av ${msg.role === 'user' ? 'user border-slate-700' : 'ai border-indigo-500/30 shadow-[0_0_10px_rgba(99,102,241,0.3)]'}`}>
-                    {msg.role === 'user' ? (user?.full_name?.charAt(0) || 'U') : <ActivityIcon size={14} />}
+                    {msg.role === 'user' ? (user?.full_name?.charAt(0) || 'U') : <MessageSquare size={14} />}
                   </div>
                   <div className="cm-bubble-wrap">
                     <motion.div 

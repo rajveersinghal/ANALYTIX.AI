@@ -4,7 +4,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, ComposedChart, Legend,
 } from "recharts";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { apiClient } from "../api/api";
 
 /* ─── mock usage history ─────────────────────────────────────────── */
@@ -347,14 +347,10 @@ export default function Settings() {
       </div>
 
       {/* ── LAYOUT ── */}
-      <div style={{ display: "grid", gridTemplateColumns: "200px 1fr", gap: 20, alignItems: "start" }}>
+      <div className="settings-grid">
 
         {/* ── SIDEBAR ── */}
-        <div style={{
-          background: "var(--sur)", border: "1px solid var(--bdr)",
-          borderRadius: "var(--r-lg)", padding: 8,
-          position: "sticky", top: 16,
-        }}>
+        <div className="settings-nav">
           {groups.map((g, gi) => (
             <div key={g}>
               {gi > 0 && <div style={{ height: 1, background: "var(--bdr)", margin: "6px 0" }} />}
@@ -418,7 +414,7 @@ export default function Settings() {
                 />
 
                 {/* 3-tier plan grid */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 12, marginBottom: 18 }}>
+                <div className="kpi-row mb-6">
                   {[
                     {
                       name: "Free", price: "₹0", period: "/ lifetime", desc: "Perfect for testing.",
@@ -562,7 +558,7 @@ export default function Settings() {
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = "var(--bdr)"; e.currentTarget.style.color = "var(--t2)"; }}
                   >Add card</button>
                 </div>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldGroup label="Billing Email">
                     <Input type="email" defaultValue={profile.email} />
                   </FieldGroup>
@@ -623,7 +619,7 @@ export default function Settings() {
                 <UsageBar label="Storage (Model artefacts)" used={124} total={500} subLabel="124 MB / 500 MB" />
                 <UsageBar label="API Requests (this month)" used={1842} total={10000} subLabel="1,842 / 10,000" />
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 10, marginTop: 16 }}>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4">
                   {[["24", "Total Runs"], ["2.4 GB", "Data Processed"], ["91.4%", "Avg Accuracy"]].map(([v, l]) => (
                     <div key={l} style={{
                       background: "var(--bg-3)", border: "1px solid var(--bdr)",
@@ -713,7 +709,7 @@ export default function Settings() {
                 <FieldGroup label="Work Email">
                   <Input type="email" value={profile.email} onChange={(e) => { setProfile({ ...profile, email: e.target.value }); markDirty(); }} />
                 </FieldGroup>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <FieldGroup label="Role / Title">
                     <Input value={profile.role} onChange={(e) => { setProfile({ ...profile, role: e.target.value }); markDirty(); }} />
                   </FieldGroup>

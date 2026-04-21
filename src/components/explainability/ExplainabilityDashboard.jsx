@@ -14,7 +14,7 @@ export default function ExplainabilityDashboard({ sessionId }) {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await apiClient.fetchExplainability(sessionId);
+        const response = await apiClient.fetchExplainDashboard(sessionId);
         setData(response);
         setError(null);
       } catch (err) {

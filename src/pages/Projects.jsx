@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useStore } from "../store/useStore";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { apiClient } from "../api/api";
 import { motion, AnimatePresence } from "framer-motion";
 import Skeleton from "../components/ui/Skeleton";
@@ -175,17 +175,17 @@ export default function Projects() {
             <span className="bc-sep">›</span>
             <span className="bc-cur">{selectedWs.name}</span>
           </div>
-          <div className="flex justify-between items-end gap-3">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6">
             <div>
-              <h1 className="ph-title">{selectedWs.name.split(' ').slice(0,-1).join(' ')}{' '}<span className="hl">{selectedWs.name.split(' ').pop()}</span></h1>
+              <h1 className="ph-title text-2xl md:text-3xl">{selectedWs.name.split(' ').slice(0,-1).join(' ')}{' '}<span className="hl">{selectedWs.name.split(' ').pop()}</span></h1>
               <p className="ph-sub">{selectedWs.desc}</p>
             </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button className="btn-secondary" onClick={(e) => handleDelete(e, selectedWs.id)}>
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <button className="btn-secondary flex-1 sm:flex-none justify-center" onClick={(e) => handleDelete(e, selectedWs.id)}>
                 <Trash2 size={13} strokeWidth={2.5} />
                 Delete
               </button>
-              <button className="btn-primary" onClick={(e) => startAnalysis(e, selectedWs)}>
+              <button className="btn-primary flex-1 sm:flex-none justify-center" onClick={(e) => startAnalysis(e, selectedWs)}>
                 <Plus size={13} strokeWidth={2.5} />
                 New Run
               </button>
@@ -294,7 +294,7 @@ export default function Projects() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
+      <div className="kpi-row mb-8">
         {[
           { label: "Total Runs", val: stats.total, sub: "↑ Live tracking" },
           { label: "Avg Accuracy", val: `${stats.avgAcc}%`, sub: "↑ Neural efficiency" },
@@ -302,12 +302,12 @@ export default function Projects() {
           { label: "Total Rows", val: stats.dataSize, sub: "↑ Neural throughput" }
         ].map((k, i) => (
           <div key={i} className="kpi">
-            <div className="kpi-lbl" style={{ fontSize: '.68rem', fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '.05em', marginBottom: '5px' }}>{k.label}</div>
-            <div className="kpi-val" style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: '1.4rem', color: 'var(--t1)' }}>
+            <div className="kpi-lbl">{k.label}</div>
+            <div className="kpi-val">
               {loading ? <Skeleton className="h-6 w-20" /> : k.val}
             </div>
-            <div className="kpi-sub" style={{ fontSize: '.68rem', color: 'var(--t3)', marginTop: '2px' }}>
-              {loading ? <Skeleton className="h-3 w-24" /> : <span className="trend tu" style={{ background: i % 2 === 0 ? 'rgba(0,229,176,.1)' : 'rgba(109,78,255,.1)', color: i % 2 === 0 ? 'var(--mint)' : 'var(--violet)', padding: '1px 5px', borderRadius: '4px', fontWeight: 600 }}>{k.sub.split(' ')[0]}</span>} {loading ? '' : k.sub.split(' ').slice(1).join(' ')}
+            <div className="kpi-sub">
+              {loading ? <Skeleton className="h-3 w-24" /> : <span className="trend-up" style={{ padding: '1px 6px', borderRadius: '4px' }}>{k.sub.split(' ')[0]}</span>} {loading ? '' : k.sub.split(' ').slice(1).join(' ')}
             </div>
           </div>
         ))}

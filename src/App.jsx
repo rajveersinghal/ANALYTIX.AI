@@ -39,8 +39,8 @@ class ErrorBoundary extends Component {
               <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
           </div>
-          <h1 className="text-3xl font-black syne italic mb-4">Neural Override <span className="text-rose-500">Triggered</span></h1>
-          <p className="text-slate-400 max-w-md mx-auto mb-8 font-medium">A runtime exception occurred in the UI orchestration layer. The diagnostic log has been captured.</p>
+          <h1 className="text-3xl font-black syne italic mb-4">Something went <span className="text-rose-500">wrong</span></h1>
+          <p className="text-slate-400 max-w-md mx-auto mb-8 font-medium">An unexpected error occurred in the application interface. We've captured the details for our team to fix.</p>
           <div className="bg-white/5 border border-white/10 p-4 rounded-xl text-left font-mono text-[10px] text-rose-300 mb-8 max-w-lg overflow-auto">
              {this.state.error?.toString()}
           </div>
@@ -48,7 +48,7 @@ class ErrorBoundary extends Component {
             onClick={() => window.location.href = '/dashboard'}
             className="px-8 py-4 bg-violet-600 rounded-2xl font-bold hover:bg-violet-700 transition-all"
           >
-            Return to Command Center
+            Return to Dashboard
           </button>
         </div>
       );

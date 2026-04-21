@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { apiClient } from "../api/api";
 import { useStore } from "../store/useStore";
 import { Card } from "../components/ui/Card";
@@ -182,7 +182,7 @@ export default function Dashboard() {
             </div>
 
             {/* Stat tiles */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div className="stat-grid mb-8">
               {[
                 { 
                   label: "Analyses Completed", 
@@ -276,32 +276,32 @@ export default function Dashboard() {
             {/* NEW: Sales Intelligence Spotlight */}
             <motion.div 
               whileHover={{ y: -3 }}
-              className="intel-spotlight mb-8" 
+              className="intel-spotlight mb-8 flex-col md:flex-row gap-6 md:gap-0" 
               onClick={() => navigate('/insights')}
               style={{ cursor: history.length > 0 ? 'pointer' : 'default' }}
             >
-               <div className="spotlight-content">
+               <div className="spotlight-content w-full md:max-w-xl">
                   <div className="flex items-center gap-2 mb-2">
                      <span className="badge-new">{history.length > 0 ? 'INSIGHT' : 'WELCOME'}</span>
                      <span className="text-[10px] font-black uppercase tracking-widest text-[#8169ff]">AI Strategic Intelligence</span>
                   </div>
-                  <h2 className="text-xl font-black text-white syne">{history.length > 0 ? 'Review Recent Pipeline ' : 'Initialize Your First '} <span className="hl">Insights</span></h2>
+                  <h2 className="text-xl md:text-2xl font-black text-white syne">{history.length > 0 ? 'Review Recent Pipeline ' : 'Initialize Your First '} <span className="hl">Insights</span></h2>
                   <p className="text-sm text-[#8385a0] mt-1">
                     {history.length > 0 
                       ? `Neural engines have processed ${history.length} sessions. High-fidelity patterns are ready for exploration.` 
                       : 'No active intelligence found. Upload your first dataset to generate business-critical predictions.'}
                   </p>
                </div>
-               <div className="spotlight-stats">
+               <div className="spotlight-stats flex-wrap gap-6 md:gap-10">
                   <div className="s-stat">
-                     <div className="s-val">{history.length > 0 ? (history.filter(s => s.accuracy).length > 0 ? (history.reduce((acc, s) => acc + (s.accuracy || 0), 0) / history.filter(s => s.accuracy).length * 100).toFixed(1) + "%" : "0%") : "—"}</div>
+                     <div className="s-val text-2xl md:text-3xl">{history.length > 0 ? (history.filter(s => s.accuracy).length > 0 ? (history.reduce((acc, s) => acc + (s.accuracy || 0), 0) / history.filter(s => s.accuracy).length * 100).toFixed(1) + "%" : "0%") : "—"}</div>
                      <div className="s-lbl">PRECISION</div>
                   </div>
                   <div className="s-stat">
-                     <div className="s-val text-mint">{history.length}</div>
+                     <div className="s-val text-2xl md:text-3xl text-mint">{history.length}</div>
                      <div className="s-lbl">RUNS</div>
                   </div>
-                  <div className="spotlight-arrow">
+                  <div className="spotlight-arrow hidden md:flex">
                      <TrendingUp size={24} />
                   </div>
                </div>

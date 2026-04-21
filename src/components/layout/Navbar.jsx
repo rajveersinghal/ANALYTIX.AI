@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import { useStore } from "../../store/useStore";
 import { Search, Bell, HelpCircle, Zap, ChevronDown, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
