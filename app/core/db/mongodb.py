@@ -31,7 +31,8 @@ async def ensure_indexes():
 
 async def seed_dev_user():
     """
-    Automagically seeds a default developer account for local testing.
+    Maintains a SINGLE canonical admin account: admin@analytix.ai
+    Removes all legacy variant accounts to prevent ID conflicts.
     """
     logger.info("MongoDB: Entering seed_dev_user...")
     if db.db is not None:
@@ -39,27 +40,31 @@ async def seed_dev_user():
             from app.core.auth.security import get_password_hash
             from datetime import datetime
             
-            # Seed multiple variants to be absolutely sure user can log in
-            admin_variants = [
-                "admin@analytix.ai",
-                "admin@analytixai.com",
-                "admin@analytixai"
-            ]
+            # Remove legacy variants that cause user_id conflicts
+            for stale_email in ["admin@analytixai.com", "admin@analytixai"]:
+                result = await db.db.users.delete_many({"email": stale_email})
+                if result.deleted_count > 0:
+                    logger.info(f"MongoDB: Removed stale admin variant: {stale_email}")
             
-            for email in admin_variants:
-                await db.db.users.delete_one({"email": email})
+            # Upsert the single canonical admin
+            canonical_email = "admin@analytix.ai"
+            existing = await db.db.users.find_one({"email": canonical_email})
+            if not existing:
                 dev_user = {
-                    "email": email,
+                    "email": canonical_email,
                     "hashed_password": get_password_hash("admin"),
-                    "full_name": f"Admin ({email.split('@')[1]})",
+                    "full_name": "Admin",
                     "is_active": True,
                     "created_at": datetime.utcnow(),
                     "tier": "pro"
                 }
                 await db.db.users.insert_one(dev_user)
-                logger.info(f"MongoDB: Seeded {email} / admin")
+                logger.info(f"MongoDB: Created admin account: {canonical_email}")
+            else:
+                logger.info(f"MongoDB: Admin account already exists: {canonical_email}")
         except Exception as e:
             logger.error(f"MongoDB Seeding Failed: {e}")
+
 
 async def connect_to_mongo():
     logger.info("Connecting to MongoDB Instance...")

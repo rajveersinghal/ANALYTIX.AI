@@ -17,7 +17,7 @@ from app.config import settings
 from app.logger import logger
 from app.api.routes import (
     health, upload, pipeline, auth, history, download, sales, project, billing, chat,
-    explain, inference, status
+    explain, inference, status, report
 )
 from app.core.db.mongodb import connect_to_mongo, close_mongo_connection
 from app.core.sockets import socket_manager
@@ -175,3 +175,4 @@ app.include_router(chat.router)
 app.include_router(explain.router)
 app.include_router(inference.router)
 app.include_router(status.router)
+app.include_router(report.router)

@@ -30,9 +30,11 @@ def success_response(data: Any = None, meta: Optional[Dict] = None) -> Dict[str,
         "meta": _sanitize_nan(meta) or {}
     }
 
-def error_response(message: str, error: Any = None) -> Dict[str, Any]:
-    return {
+def error_response(message: str, error: Any = None, **kwargs) -> Dict[str, Any]:
+    response = {
         "status": "error",
         "message": message,
         "error": str(error) if error else None
     }
+    response.update(kwargs)
+    return response

@@ -1,141 +1,90 @@
-import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useChat } from "../../context/ChatContext";
-import { useAuth } from "../../hooks/useAuth";
-import { useStore } from "../../store/useStore";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { 
-  Home,
-  TrendingUp,
-  Upload,
-  Archive,
-  BarChart3,
-  FileText,
-  Globe,
-  Settings,
-  LogOut,
-  ChevronLeft,
+  LayoutDashboard, 
+  Upload, 
+  BarChart3, 
+  Archive as ArchiveIcon, 
+  Settings, 
+  MessageSquare,
   ChevronRight,
-  Plus,
-  MessageSquare
-} from "lucide-react";
+  X
+} from 'lucide-react';
 
-export default function Sidebar({ isOpen, setIsOpen }) {
-  const [collapsed, setCollapsed] = useState(false);
-  const location = useLocation();
-  const { user, logout } = useAuth();
-  const { resetSession } = useStore();
-  const { clearChat } = useChat();
-  const navigate = useNavigate();
+const menuItems = [
+  { icon: LayoutDashboard, label: 'Dashboard', path: '/app/dashboard' },
+  { icon: Upload, label: 'Upload Data', path: '/app/upload' },
+  { icon: BarChart3, label: 'Insights', path: '/app/insights' },
+  { icon: MessageSquare, label: 'Neural Chat', path: '/app/chat' },
+  { icon: ArchiveIcon, label: 'Archive', path: '/app/archive' },
+  { icon: Settings, label: 'Settings', path: '/app/settings' },
+];
 
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
-    document.body.classList.toggle('collapsed');
-  };
-
-  const platformItems = [
-    { label: "Overview", icon: BarChart3, path: "/analytics" },
-    { label: "Workspaces", icon: Home, path: "/projects" },
-    { label: "Sales Intel", icon: TrendingUp, path: "/sales", badge: "PRO" },
-    { label: "AI Chat", icon: MessageSquare, path: "/chat", badge: "Live" },
-    { label: "Upload Center", icon: Upload, path: "/pipeline" },
-  ];
-
-  const intelligenceItems = [
-    { label: "Archive", icon: Archive, path: "/history" },
-    { label: "Reports", icon: FileText, path: "/reports" },
-  ];
-
-  const discoveryItems = [
-    { label: "Community", icon: Globe, path: "/docs" },
-  ];
-
-  const renderNavGroup = (title, items) => (
-    <div key={title} className="nav-group">
-      <div className="nav-section-label">{title}</div>
-      {items.map((item) => {
-        const Icon = item.icon;
-        const active = location.pathname === item.path || (item.path === '/projects' && location.pathname === '/dashboard');
-        return (
-          <div 
-            key={item.path} 
-            className={`nav-item ${active ? 'active' : ''}`}
-            onClick={() => {
-              window.requestAnimationFrame(() => {
-                navigate(item.path);
-              });
-            }}
-            data-tip={item.label}
-          >
-            <Icon className="nav-icon" size={16} />
-            <span className="nav-label">{item.label}</span>
-            {item.badge && <span className="nav-badge">{item.badge}</span>}
-          </div>
-        );
-      })}
-    </div>
-  );
-
+export default function Sidebar({ onClose }) {
   return (
-    <aside className={`sidebar ${isOpen ? 'mobile-open' : ''}`} id="sidebar">
-      {/* Logo */}
-      <Link to="/" className="sb-logo">
-        <svg className="logo-icon" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 13H7L10 5L14 21L17 13H24" stroke="url(#sb_logo_grad)" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
-          <defs>
-            <linearGradient id="sb_logo_grad" x1="2" y1="13" x2="24" y2="13" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#9a85ff"/><stop offset="1" stopColor="#8169ff"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <span className="logo-wordmark">Analytix<span className="hl-text">AI</span></span>
-      </Link>
-
-      {/* New session btn */}
-      <button className="new-session" onClick={() => { 
-        resetSession(); 
-        clearChat();
-        navigate('/pipeline'); 
-      }}>
-        <Plus size={14} strokeWidth={2.5} />
-        <span>New Session</span>
-      </button>
-
-      {/* Nav */}
-      <nav className="sb-nav">
-        {renderNavGroup("PLATFORM", platformItems)}
-        {renderNavGroup("INTELLIGENCE", intelligenceItems)}
-        {renderNavGroup("DISCOVERY", discoveryItems)}
-      </nav>
-
-      {/* Bottom Actions */}
-      <div className="sb-bottom">
-        <div 
-          className="nav-item" 
-          onClick={() => navigate('/settings')}
-          data-tip="Settings"
-        >
-          <Settings className="nav-icon" size={16} />
-          <span className="nav-label">Settings</span>
-        </div>
-        <div 
-          className="nav-item" 
-          onClick={() => {
-            if (window.confirm('Terminate session?')) {
-              logout();
-              navigate('/login');
-            }
-          }}
-          data-tip="Logout"
-          style={{ marginBottom: '12px' }}
-        >
-          <LogOut className="nav-icon" size={16} />
-          <span className="nav-label">Logout Session</span>
+    <aside className="w-64 border-r border-zinc-800 bg-[#08090a] flex flex-col h-screen relative z-40">
+      <div className="p-6">
+        <div className="flex items-center justify-between">
+          <div 
+            className="flex items-center gap-3 px-2 cursor-pointer hover:opacity-80 transition-opacity"
+            onClick={() => window.location.href = '/app/dashboard'}
+          >
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 32H18L26 14L34 50L42 32H56" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+            <span className="font-semibold text-[15px] tracking-tight text-white">AnalytixAI</span>
+          </div>
+          <button 
+            onClick={onClose}
+            className="p-2 text-zinc-500 hover:text-white transition-colors"
+            title="Hide Sidebar"
+          >
+            <ChevronRight className="rotate-180" size={20} />
+          </button>
         </div>
       </div>
 
-      {/* Collapse toggle */}
-      <div className="collapse-btn" onClick={toggleSidebar}>
-        {collapsed ? <ChevronRight size={12} strokeWidth={2.5} /> : <ChevronLeft size={12} strokeWidth={2.5} />}
+      <nav className="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+        <div className="px-3 mb-4">
+          <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Main Workspace</span>
+        </div>
+        
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.path}
+            onClick={() => window.innerWidth < 1024 && onClose()}
+            className={({ isActive }) => `
+              flex items-center justify-between px-3 py-2 rounded-lg transition-all duration-150 group
+              ${isActive 
+                ? 'bg-white/[0.05] text-white' 
+                : 'text-zinc-500 hover:text-white hover:bg-white/[0.02]'}
+            `}
+          >
+            <div className="flex items-center gap-3">
+              <item.icon size={18} className="transition-colors" />
+              <span className="text-sm font-medium tracking-tight">{item.label}</span>
+            </div>
+            <ChevronRight 
+              size={14} 
+              className={`opacity-0 group-hover:opacity-40 transition-opacity transform group-hover:translate-x-0.5`} 
+            />
+          </NavLink>
+        ))}
+      </nav>
+
+      <div className="p-4 mt-auto border-t border-zinc-800">
+        <div className="px-3 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] group cursor-pointer hover:bg-white/[0.04] transition-colors">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-zinc-700 to-zinc-900 border border-white/10 flex items-center justify-center overflow-hidden">
+              <div className="w-full h-full bg-white/5 flex items-center justify-center text-[10px] text-zinc-400">RS</div>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[12px] font-semibold text-white truncate">Rajveer Singhal</p>
+              <p className="text-[10px] text-zinc-500 truncate">Pro Plan</p>
+            </div>
+          </div>
+        </div>
       </div>
     </aside>
   );

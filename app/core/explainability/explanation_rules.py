@@ -18,10 +18,10 @@ def generate_sentence(feature_name: str, impact: str, rank: int):
     Generates a natural language sentence for a feature.
     """
     if rank == 0:
-        return f"The model relies heavily on **{feature_name}**, which is the primary driver of predictions."
+        return f"The model relies heavily on {feature_name}, which is the primary driver of predictions."
     elif rank == 1:
-        return f"**{feature_name}** is also a key factor, significantly influencing the outcome."
+        return f"{feature_name} is also a key factor, significantly influencing the outcome."
     elif impact == "Moderate Influence":
-        return f"**{feature_name}** plays a moderate role."
+        return f"{feature_name} plays a moderate role."
     else:
         return None  # Skip minimal impact features in summary to keep it clean

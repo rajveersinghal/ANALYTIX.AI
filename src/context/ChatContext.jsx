@@ -19,6 +19,12 @@ export function ChatProvider({ children }) {
     setUnreadCount(0);
   }, []);
 
+  const clearConversation = useCallback((id) => {
+    setConversations(prev => prev.map(c => 
+      c.id === id ? { ...c, messages: [] } : c
+    ));
+  }, []);
+
   const activeConv = conversations.find(c => c.id === activeConvId);
 
   const getReply = (query, sessionId) => {
@@ -116,6 +122,7 @@ export function ChatProvider({ children }) {
     createNewConv,
     deleteConv,
     clearChat,
+    clearConversation,
     unreadCount,
     setUnreadCount,
     KB

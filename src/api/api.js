@@ -116,6 +116,9 @@ export const endpoints = {
     return url;
   },
   salesForecast: (id, periods) => `/sales/forecast/${id}?periods=${periods}`,
+  
+  // Reporting & Export
+  exportInsights: "/insights/export",
 };
 
 // Helper methods
@@ -133,7 +136,13 @@ export const apiClient = {
   },
   
   startPipeline: async (id, config = { mode: "fast" }) => {
-    return api.post(endpoints.runPipeline(id), config);
+    // Sync with backend spec: pass ID in body
+    const payload = { 
+      dataset_id: id, 
+      file_id: id,
+      ...config 
+    };
+    return api.post(endpoints.runPipeline(id), payload);
   },
   
   fetchPipelineStatus: async (id, jobId = null) => {
@@ -207,6 +216,12 @@ export const apiClient = {
 
   resetPassword: async (token, newPassword) => {
     return api.post(endpoints.resetPassword, { token, password: newPassword });
+  },
+
+  exportIntelligence: async (fileId, format = 'pdf') => {
+    return api.post(`${endpoints.exportInsights}?file_id=${fileId}&format=${format}`, {}, {
+      responseType: 'blob'
+    });
   },
 };
 

@@ -7,7 +7,7 @@ class StrategicNarrativeService:
     def get_bot_greeting(user_name: str = "Explorer") -> str:
         hour = datetime.datetime.now().hour
         greeting_prefix = "Good morning" if hour < 12 else "Good afternoon" if hour < 18 else "Good evening"
-        return f"👋 **{greeting_prefix}, {user_name}!** I'm **AnalytixBot**, your AI data guide. My mission is to translate these complex numbers into clear, simple business strategies. Ready to see what your data is hiding?"
+        return f"{greeting_prefix}, {user_name}! I'm AnalytixBot, your AI data guide. My mission is to translate these complex numbers into clear, simple business strategies. Ready to see what your data is hiding?"
 
     @staticmethod
     def get_stage_guidance(stage: str) -> str:
@@ -33,11 +33,11 @@ class StrategicNarrativeService:
         # 1. Pipeline Strength (Quality)
         quality_score = metadata.get("data_quality_score", metadata.get("quality_score", 0))
         if quality_score > 80:
-            narratives.append(f"**High Integrity Data**: Your dataset is incredibly healthy ({quality_score}/100), forming a rock-solid foundation for our analysis.")
+            narratives.append(f"High Integrity Data: Your dataset is incredibly healthy ({quality_score}/100), forming a rock-solid foundation for our analysis.")
         elif quality_score > 50:
-            narratives.append(f"**Moderate Quality**: We found some minor gaps ({quality_score}/100), but I've already applied automated remediation to keep us on track.")
+            narratives.append(f"Moderate Quality: We found some minor gaps ({quality_score}/100), but I've already applied automated remediation to keep us on track.")
         else:
-            narratives.append(f"**Action Required**: The data quality was lower than expected ({quality_score}/100). I've cleaned it aggressively, but please validate the results carefully.")
+            narratives.append(f"Action Required: The data quality was lower than expected ({quality_score}/100). I've cleaned it aggressively, but please validate the results carefully.")
 
         # 2. Extract context for Insight Engine (Cognitive Synthesis)
         explainability = metadata.get("explainability_results", {})
@@ -63,12 +63,12 @@ class StrategicNarrativeService:
         strategic_advice = await insight_engine.generate_strategic_advice(context)
         
         if strategic_advice:
-            narratives.append(f"**Strategic Roadmap**:\n{strategic_advice}")
+            narratives.append(f"Strategic Roadmap: {strategic_advice}")
         else:
             # Fallback to simple template driver if generator fails/no key
             if top_features:
                  main_driver = top_features[0]["name"]
-                 narratives.append(f"**Primary Strategic Driver**: Analysis reveals that **'{main_driver}'** is the #1 factor influencing your outcomes. Focus your efforts here for maximum impact.")
+                 narratives.append(f"Primary Strategic Driver: Analysis reveals that '{main_driver}' is the #1 factor influencing your outcomes. Focus your efforts here for maximum impact.")
 
         return narratives
 
@@ -78,4 +78,4 @@ class StrategicNarrativeService:
         percent_change = (delta / original_pred) * 100 if original_pred != 0 else 0
         direction = "increase" if delta > 0 else "decrease"
         intensity = "substantial" if abs(percent_change) > 20 else "notable" if abs(percent_change) > 5 else "slight"
-        return f"This adjustment predicts a **{intensity} {direction}** of **{abs(delta):.2f} {unit}** ({percent_change:+.1f}% change) in the final outcome."
+        return f"This adjustment predicts a {intensity} {direction} of {abs(delta):.2f} {unit} ({percent_change:+.1f}% change) in the final outcome."

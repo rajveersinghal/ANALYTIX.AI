@@ -12,7 +12,7 @@ def generate_model_summary(importances: list):
     
     # Overview
     top_feature = importances[0]['feature']
-    sentences.append(f"This model predicts outcomes primarily based on **{top_feature}** and other key factors.")
+    sentences.append(f"This model predicts outcomes primarily based on {top_feature} and other key factors.")
     
     # Detail top 3
     for i, item in enumerate(importances[:3]):

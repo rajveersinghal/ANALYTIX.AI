@@ -1,10 +1,11 @@
 from fpdf import FPDF
 import datetime
+import os
 
 class PDFReportGenerator(FPDF):
     def header(self):
         # Branding Header (AnalytixAI Midnight Luxe)
-        self.set_fill_color(15, 23, 42) 
+        self.set_fill_color(0, 0, 0) 
         self.rect(0, 0, 210, 30, 'F')
         
         # Logo Text
@@ -15,10 +16,10 @@ class PDFReportGenerator(FPDF):
         
         # Global Identifiers
         self.set_font('helvetica', 'B', 8)
-        self.set_text_color(168, 85, 247) # Neon Purple
+        self.set_text_color(255, 255, 255) # Pure White
         self.set_y(10)
         self.cell(0, 5, 'EXECUTIVE INTELLIGENCE ASSESSMENT  ', border=False, align='R', ln=True)
-        self.set_text_color(100, 116, 139) # Slate
+        self.set_text_color(161, 161, 170) # Zinc-400
         self.cell(0, 5, 'AI-GENERATED REPORT | v2.0  ', border=False, align='R')
         
         # Confidential Watermark
@@ -43,19 +44,19 @@ class PDFReportGenerator(FPDF):
         Strips emojis and other non-latin characters that Helvetica doesn't support.
         """
         if not text: return ""
-        # Keep basic punctuation and alphanumeric. 
-        # A more robust way is to encode to latin-1 and ignore errors, 
-        # which is exactly what fpdf expectations are for default fonts.
-        return text.encode('latin-1', 'ignore').decode('latin-1')
+        # Convert to string if it's not
+        text = str(text)
+        # fpdf only supports latin-1 by default
+        return text.encode('latin-1', 'replace').decode('latin-1')
 
     def draw_highlight_box(self, title, text, type="insight"):
         # Box Colors
         if type == "risk":
-            bg = (254, 242, 242); border = (239, 68, 68); text_col = (153, 27, 27); icon = "!"
+            bg = (250, 250, 250); border = (39, 39, 42); text_col = (0, 0, 0); icon = "!"
         elif type == "rec":
-            bg = (240, 253, 244); border = (34, 197, 94); text_col = (20, 83, 45); icon = ">>"
+            bg = (255, 255, 255); border = (39, 39, 42); text_col = (0, 0, 0); icon = ">>"
         else:
-            bg = (238, 242, 255); border = (99, 102, 241); text_col = (49, 46, 129); icon = "*"
+            bg = (244, 244, 245); border = (39, 39, 42); text_col = (0, 0, 0); icon = "*"
 
         self.set_fill_color(*bg)
         self.set_draw_color(*border)
@@ -74,58 +75,86 @@ class PDFReportGenerator(FPDF):
 
     def chapter_title(self, title):
         self.set_font('helvetica', 'B', 16)
-        self.set_text_color(30, 41, 59)
+        self.set_text_color(0, 0, 0)
         self.cell(0, 15, self.clean_text(title), ln=True)
-        self.set_draw_color(99, 102, 241)
+        self.set_draw_color(39, 39, 42)
         self.line(self.get_x(), self.get_y(), self.get_x() + 40, self.get_y())
         self.ln(5)
 
     def chapter_body(self, paragraphs):
         self.set_font('helvetica', '', 11)
         self.set_text_color(71, 85, 105)
+        if isinstance(paragraphs, str):
+            paragraphs = [paragraphs]
+        if not paragraphs: return
         for p in paragraphs:
-            self.multi_cell(0, 6, self.clean_text(p))
-            self.ln(2)
+            if p:
+                self.multi_cell(0, 6, self.clean_text(p))
+                self.ln(2)
         self.ln(5)
 
     def generate(self, report_data, filepath):
         self.add_page()
         
-        # Cover Page
+        # 1. COVER PAGE
+        self.set_fill_color(0, 0, 0)
+        self.rect(0, 0, 210, 297, 'F')
+        
         self.set_y(100)
-        self.set_font('helvetica', 'B', 32)
-        self.set_text_color(15, 23, 42)
-        self.multi_cell(0, 12, "Autonomous Executive Intelligence Report", align='C')
+        self.set_font('helvetica', 'B', 42)
+        self.set_text_color(255, 255, 255)
+        self.cell(0, 20, 'INTELLIGENCE', ln=True, align='C')
+        self.set_font('helvetica', '', 20)
+        self.cell(0, 15, 'Strategic Multi-Variant Analysis Report', ln=True, align='C')
         
-        self.ln(10)
-        self.set_font('helvetica', '', 14)
-        self.set_text_color(100, 116, 139)
-        self.cell(0, 10, f"Project Fragment: {report_data.dataset_name}", align='C', ln=True)
-        self.cell(0, 10, "STRICTLY PRIVATE & CONFIDENTIAL", align='C', ln=True)
-        
-        # 1. Executive Strategic Summary
-        self.add_page()
-        self.chapter_title("1. Executive Strategic Summary")
-        self.chapter_body(report_data.sections[0].content)
-        
-        self.draw_highlight_box("Primary Insight", "Correlation analysis reveals a high-probability trigger in customer churn related to plan latency. Recommend immediate infrastructure review.", "insight")
-        self.draw_highlight_box("Strategic Playbook", "Deploy the 'Retention Shield' playbook: automated discounting for high-value segments with latent connectivity markers.", "rec")
-
-        # 2. Quality Audit
-        self.chapter_title("2. Quality & Feature Inventory")
-        # (Table logic remains similar but with updated styling)
-        
-        # 5. Machine Learning Leaderboard (Special Styling)
-        self.add_page()
-        self.chapter_title("5. Machine Learning Intelligence")
-        self.set_font('helvetica', 'B', 12)
-        self.set_text_color(168, 85, 247)
-        self.cell(0, 10, "CHAMPION MODEL: XGBOOST REGRESSOR (v1.2)", ln=True)
+        self.set_y(200)
+        self.set_font('helvetica', 'B', 14)
+        self.cell(0, 10, self.clean_text(f"DATASET: {report_data.dataset_name}"), ln=True, align='C')
         self.set_font('helvetica', '', 10)
-        self.set_text_color(71, 85, 105)
-        self.multi_cell(0, 6, "The XGBoost architecture was selected due to its superior handling of non-linear variance and the complex feature hierarchies present in the financial vectors.")
-        
-        self.ln(10)
-        self.draw_highlight_box("Risk Alert", "Model performance shows a 2% degradation in the 'High Entropy' segment. Monitor production drift closely.", "risk")
+        self.set_text_color(161, 161, 170)
+        self.cell(0, 10, f"Generated by AnalytixAI Autonomous Engine", ln=True, align='C')
+
+        # 2. EXECUTIVE SUMMARY
+        self.add_page()
+        self.chapter_title("1. Executive Strategic Narrative")
+        if report_data.sections and len(report_data.sections) > 0:
+            self.chapter_body(report_data.sections[0].content)
+
+        # 3. SECTIONS
+        for i, section in enumerate(report_data.sections[1:], 2):
+            self.add_page()
+            self.chapter_title(f"{i}. {section.title}")
+            self.chapter_body(section.content)
+            
+            # Metrics / Tables
+            if section.metrics:
+                if isinstance(section.metrics, dict):
+                    if section.metrics.get("type") == "leaderboard":
+                        self.set_font('helvetica', 'B', 10)
+                        self.cell(0, 10, "Model Performance Leaderboard", ln=True)
+                        self.set_font('helvetica', '', 9)
+                        # Simplified table
+                        for row in section.metrics.get("data", []):
+                            self.cell(60, 8, self.clean_text(str(row[1])), border=1)
+                            self.cell(60, 8, self.clean_text(str(row[2])), border=1, ln=True)
+                    elif section.metrics.get("type") == "data_preview":
+                        self.set_font('helvetica', 'B', 10)
+                        self.cell(0, 10, "Final Dataset Preview (Top 10 Rows)", ln=True)
+                        self.set_font('helvetica', '', 7)
+                        cols = section.metrics.get("columns", [])[:6] # Limit to 6 cols for width
+                        for col in cols:
+                            self.cell(30, 8, self.clean_text(str(col)), border=1)
+                        self.ln()
+                        for row in section.metrics.get("data", []):
+                            for val in row[:6]:
+                                self.cell(30, 8, self.clean_text(str(val)), border=1)
+                            self.ln()
+                    else:
+                        # Standard Key-Value table
+                        self.set_font('helvetica', 'B', 9)
+                        for k, v in section.metrics.items():
+                            if isinstance(v, (str, int, float)):
+                                self.cell(50, 8, self.clean_text(str(k)), border=1)
+                                self.cell(140, 8, self.clean_text(str(v)), border=1, ln=True)
 
         self.output(filepath)

@@ -103,12 +103,14 @@ class PipelineOrchestrator:
                 
             # Finalize
             self.active_jobs[job_id]["status"] = JobStatus.COMPLETED
+            self.active_jobs[job_id]["current_step"] = "completed"
             self.active_jobs[job_id]["progress"] = 100
             self.active_jobs[job_id]["ai_thinking"] = "Pipeline finalized. Intelligence is now production-ready."
             await socket_manager.broadcast_to_job(job_id, self.active_jobs[job_id])
             
             await mm.update_config("last_job_status", JobStatus.COMPLETED)
             await mm.update_config("active_job_id", None)
+            await mm.update_config("last_job_id", job_id)  # Persist for history lookup
             logger.info(f"ORCHESTRATOR: Job {job_id} COMPLETED successfully.")
             
         except Exception as e:
@@ -117,6 +119,7 @@ class PipelineOrchestrator:
             self.active_jobs[job_id]["error"] = str(e)
             await mm.update_config("last_job_status", JobStatus.FAILED)
             await mm.update_config("active_job_id", None)
+            await mm.update_config("last_job_id", job_id)  # Persist for history lookup
             await mm.update_config("last_job_error", str(e))
 
     def get_job_status(self, job_id: str) -> Optional[Dict]:

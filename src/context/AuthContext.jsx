@@ -67,29 +67,43 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const register = async (email, password, fullName) => {
+  const signup = async (email, password, fullName) => {
     setError(null);
-    console.log(`[Auth] Attempting register to: ${API_BASE_URL}/auth/register`);
+    console.log(`[Auth] Attempting signup to: ${API_BASE_URL}/auth/register`);
     try {
       await api.post('/auth/register', {
         email,
         password,
         full_name: fullName
       });
-      console.log("[Auth] Register successful");
+      console.log("[Auth] Signup successful");
       return true;
     } catch (err) {
-      console.error("[Auth] Register error details:", err);
-      
-      let errorMessage = "Registration failed.";
-      
-      if (!err.response) {
-        errorMessage = "We're having trouble reaching our servers. Please check your internet connection and try again.";
-      } else if (err.response.data?.detail) {
-        errorMessage = err.response.data.detail;
-      }
-      
+      console.error("[Auth] Signup error details:", err);
+      let errorMessage = err.response?.data?.detail || "Registration failed.";
       setError(errorMessage);
+      return false;
+    }
+  };
+
+  const forgotPassword = async (email) => {
+    setError(null);
+    try {
+      await api.post('/auth/forgot-password', { email });
+      return true;
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to send reset link.");
+      return false;
+    }
+  };
+
+  const resetPassword = async (token, newPassword) => {
+    setError(null);
+    try {
+      await api.post('/auth/reset-password', { token, new_password: newPassword });
+      return true;
+    } catch (err) {
+      setError(err.response?.data?.detail || "Failed to reset password.");
       return false;
     }
   };
@@ -102,7 +116,7 @@ export const AuthProvider = ({ children }) => {
   const clearError = () => setError(null);
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, login, register, logout, clearError }}>
+    <AuthContext.Provider value={{ user, loading, error, login, signup, forgotPassword, resetPassword, logout, clearError }}>
       {children}
     </AuthContext.Provider>
   );

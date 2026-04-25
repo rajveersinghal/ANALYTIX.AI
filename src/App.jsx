@@ -1,107 +1,80 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import ProtectedRoute from "./pages/ProtectedRoute";
-import MainLayout from "./components/layout/MainLayout";
+import { useAuth } from "./hooks/useAuth";
+
+// Layouts
+import DashboardLayout from "./layouts/DashboardLayout";
+
+// Pages
 import Landing from "./pages/Landing";
-import Projects from "./pages/Projects";
-import Pricing from "./pages/Pricing";
-import Dashboard from "./pages/Dashboard";
-import Auth from "./pages/Auth";
-import HistoryView from "./pages/HistoryView";
-import Pipeline from "./pages/Pipeline";
-import Analytics from "./pages/Analytics";
-import Reports from "./pages/Reports";
-import Insights from "./pages/Insights";
-import Settings from "./pages/Settings";
-import SalesDashboard from "./pages/SalesDashboard";
-import Docs from "./pages/Docs";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
+import Login from "./pages/auth/Login";
+import Signup from "./pages/auth/Signup";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Upload from "./pages/upload/Upload";
+import Insights from "./pages/insights/Insights";
+import Chat from "./pages/chat/Chat";
+import Archive from "./pages/archive/Archive";
+import Settings from "./pages/settings/Settings";
 
-import TierGuard from "./pages/TierGuard";
-import { ChatProvider } from "./context/ChatContext";
-import ChatView from "./pages/ChatView";
-
-import { Component } from "react";
-
-class ErrorBoundary extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, error: null };
-  }
-  static getDerivedStateFromError(error) { return { hasError: true, error }; }
-  render() {
-    if (this.state.hasError) {
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-[#04050f] text-white p-10 text-center">
-          <div className="w-20 h-20 rounded-full bg-rose-500/10 flex items-center justify-center mb-6 border border-rose-500/20">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-rose-500">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-            </svg>
-          </div>
-          <h1 className="text-3xl font-black syne italic mb-4">Something went <span className="text-rose-500">wrong</span></h1>
-          <p className="text-slate-400 max-w-md mx-auto mb-8 font-medium">An unexpected error occurred in the application interface. We've captured the details for our team to fix.</p>
-          <div className="bg-white/5 border border-white/10 p-4 rounded-xl text-left font-mono text-[10px] text-rose-300 mb-8 max-w-lg overflow-auto">
-             {this.state.error?.toString()}
-          </div>
-          <button 
-            onClick={() => window.location.href = '/dashboard'}
-            className="px-8 py-4 bg-violet-600 rounded-2xl font-bold hover:bg-violet-700 transition-all"
-          >
-            Return to Dashboard
-          </button>
+const ProtectedRoute = ({ children }) => {
+  const { user, loading } = useAuth();
+  
+  if (loading) return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#000000]">
+      <div className="relative flex flex-col items-center gap-6 animate-pulse">
+        <div className="p-4 rounded-2xl bg-white/[0.03] border border-white/10">
+          <svg width="48" height="48" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 32H18L26 14L34 50L42 32H56" stroke="white" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
         </div>
-      );
-    }
-    return this.props.children;
-  }
-}
+        <div className="flex flex-col items-center gap-2">
+          <span className="text-white font-bold tracking-[0.2em] uppercase text-xs">AnalytixAI</span>
+          <div className="w-32 h-[1px] bg-white/10 relative overflow-hidden">
+            <div className="absolute inset-0 bg-white/40 animate-loading-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+  
+  if (!user) return <Navigate to="/login" replace />;
+  return children;
+};
 
-function App() {
+export default function App() {
   return (
-    <ErrorBoundary>
-      <AuthProvider>
-        <ChatProvider>
-          <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-            <Routes>
-            {/* ── Public Routes ── */}
-            <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Auth />} />
-            <Route path="/signup" element={<Auth />} />
-            <Route path="/forgot" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-            <Route path="/docs" element={<Docs />} />
+    <AuthProvider>
+      <BrowserRouter
+        future={{
+          v7_startTransition: true,
+          v7_relativeSplatPath: true,
+        }}
+      >
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* ── Protected Dashboard Routes (all require auth + MainLayout) ── */}
-            <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
-              {/* Bookmarkable Dashboard Routes */}
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/dashboard/:sessionId" element={<Dashboard />} />
-              <Route path="/dashboard/:sessionId/:activeStep" element={<Dashboard />} />
-
-              <Route path="/projects"   element={<Projects />} />
-              <Route path="/pipeline"   element={<Pipeline />} />
-              <Route path="/analytics"  element={<Analytics />} />
-              <Route path="/reports"    element={<Reports />} />
-              <Route path="/insights"   element={<Insights />} />
-              <Route path="/history"    element={<HistoryView />} />
-              
-              {/* Premium Gated Routes */}
-              <Route path="/chat"  element={<TierGuard><ChatView /></TierGuard>} />
-              <Route path="/sales" element={<TierGuard><SalesDashboard /></TierGuard>} />
-              
-              <Route path="/pricing"    element={<Pricing />} />
-              <Route path="/settings"   element={<Settings />} />
-            </Route>
-
-            {/* ── Catch-all ── */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </BrowserRouter>
-      </ChatProvider>
+          {/* Protected App Routes */}
+          <Route path="/app" element={<ProtectedRoute><DashboardLayout /></ProtectedRoute>}>
+            <Route index element={<Navigate to="/app/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="upload" element={<Upload />} />
+            <Route path="insights" element={<Insights />} />
+            <Route path="chat" element={<Chat />} />
+            <Route path="archive" element={<Archive />} />
+            <Route path="settings" element={<Settings />} />
+          </Route>
+          
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </BrowserRouter>
     </AuthProvider>
-    </ErrorBoundary>
   );
 }
-
-export default App;

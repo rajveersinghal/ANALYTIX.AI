@@ -8,7 +8,6 @@ from app.utils.metadata_manager import MetadataManager
 class ReportService:
     def __init__(self):
         self.orchestrator = ReportOrchestrator()
-        self.pdf_gen = PDFReportGenerator()
         
     async def generate_report(self, file_id: str, user_id: str = None, project_id: str = None, overrides: dict = None) -> str:
         import asyncio
@@ -25,7 +24,8 @@ class ReportService:
         filepath = os.path.join(settings.REPORT_DIR, filename)
         
         # 3. Generate PDF (Offload to thread)
-        await asyncio.to_thread(self.pdf_gen.generate, report_data, filepath)
+        pdf_gen = PDFReportGenerator()
+        await asyncio.to_thread(pdf_gen.generate, report_data, filepath)
         
         await mm.update_step("report", "generation", "completed")
         await mm.add_log("report", "Compiled all insights and models into a professional PDF report.")
@@ -57,21 +57,21 @@ class ReportService:
             <title>AnalytixAI | Executive Intelligence Dashboard</title>
             <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Inter:wght@400;600&display=swap" rel="stylesheet">
             <style>
-                :root {{ --primary: #6366f1; --secondary: #a855f7; --bg: #030712; --card: #111827; --text: #f9fafb; --slate: #94a3b8; }}
+                :root {{ --primary: #ffffff; --secondary: #a1a1aa; --bg: #000000; --card: #09090b; --text: #f4f4f5; --slate: #71717a; }}
                 body {{ font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); padding: 50px 20px; line-height: 1.6; margin: 0; }}
                 .container {{ max-width: 1000px; margin: auto; }}
                 .header {{ text-align: left; border-left: 4px solid var(--primary); padding-left: 30px; margin-bottom: 60px; }}
                 h1 {{ font-family: 'Outfit', sans-serif; font-weight: 900; font-size: 3.5rem; margin: 0; letter-spacing: -2px; }}
-                .eyebrow {{ color: var(--secondary); font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 3px; }}
+                .eyebrow {{ color: var(--slate); font-weight: 800; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 3px; }}
                 .card {{ background: var(--card); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 40px; margin-bottom: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }}
-                .tag {{ display: inline-block; padding: 5px 15px; border-radius: 8px; background: rgba(168, 85, 247, 0.1); color: var(--secondary); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-right: 10px; border: 1px solid rgba(168,85,247,0.2); }}
+                .tag {{ display: inline-block; padding: 5px 15px; border-radius: 8px; background: rgba(255, 255, 255, 0.05); color: var(--text); font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-right: 10px; border: 1px solid rgba(255,255,255,0.1); }}
                 h2 {{ font-family: 'Outfit', sans-serif; color: white; font-size: 1.8rem; margin-top: 0; display: flex; align-items: center; justify-content: space-between; cursor: pointer; }}
                 .metric-grid {{ display: grid; grid-cols: 1; md:grid-cols-3; gap: 20px; margin-top: 30px; }}
                 .metric-item {{ padding: 20px; border-radius: 16px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); }}
                 .m-val {{ display: block; font-size: 1.5rem; font-weight: 900; color: var(--primary); font-family: 'Outfit'; }}
                 .m-lab {{ font-size: 0.65rem; color: var(--slate); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }}
                 .content-area {{ margin-top: 20px; color: var(--slate); font-size: 0.95rem; }}
-                .highlight-box {{ border-radius: 16px; padding: 20px; margin-top: 20px; background: rgba(99, 102, 241, 0.05); border-left: 4px solid var(--primary); }}
+                .highlight-box {{ border-radius: 16px; padding: 20px; margin-top: 20px; background: rgba(255, 255, 255, 0.03); border-left: 4px solid var(--primary); }}
                 .watermark {{ position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 8rem; opacity: 0.02; pointer-events: none; font-weight: 900; white-space: nowrap; }}
             </style>
         </head>

@@ -1,77 +1,165 @@
-@import "./styles/DeepVoid.css";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
-.app {
-  display: flex;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #04050f;
+:root {
+  /* Absolute Deep Black Production Theme */
+  --bg-main: #000000;
+  --bg-card: #08090a;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.15);
+  
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa; /* zinc-400 */
+  --text-muted: #71717a; /* zinc-500 */
+  
+  --accent: #ffffff;
+  --accent-muted: rgba(255, 255, 255, 0.1);
+  
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  
+  --transition: all 0.15s ease;
 }
 
-.main {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  position: relative;
+@layer base {
+  html {
+    background-color: var(--bg-main);
+  }
+  
+  body {
+    @apply bg-[var(--bg-main)] text-[var(--text-primary)] font-sans antialiased overflow-x-hidden;
+    font-family: 'Inter', sans-serif;
+    letter-spacing: -0.01em;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight text-white;
+  }
 }
 
-.page {
-  flex: 1;
-  overflow-y: auto;
-  padding: 24px 20px;
-  position: relative;
-  z-index: 1;
+@layer components {
+  /* Standardized Card */
+  .card-linear {
+    @apply bg-[#08090a] border border-white/[0.08] rounded-xl overflow-hidden;
+    transition: var(--transition);
+  }
+
+  .card-linear-hover:hover {
+    @apply border-white/[0.15] bg-[#0c0d0e];
+  }
+
+  /* Standardized Buttons */
+  .btn-linear {
+    @apply bg-white text-black font-semibold text-sm px-4 py-2 rounded-lg 
+           hover:bg-zinc-200 active:scale-[0.98] transition-all duration-150
+           disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100;
+  }
+
+  .btn-secondary {
+    @apply bg-white/[0.05] text-white border border-white/[0.08] font-medium text-sm px-4 py-2 rounded-lg 
+           hover:bg-white/[0.1] active:scale-[0.98] transition-all duration-150;
+  }
+
+  .btn-ghost {
+    @apply text-zinc-400 hover:text-white hover:bg-white/[0.05] px-3 py-1.5 rounded-lg transition-all;
+  }
+
+  /* Input Fields */
+  .input-linear {
+    @apply bg-white/[0.03] border border-white/[0.08] text-white text-sm px-4 py-2.5 rounded-lg
+           focus:outline-none focus:border-white/[0.2] focus:bg-white/[0.05] transition-all;
+  }
+
+
+  /* Scrollbar Polish - Sleek & Hidden when not needed */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    transition: background 0.3s ease;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Hide horizontal scrollbar globally unless explicitly allowed */
+  body::-webkit-scrollbar:horizontal {
+    display: none;
+  }
 }
 
-body {
-  font-family: 'Figtree', sans-serif;
-  margin: 0;
-  background-color: #04050f;
-  color: #eeeeff;
+/* Animations - Fast and Subtle */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Syne', sans-serif;
-  font-weight: 800;
-  letter-spacing: -0.02em;
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
 }
 
-.family-syne {
-  font-family: 'Syne', sans-serif;
+@keyframes loadingBar {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(0); }
+  100% { transform: translateX(100%); }
 }
 
-::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+.animate-loading-bar {
+  animation: loadingBar 0.8s infinite ease-in-out;
 }
 
-::-webkit-scrollbar-track {
-  background: transparent;
+/* Skeleton Loading State */
+.skeleton {
+  @apply bg-white/[0.05] animate-pulse rounded;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 50px;
+/* Status Badges */
+.badge-linear {
+  @apply px-2 py-0.5 rounded-full text-[11px] font-bold tracking-tight border;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(109, 78, 255, 0.3);
+.badge-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #34d399;
+  border-color: rgba(16, 185, 129, 0.2);
 }
 
-/* Hide Vercel Toolbar & Feedback Injected Icons */
-#vercel-toolbar-container, 
-[data-vercel-toolbar], 
-[data-vercel-insights],
-.vercel-toolbar-container,
-#vercel-feedback-widget {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-  opacity: 0 !important;
+.badge-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #fbbf24;
+  border-color: rgba(245, 158, 11, 0.2);
 }
 
+.badge-error {
+  background-color: rgba(244, 63, 94, 0.1);
+  color: #fb7185;
+  border-color: rgba(244, 63, 94, 0.2);
+}
+
+.badge-info {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.hero-glow {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}

@@ -30,7 +30,7 @@ class NarrativeGenerator:
         col_info = metadata.get("column_info", {})
         
         paragraphs = [
-            f"The initial assessment yielded a **Data Quality Score of {score}/100**.",
+            f"The initial assessment yielded a Data Quality Score of {score}/100.",
             f"Screening identified {dupes} duplicate rows and various data inconsistencies that required automated remediation."
         ]
         
@@ -81,8 +81,8 @@ class NarrativeGenerator:
         metric = model_metrics.get("metric", "score")
         
         return [
-            f"The AnalytixAI Smart Strategy evaluated multiple architectures and selected **{name}** as the optimal model.",
-            f"The model achieved a performance score of **{score}%** ({metric}), indicating its level of predictive reliability for production deployment."
+            f"The AnalytixAI Smart Strategy evaluated multiple architectures and selected {name} as the optimal model.",
+            f"The model achieved a performance score of {score}% ({metric}), indicating its level of predictive reliability for production deployment."
         ]
 
     def generate_decision_summary_combined(self, explain: dict, decision: dict) -> list:

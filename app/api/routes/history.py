@@ -40,12 +40,18 @@ async def get_user_sessions(
     try:
         db = get_database()
         user_id = str(current_user["_id"])
+        user_email = current_user.get("email", "")
+        is_admin = user_email == "admin@analytix.ai"
         
-        query = {"user_id": user_id}
+        # Admin sees ALL sessions; regular users see only their own
+        if is_admin:
+            query = {}
+        else:
+            query = {"user_id": user_id}
+            
         if project_id:
             query["project_id"] = project_id
             
-        # Find all metadata documents for this user & project
         cursor = db.sessions.find(query).sort("created_at", -1)
         sessions = await cursor.to_list(length=100)
         
@@ -107,25 +113,46 @@ async def get_user_sessions(
 async def get_session_details(file_id: str, current_user: dict = Depends(get_current_user)):
     """
     Returns full details for a specific session.
+    Admin (admin@analytix.ai) can access any session regardless of user_id.
     """
     try:
         db = get_database()
         user_id = str(current_user["_id"])
+        user_email = current_user.get("email", "")
+        is_admin = user_email == "admin@analytix.ai"
         
-        session = await db.sessions.find_one({"file_id": file_id, "user_id": user_id})
+        logger.info(f"HISTORY: Fetching details for file_id={file_id} | user_id={user_id} | is_admin={is_admin}")
+        
+        # Search across ALL possible ID fields (dataset_id is primary; job IDs as fallback)
+        id_query = {"$or": [
+            {"dataset_id": file_id},
+            {"file_id": file_id},
+            {"last_job_id": file_id},    # persisted after pipeline completes
+            {"active_job_id": file_id}   # in-progress jobs
+        ]}
+        
+        if is_admin:
+            # Admin has global view — no user_id restriction
+            session = await db.sessions.find_one(id_query)
+            logger.info(f"HISTORY: Admin lookup -> {'FOUND' if session else 'NOT FOUND'}")
+        else:
+            session = await db.sessions.find_one({"$and": [{"user_id": user_id}, id_query]})
+        
         if not session:
-            # Fallback to dataset_id in case it's saved that way
-            session = await db.sessions.find_one({"dataset_id": file_id, "user_id": user_id})
-        if not session:
-            return error_response("Session not found or access denied", status_code=404)
+            # Debug: log a sample doc to compare ID fields
+            sample = await db.sessions.find_one({}, {"dataset_id": 1, "file_id": 1, "user_id": 1, "_id": 0})
+            logger.warning(f"HISTORY: NOT FOUND for file_id={file_id}. Sample DB doc: {sample}")
+            return error_response("Session not found or access denied")
             
-        # Clean up Internal MongoDB ID
+        # Serialize MongoDB ObjectId
         if "_id" in session:
             session["_id"] = str(session["_id"])
             
         return success_response(data=session)
     except Exception as e:
+        logger.error(f"HISTORY: Exception in get_session_details: {e}")
         return error_response(f"Failed to fetch session details: {str(e)}")
+
 
 @router.delete("/session/{file_id}")
 async def delete_session(file_id: str, current_user: dict = Depends(get_current_user)):

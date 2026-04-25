@@ -1,7 +1,15 @@
 # app/core/nlp/insight_engine.py
+"""
+AnalytixAI Data Intelligence Agent
+====================================
+Converts a raw dataset + ML session into a fully conversational, data-aware AI.
+The agent computes REAL statistics from the actual DataFrame and feeds them
+as grounded context to the LLM — ensuring every answer is factual and specific.
+"""
 import json
 import asyncio
 import pandas as pd
+import numpy as np
 from typing import Dict, Any, List, Optional
 from app.logger import logger
 from app.config import settings
@@ -13,259 +21,236 @@ try:
 except ImportError:
     HAS_GENAI = False
 
-EXECUTIVE_PROMPT = """
-You are a Senior Business Consultant & Strategic Advisor.
-Dataset Context: {context}
 
-Focus: Business Impact, Revenue, Cost, Risk, and ROI.
-Tone: Strategic, Decision-Focused, No-Jargon.
+# ─── System Prompts ────────────────────────────────────────────────────────────
 
-Structure your response as:
-1. WHAT'S HAPPENING: (Concise current state)
-2. WHY: (Causal drivers from features)
-3. WHAT TO DO: (Actionable business strategy)
+SYSTEM_PROMPT = """
+You are the AnalytixAI Data Intelligence Agent — an expert data scientist and business analyst.
 
-End with: '👉 SUGGESTED NEXT STEP: [Single high-impact action]'
+You have been given REAL, COMPUTED statistics from the user's actual dataset below.
+Use ONLY this context to answer questions. Do not hallucinate or invent numbers.
+
+DATASET CONTEXT:
+{context}
+
+RULES:
+1. Answer using the actual numbers provided in the context above.
+2. Be concise but insightful — translate numbers into business meaning.
+3. If the user asks for something not in the context, say "I don't have that specific data, but based on what I can see..."
+4. Use plain text. No markdown stars. Use CAPITAL LETTERS for emphasis.
+5. Always end complex answers with a "👉 KEY TAKEAWAY:" line.
 """
 
-ANALYST_PROMPT = """
-You are a Lead Data Analyst.
-Dataset Context: {context}
-
-Focus: Patterns, Relationships, and Data Distribution.
-Tone: Insightful, Explanatory, Clear.
-
-Structure your response to explain the 'Shape' of the data and the most significant correlations identified by the AutoML pipeline.
-"""
-
-TECHNICAL_PROMPT = """
-You are a Principal Machine Learning Engineer.
-Dataset Context: {context}
-
-Focus: Model Metrics (R2, F1, Accuracy), SHAP values, and Distribution shift.
-Tone: Precise, Technical, Low-Level.
-
-Explain the architectural choices and model performance thresholds.
-"""
 
 class InsightEngine:
     """
-    Architecture V2: Conversational Data Agent
-    Transforms the LLM from a generic chatbot into a Tool-Using Data Analyst.
+    Data Intelligence Agent V3
+    - Loads the real DataFrame for the session
+    - Computes grounded statistics (describe, correlations, value_counts, etc.)
+    - Feeds actual numbers to the LLM as context
+    - Answers ANY question about the dataset accurately
     """
+
     def __init__(self):
         self.api_key = settings.GENAI_API_KEY if hasattr(settings, 'GENAI_API_KEY') else None
         self.enabled = bool(self.api_key) and HAS_GENAI
         if self.enabled:
             genai.configure(api_key=self.api_key)
-            self.model = genai.GenerativeModel('gemini-1.5-flash-latest')
+        # Model name — 2.0-flash is the latest, but 1.5-flash is more widely available
+        self.model_name = 'gemini-1.5-flash'
 
-    async def ask_contextual_question(self, question: str, session_data: Dict[str, Any]) -> str:
-        """
-        New Agent Architecture: Natural Language -> Analysis -> Strategic Response.
-        """
-        if not self.enabled:
-            return "Cognitive Module Offline: Please provide a GENAI_API_KEY to activate my intelligence layer."
+    # ── Core Context Builder ────────────────────────────────────────────────────
 
-        dataset_id = session_data.get("dataset_id")
-        df = await data_manager.get_dataframe(dataset_id, "train")
-        
-        # Build High-Fidelity Context
+    async def _build_data_context(self, dataset_id: str, metadata: Dict) -> Dict[str, Any]:
+        """
+        Loads the actual DataFrame and computes rich, grounded statistics.
+        This is the foundation of every AI answer.
+        """
         context = {
-            "columns": list(df.columns) if df is not None else [],
-            "shape": df.shape if df is not None else (0,0),
-            "target": session_data.get("target_column"),
-            "problem": session_data.get("problem_type", "General Intelligence"),
-            "top_drivers": session_data.get("explainability_results", {}).get("business_brain", [])
+            "dataset_name": metadata.get("filename", "Dataset"),
+            "problem_type": metadata.get("problem_type", "Unknown"),
+            "target_column": metadata.get("target_column"),
+            "best_model": (metadata.get("modeling_results") or {})
+                          .get("best_model", {}).get("model_name", "AutoML"),
+            "model_score": (metadata.get("modeling_results") or {})
+                           .get("best_model", {}).get("mean_score"),
+            "top_features": list(
+                (metadata.get("explainability_results") or {})
+                .get("global_explanation", {})
+                .get("feature_importance", {}).keys()
+            )[:8],
         }
 
-        # SYSTEM PROMPT: Establish Identity and Rules
-        system_instruction = f"""
-        Identity: You are the 'AnalytixAI Executive Partner'. 
-        Objective: Answer business questions about this dataset using facts and data.
-        
-        DATA CONTEXT:
-        - Columns: {context['columns']}
-        - Total Samples: {context['shape'][0]}
-        - Key KPI: {context['target']}
-        - Business Domain: {session_data.get('domain', 'Industrial')}
-        
-        RULES:
-        1. If the user asks for a specific number (e.g. 'How many rows are missing?'), use the context provided.
-        2. If the user asks for a recommendation, use the 'top_drivers' context.
-        3. Always translate technical findings into 'BUSINESS IMPACT'.
-        4. Use a professional, executive tone. No jargon.
-        5. NEVER use markdown stars (**) for bolding. Use CAPITAL LETTERS for emphasis.
-        """
+        # Try to load the real DataFrame
+        df = await data_manager.get_dataframe(dataset_id, "train")
+        if df is None:
+            df = await data_manager.get_dataframe(dataset_id, "raw")
 
-        # AGENT EXECUTION
-        prompt = f"{system_instruction}\n\nUser Question: {question}\n\nAnalyst Response:"
-        
-        try:
-            # AI Strategic Response
-            response = await asyncio.to_thread(self.model.generate_content, prompt)
-            answer = response.text if response else "I encountered a neural synchronization error. Please rephrase."
-            
-            # Add 'AI Suggestion'
-            suggestion_prompt = f"Based on the question '{question}', suggest one follow-up question the user should ask to gain more insight. Return ONLY the question text."
-            suggestion_res = await asyncio.to_thread(self.model.generate_content, suggestion_prompt)
-            suggestion = suggestion_res.text if suggestion_res else None
-            
-            final_output = f"{answer}"
-            if suggestion:
-                final_output += f"\n\nSUGGESTED NEXT STEP: {suggestion}"
-                
-            return final_output
-            
-        except Exception as e:
-            logger.error(f"Agent Execution Failed: {e}")
-            return "Cognitive interference detected. My LLM links are currently unstable."
+        if df is not None and not df.empty:
+            try:
+                context["shape"] = {"rows": int(df.shape[0]), "columns": int(df.shape[1])}
+                context["columns"] = list(df.columns)
+                context["dtypes"] = {c: str(df[c].dtype) for c in df.columns}
+                context["missing_values"] = {
+                    c: int(df[c].isna().sum())
+                    for c in df.columns if df[c].isna().sum() > 0
+                }
+                context["duplicate_rows"] = int(df.duplicated().sum())
 
-    async def generate_consulting_recommendations(self, features: List[Dict]) -> List[Dict]:
-        """
-        Architecture V2: Generates actionable recommendations based on feature importance.
-        """
-        recommendations = []
-        for f in features[:3]:
-            # Strategic logic for recommendations
-            if f['importance'] > 0.4:
-                recommendations.append({
-                    "title": f"Strategic Optimization of {f['name']}",
-                    "rationale": f"With an importance of {int(f['importance']*100)}%, this is your primary performance lever.",
-                    "action": f"Launch a targeted pilot to refine {f['name']} parameters by 5-10%."
-                })
-            else:
-                recommendations.append({
-                    "title": f"Incremental Gains in {f['name']}",
-                    "rationale": f"{f['name']} shows a secondary but meaningful influence on outcomes.",
-                    "action": f"Automate routine monitoring of {f['name']} to maintain baseline stability."
-                })
-        return recommendations
+                # Numeric stats
+                num_df = df.select_dtypes(include=[np.number])
+                if not num_df.empty:
+                    desc = num_df.describe().round(3)
+                    context["numeric_stats"] = desc.to_dict()
 
-    def detect_risks(self, feature_importance: Dict[str, float]) -> List[str]:
-        """
-        Architecture V2: Detects systemic business risks based on data distribution.
-        """
-        risks = []
-        for feat, imp in feature_importance.items():
-            if imp > 0.6:
-                risks.append(f"CRITICAL DEPENDENCY: Your business model is highly sensitive to '{feat}'. Volatility here could destabilize the target.")
-            elif imp > 0.4:
-                risks.append(f"CONCENTRATION RISK: Significant reliance on '{feat}' detected. Diversification may be required.")
-        
-        if not risks:
-            risks.append("STABILITY SIGNAL: No single feature dominates the model, indicating a well-balanced distribution of drivers.")
-        return risks
+                    # Top correlations with target
+                    target = metadata.get("target_column")
+                    if target and target in num_df.columns:
+                        corr = num_df.corr()[target].drop(target).sort_values(key=abs, ascending=False)
+                        context["target_correlations"] = corr.round(3).to_dict()
 
-    def detect_opportunities(self, feature_importance: Dict[str, float]) -> List[str]:
-        """
-        Architecture V2: Identifies untapped growth potential.
-        """
-        opportunities = []
-        # Look for 'Moderate' drivers that could be upscaled
-        moderate_levers = [f for f, i in feature_importance.items() if 0.15 < i < 0.35]
-        for feat in moderate_levers[:2]:
-            opportunities.append(f"UNEXPLORED LIFT: '{feat}' has moderate influence. Optimization in this area could unlock incremental growth.")
-        
-        return opportunities
+                # Categorical value counts (top 5 per column)
+                cat_df = df.select_dtypes(include=["object", "category"])
+                if not cat_df.empty:
+                    context["categorical_summary"] = {}
+                    for col in cat_df.columns[:6]:  # limit to 6 columns
+                        vc = df[col].value_counts().head(5)
+                        context["categorical_summary"][col] = vc.to_dict()
 
-    def get_confidence_level(self, score: float) -> Dict:
-        """
-        Architecture V2: Translates technical metric into executive confidence rating.
-        """
-        if score > 0.85:
-            return {"level": "HIGH", "desc": "Model results are exceptionally reliable for strategic deployment.", "color": "emerald"}
-        elif score > 0.65:
-            return {"level": "MODERATE", "desc": "Results provide sound guidance but require human-in-the-loop validation.", "color": "amber"}
+                # Sample rows (first 5)
+                context["sample_rows"] = df.head(5).fillna("N/A").to_dict(orient="records")
+
+            except Exception as e:
+                logger.warning(f"InsightEngine: Context build partial failure: {e}")
         else:
-            return {"level": "PROVISIONAL", "desc": "Insights are indicative; further data collection is recommended for high-stakes decisions.", "color": "rose"}
+            context["note"] = "DataFrame not available in cache. Answering from metadata only."
 
-    async def generate_strategic_advice(self, context: Dict[str, Any]) -> str:
-        """
-        Architecture V2: Multi-Layer Strategic Synthesis
-        """
-        if not self.enabled:
-            return "Baseline Advice: Focus on data quality and feature engineering."
+        return context
 
-        prompt = f"""
-        Act as a McKinsey Consultant. 
-        Analyze these AutoML findings: {json.dumps(context)}
-        
-        Deliver 3 STRATEGIC RECOMMENDATIONS. 
-        Each recommendation must have:
-        1. A CLEAR TITLE
-        2. BUSINESS RATIONALE (Why this matters)
-        3. EXECUTIVE ACTION (What to do now)
-        
-        Use plain text only. NO BOLDING.
-        """
-        
-        try:
-            response = await asyncio.to_thread(self.model.generate_content, prompt)
-            return response.text
-        except Exception as e:
-            logger.error(f"Advice Generation Failed: {e}")
-            return "Focus on the top predictive drivers identified in the dashboard."
-
-    def detect_mode(self, metadata: Dict, query: str) -> str:
-        """
-        Architecture V2: Auto-detects the optimal AI personality mode.
-        """
-        q = query.lower()
-        domain = metadata.get("domain", "general")
-        
-        # 1. Technical Intent
-        if any(word in q for word in ["accuracy", "model", "f1", "r2", "overfit", "train", "loss", "tuning"]):
-            return "technical"
-        
-        # 2. Executive Intent (Sales/Impact)
-        if domain == "sales" or any(word in q for word in ["revenue", "sales", "risk", "profit", "money", "cost", "strategy", "impact", "margin", "forecast"]):
-            return "executive"
-            
-        return "analyst"
+    # ── Main Public Interface ───────────────────────────────────────────────────
 
     async def get_adaptive_insight(self, file_id: str, query: str, user_id: str = None) -> str:
         """
-        Architecture V2: Adaptive AI Personality (Copilot)
+        Main entry point: given a dataset_id and a natural language question,
+        return a grounded, factual AI answer.
         """
         if not self.enabled:
-            return "Cognitive Module Offline: Please activate Gemini via API key."
+            return (
+                "The AI chat requires a valid GENAI_API_KEY. "
+                "Please add it to your .env file to activate the intelligence layer."
+            )
 
         try:
             from app.utils.metadata_manager import MetadataManager
             mm = MetadataManager(file_id, user_id=user_id)
             metadata = await mm.load()
+
+            logger.info(f"InsightEngine: Building data context for dataset={file_id}")
+            context = await self._build_data_context(file_id, metadata)
+
+            context_str = json.dumps(context, indent=2, default=str)
+            system_instruction = SYSTEM_PROMPT.format(context=context_str)
+
+            logger.info(f"InsightEngine: Sending query to Gemini: {query[:80]}")
             
-            mode = self.detect_mode(metadata, query)
-            logger.info(f"AI CO-PILOT: Switching to '{mode.upper()}' mode for query: {query}")
+            # List of models to try in order of preference
+            candidate_models = [self.model_name, 'gemini-1.5-flash', 'gemini-2.0-flash', 'gemini-pro']
+            last_error = None
             
-            # Context Enrichment
-            context = {
-                "dataset_name": metadata.get("filename"),
-                "problem_type": metadata.get("problem_type"),
-                "rows": metadata.get("rows"),
-                "target": metadata.get("target_column"),
-                "best_model": metadata.get("modeling_results", {}).get("best_model", {}).get("name"),
-                "drivers": list(metadata.get("explainability_results", {}).get("global_explanation", {}).get("feature_importance", {}).keys())[:5]
-            }
-            
-            # Select Prompt
-            prompt_map = {
-                "executive": EXECUTIVE_PROMPT,
-                "technical": TECHNICAL_PROMPT,
-                "analyst": ANALYST_PROMPT
-            }
-            system_instruction = prompt_map.get(mode, ANALYST_PROMPT).format(context=json.dumps(context))
-            
-            # Neural Invocation
-            model = genai.GenerativeModel('gemini-1.5-flash-latest', system_instruction=system_instruction)
-            chat = model.start_chat()
-            
-            response = await asyncio.to_thread(chat.send_message, query)
-            return response.text
-            
+            for model_id in candidate_models:
+                try:
+                    logger.info(f"InsightEngine: Attempting {model_id}...")
+                    model = genai.GenerativeModel(
+                        model_id,
+                        system_instruction=system_instruction
+                    )
+                    chat = model.start_chat()
+                    response = await asyncio.to_thread(chat.send_message, query)
+                    return response.text
+                except Exception as e:
+                    last_error = str(e)
+                    # If it's a 429 (Quota), don't bother trying other models
+                    if '429' in last_error or 'quota' in last_error.lower():
+                        break
+                    # If it's a 404 (Not Found), try the next model
+                    if '404' in last_error:
+                        continue
+                    # Other errors -> break and report
+                    break
+
+            # If we reach here, all attempted models failed
+            logger.error(f"InsightEngine: All models failed. Last error: {last_error}")
+            if '429' in last_error or 'quota' in last_error.lower():
+                return "The AI chat is temporarily unavailable — the API quota has been reached. Please wait a few minutes."
+            if '404' in last_error:
+                return "The AI models are currently unavailable for this API key. Please check your Gemini API settings."
+            return f"I encountered an error while analyzing your dataset: {last_error[:100]}"
+
         except Exception as e:
-            logger.error(f"Adaptive Insight Failed: {e}")
-            return "Intelligence link degraded. Analyzing via baseline heuristics."
+            logger.error(f"InsightEngine: get_adaptive_insight system failure: {e}")
+            return f"I encountered a system error: {str(e)[:100]}"
+
+
+    # ── Legacy/Pipeline Helpers (kept for compatibility) ────────────────────────
+
+    async def generate_strategic_advice(self, context: Dict[str, Any]) -> str:
+        if not self.enabled:
+            return "Focus on the top predictive drivers identified in the dashboard."
+        try:
+            prompt = (
+                f"Act as a McKinsey Consultant. "
+                f"Analyze these AutoML findings: {json.dumps(context)}\n\n"
+                f"Deliver 3 STRATEGIC RECOMMENDATIONS with TITLE, RATIONALE, and ACTION. "
+                f"Plain text only. No markdown."
+            )
+            model = genai.GenerativeModel(self.model_name)
+            response = await asyncio.to_thread(model.generate_content, prompt)
+            return response.text
+        except Exception as e:
+            logger.error(f"Advice Generation Failed: {e}")
+            return "Focus on the top predictive drivers identified in the dashboard."
+
+    def get_confidence_level(self, score: float) -> Dict:
+        if score > 0.85:
+            return {"level": "HIGH", "desc": "Results are highly reliable.", "color": "emerald"}
+        elif score > 0.65:
+            return {"level": "MODERATE", "desc": "Results are sound but need validation.", "color": "amber"}
+        return {"level": "PROVISIONAL", "desc": "More data recommended.", "color": "rose"}
+
+    def detect_risks(self, feature_importance: Dict[str, float]) -> List[str]:
+        risks = []
+        for feat, imp in feature_importance.items():
+            if imp > 0.6:
+                risks.append(f"CRITICAL DEPENDENCY: Model is highly sensitive to '{feat}'.")
+            elif imp > 0.4:
+                risks.append(f"CONCENTRATION RISK: Significant reliance on '{feat}'.")
+        if not risks:
+            risks.append("STABILITY SIGNAL: No single feature dominates — well-balanced model.")
+        return risks
+
+    def detect_opportunities(self, feature_importance: Dict[str, float]) -> List[str]:
+        opportunities = []
+        moderate_levers = [f for f, i in feature_importance.items() if 0.15 < i < 0.35]
+        for feat in moderate_levers[:2]:
+            opportunities.append(f"UNEXPLORED LIFT: '{feat}' has moderate influence. Optimization here could unlock growth.")
+        return opportunities
+
+    async def generate_consulting_recommendations(self, features: List[Dict]) -> List[Dict]:
+        recommendations = []
+        for f in features[:3]:
+            if f['importance'] > 0.4:
+                recommendations.append({
+                    "title": f"Strategic Optimization of {f['name']}",
+                    "rationale": f"With {int(f['importance']*100)}% importance, this is your primary lever.",
+                    "action": f"Launch a targeted pilot to refine {f['name']} by 5-10%."
+                })
+            else:
+                recommendations.append({
+                    "title": f"Incremental Gains via {f['name']}",
+                    "rationale": f"{f['name']} shows secondary but meaningful influence.",
+                    "action": f"Automate monitoring of {f['name']} for baseline stability."
+                })
+        return recommendations
+
 
 insight_engine = InsightEngine()

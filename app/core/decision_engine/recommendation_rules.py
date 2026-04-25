@@ -17,14 +17,14 @@ def generate_recommendations(analyzed_features: list, target_name: str) -> list:
         effect = ""
         
         if direction == "positive":
-            action = f"Increase/Focus on **{name}**"
-            effect = f"improve **{target_name}**"
+            action = f"Increase/Focus on {name}"
+            effect = f"improve {target_name}"
         elif direction == "negative":
-            action = f"Reduce/Monitor **{name}**"
-            effect = f"improve **{target_name}**"
+            action = f"Reduce/Monitor {name}"
+            effect = f"improve {target_name}"
         else:
-            action = f"Maintain **{name}** stability"
-            effect = f"stabilize **{target_name}**"
+            action = f"Maintain {name} stability"
+            effect = f"stabilize {target_name}"
             
         confidence = "High" if strength == "high" else "Medium"
         

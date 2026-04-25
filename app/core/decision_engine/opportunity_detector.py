@@ -13,12 +13,12 @@ def detect_opportunities(analyzed_features: list) -> list:
         if feat['direction'] == 'positive':
             opportunities.append({
                 "opportunity": f"Leverage {feat['feature']}",
-                "detail": f"**{feat['feature']}** is a top driver. Maximizing this generally leads to best results."
+                "detail": f"{feat['feature']} is a top driver. Maximizing this generally leads to best results."
             })
         elif feat['direction'] == 'negative':
              opportunities.append({
                 "opportunity": f"Optimize {feat['feature']}",
-                "detail": f"**{feat['feature']}** strongly reduces the target. Minimizing it presents a quick win."
+                "detail": f"{feat['feature']} strongly reduces the target. Minimizing it presents a quick win."
             })
             
     return opportunities
